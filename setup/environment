@@ -1,0 +1,40 @@
+# -*- mode: bash -*-
+#
+# This project is set up with Git submodules.
+# We are NOT using West for anything but additional commands.
+# https://docs.zephyrproject.org/latest/guides/west/without-west.html
+
+if [[ -e "prj.conf" ]] ; then
+
+    export PROJECT_DIR="$(pwd)"
+
+    conda deactivate
+    conda env remove --name "zephyr" --yes
+    conda     create --name "zephyr" --yes
+
+    conda activate "zephyr"
+
+    pip install --requirement "zephyr/scripts/requirements.txt"
+    pip install pyrtt-viewer # https://docs.zephyrproject.org/latest/tools/nordic_segger.html#rtt-console
+    pip install cmake_format # optional, but useful, I think
+    pip install gdbgui       # for debugging, of course
+
+    export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
+    export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major"
+
+    export PATH="${HOME}/Developer/Nordic/Tools/Latest/nrfjprog:${PATH}"
+    export PATH="${HOME}/Developer/Nordic/Tools/Latest/mergehex:${PATH}"
+
+    unset  ZEPHYR_MODULES                       # because we are not using modules, yet
+    export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
+
+    source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
+    # source .west/west/scripts/west-completion.bash
+
+else
+
+    echo "error: please 'cd' to the project directory first"
+
+fi
+
+# Done

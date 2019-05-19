@@ -1,0 +1,157 @@
+//
+// Copyright (c) 2019 Andrew Fernandes <andrew@fernandes.org>
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+/dts-v1/;
+#include <nordic/nrf52832_ciaa.dtsi>
+
+/ {
+    model = "nrf52832-midair";
+    compatible = "fernandes,nrf52832-midair", "nordic,nrf52832-ciaa", "nordic,nrf52832", "nordic,nrf52";
+
+    chosen {
+        zephyr,sram = &sram0;
+        zephyr,flash = &flash0;
+        zephyr,code-partition = &slot0_partition;
+    };
+
+    leds {
+
+        compatible = "gpio-leds";
+
+        led0_red: led_0 {
+            gpios = <&gpio0 31 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
+            label = "led0-red";
+        };
+
+        led1_green: led_1 {
+            gpios = <&gpio0 30 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
+            label = "led1-green";
+        };
+
+    };
+
+    buttons {
+
+        compatible = "gpio-keys";
+
+        button0_red: button_0 {
+            gpios = <&gpio0 24 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>;
+            label = "button0-red";
+        };
+
+        button1_green: button_1 {
+            gpios = <&gpio0 16 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>;
+            label = "button1-green";
+        };
+
+    };
+
+    aliases {
+
+        led0 = &led0_red;
+        led1 = &led1_green;
+
+        led0-red   = &led0_red;
+        led1-green = &led1_green;
+
+        button0 = &button0_red;
+        button1 = &button1_green;
+
+        button0-red   = &button0_red;
+        button1-green = &button1_green;
+
+    };
+
+};
+
+&gpio0 {
+    status = "ok";
+};
+
+&gpiote {
+    status = "ok";
+};
+
+&adc {
+    status = "ok";
+    enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>;
+};
+
+&spi0 {
+    status = "ok";
+    sck-pin  = <5>;
+    mosi-pin = <6>;
+    miso-pin = <8>;
+    cs-gpios = <&gpio0 3 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
+    enable-gpios = <&gpio0 22 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>, // INT1
+                   <&gpio0  2 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT2
+    label = "accelerometer";
+};
+
+&i2c1 {
+    status = "ok";
+    scl-pin =  <9>; // P0.12 and P0.19 should be set as inputs with pull-up
+    sda-pin = <10>; // P0.11 and P0.14 should be set as inputs with pull-up
+    enable-gpios = <&gpio0 12 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 19 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
+                   <&gpio0 11 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 14 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
+                   <&gpio0 26 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT
+    label = "magnetometer";
+};
+
+&timer1 {
+	prescaler = <4>; // 0 -> 16 MHz, 4 -> 1 MHz
+};
+
+&timer2 {
+	prescaler = <4>; // 0 -> 16 MHz, 4 -> 1 MHz
+};
+
+&timer3 {
+	prescaler = <4>; // 0 -> 16 MHz, 4 -> 1 MHz
+};
+
+&timer4 {
+	prescaler = <4>; // 0 -> 16 MHz, 4 -> 1 MHz
+};
+
+&flash0 {
+
+    // http://docs.zephyrproject.org/latest/guides/dts/index.html#flash-partitions
+
+    partitions {
+
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        boot_partition: partition@0 {
+            label = "mcuboot";
+            reg = <0x00000000 0xc000>;
+        };
+
+        slot0_partition: partition@c000 {
+            label = "image-0";
+            reg = <0x0000C000 0x32000>;
+        };
+
+        slot1_partition: partition@3e000 {
+            label = "image-1";
+            reg = <0x0003E000 0x32000>;
+        };
+
+        scratch_partition: partition@70000 {
+            label = "image-scratch";
+            reg = <0x00070000 0xa000>;
+        };
+
+        storage_partition: partition@7a000 {
+            label = "storage";
+            reg = <0x0007a000 0x00006000>;
+        };
+
+    };
+
+};
