@@ -1,0 +1,6 @@
+[submodule "zephyr"]
+	path = zephyr
+	url = git@github.com:adfernandes/zephyr.git
+[submodule ".west/west"]
+	path = .west/west
+	url = https://github.com/zephyrproject-rtos/west.git

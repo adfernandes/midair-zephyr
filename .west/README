@@ -1,0 +1,6 @@
+This project is set up with Git submodules.
+
+We are NOT using West for anything but additional commands.
+
+https://docs.zephyrproject.org/latest/guides/west/without-west.html
+
