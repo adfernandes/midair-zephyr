@@ -1,0 +1,7 @@
+{
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "dts_fixup.h": "c",
+        "autoconf.h": "c"
+    }
+}

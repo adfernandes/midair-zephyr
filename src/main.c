@@ -11,6 +11,15 @@
 #include <spi.h>
 #include <i2c.h>
 
+// These 'include' directives are NOT needed by Zephyr.
+// They are only included so that Visual Studio Code's
+// "vscode-cpptools" intellisense can worl properly.
+//
+#if defined(NEVER_DEFINED) // never include // FIXME
+#include "zephyr/include/generated/autoconf.h"
+#include "zephyr/soc/arm/nordic_nrf/nrf52/dts_fixup.h"
+#include "zephyr/include/generated/generated_dts_board_unfixed.h"
+#endif
 
 #define RED_LED_CONTROLLER DT_GPIO_LEDS_LED0_RED_GPIO_CONTROLLER
 #define RED_LED_PIN        DT_GPIO_LEDS_LED0_RED_GPIO_PIN

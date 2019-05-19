@@ -1,13 +1,14 @@
-#!/bin/bash
+# -*- mode: bash -*-
 
-set -eux -o pipefail
-
-cd "${PROJECT_DIR}"
-
-test -e "prj.conf"
-
-rm -rf "_build"
-mkdir  "_build"
-cd     "_build"
-
-cmake -G"Ninja" -DBOARD="nrf52832_midair" -DBOARD_ROOT="${PROJECT_DIR}" "${PROJECT_DIR}"
+set -x
+cd "${PROJECT_DIR}" && \
+test -e "prj.conf"  && \
+rm -rf "_build"     && \
+mkdir  "_build"     && \
+cd     "_build"     && \
+cmake \
+    -G"Ninja" \
+    -DBOARD="nrf52832_midair" \
+    -DBOARD_ROOT="${PROJECT_DIR}" \
+    "${PROJECT_DIR}"
+set +x
