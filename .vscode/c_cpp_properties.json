@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines": [],
+            "defines": ["VSCODE_CPPTOOLS_INTELLISENSE"],
             "compilerPath": "${env:HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
             "cppStandard": "c++17",
