@@ -28,6 +28,12 @@ config SPI
 config I2C
 	default y
 
+config ADC
+	default y
+
+config ADC_ASYNC
+	default y
+
 #|config BT_CTLR
 #|	default BT
 
