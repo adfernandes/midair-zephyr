@@ -8,7 +8,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
 
 #define DEVICE_GET_BINDING(var, label)   \
     (var) = device_get_binding((label)); \
-    if (!var) {                                                \
+    if ((var) == NULL) {                                                \
         LOG_ERR("device_get_binding(\"%s\") failed", (label)); \
         k_panic();                                             \
     }
