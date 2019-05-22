@@ -192,7 +192,6 @@ static void configure_i2c(void) {
     const u8_t mmc5883ma_product_id1_register = 0x2F;
     const u8_t mmc5883ma_product_id1_reset_value = 0b00001100;
 
-
     const u32_t i2c1_cfg = I2C_SPEED_SET(I2C_SPEED_FAST) | I2C_MODE_MASTER;
 
     const bool i2c1_configured = !i2c_configure(dev.i2c1, i2c1_cfg);
