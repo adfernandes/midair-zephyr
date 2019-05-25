@@ -1,5 +1,6 @@
 #ifndef DEVICES_H
 #define DEVICES_H
+
 //----------------------------------------------------------------------
 
 struct devices {
@@ -50,4 +51,5 @@ void devices_init(void);
 #define GRN_BTN_PIN        DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
 //----------------------------------------------------------------------
+
 #endif // DEVICES_H

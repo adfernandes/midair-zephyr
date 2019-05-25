@@ -20,7 +20,7 @@
     #endif // _Static_assert
 #endif // __cplusplus
 
-#define STATIC_ASSERT(is_true) _Static_assert((is_true), "(" #is_true ") failed")
+#define STATIC_ASSERT(is_true) _Static_assert((is_true), #is_true )
 
 //----------------------------------------------------------------------
 

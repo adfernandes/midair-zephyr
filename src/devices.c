@@ -14,6 +14,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
     }
 
 static void configure_gpio_pins(void);
+static void verify_counter_configs(void);
 
 void devices_init(void) {
 
@@ -42,12 +43,19 @@ void devices_init(void) {
     DEVICE_GET_BINDING(dev.timer4, DT_NORDIC_NRF_TIMER_TIMER_4_LABEL);
 
     configure_gpio_pins();
+    verify_counter_configs();
 
     atomic_set(&is_initialized, true);
 
 }
 
 
+// Santity check the hard-coded pin numbers, below:
+//
+STATIC_ASSERT(DT_NORDIC_NRF_SPI_0_CS_GPIOS_PIN == 3);
+STATIC_ASSERT(DT_NORDIC_NRF_I2C_I2C_1_SCL_PIN ==  9);
+STATIC_ASSERT(DT_NORDIC_NRF_I2C_I2C_1_SDA_PIN == 10);
+//
 static void configure_gpio_pins(void) {
 
     struct {
@@ -57,7 +65,7 @@ static void configure_gpio_pins(void) {
         int flags;
         u32_t state;
 
-    } config[] = {
+    } const config[] = {
 
         // LED Output Pins ---------------------------------------------
 
@@ -136,6 +144,57 @@ static void configure_gpio_pins(void) {
 
     }
 
-    k_sleep(100); // milliseconds // this delay resets the SPI and I2C bus states
+    k_sleep(100); // this delay ensures that the SPI and I2C bus states are reset
+
+}
+
+
+static void verify_counter_configs(void) {
+
+    struct counter {
+
+        struct device *port;
+        u32_t frequency;
+        bool is_counting_up;
+        u8_t alarm_channels;
+        u32_t top_value;
+
+    } const config[] = {
+
+        { .port = dev.rtc2,   .frequency = 32768,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
+        { .port = dev.timer1, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer2, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer3, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer4, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+
+    };
+
+    for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
+
+        const struct device *port = config[i].port;
+
+        const struct counter instance = {
+            .port = port,
+            .frequency = counter_get_frequency(port),
+            .is_counting_up = counter_is_counting_up(port),
+            .alarm_channels = counter_get_num_of_channels(port),
+            .top_value = counter_get_top_value(port),
+        };
+
+        if (
+            (instance.port != config[i].port) ||
+            (instance.frequency != config[i].frequency) ||
+            (instance.is_counting_up != config[i].is_counting_up) ||
+            (instance.alarm_channels != config[i].alarm_channels) ||
+            (instance.top_value != config[i].top_value)
+        ) {
+
+            LOG_ERR("counter[%u] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i, config[i].frequency, config[i].is_counting_up, config[i].alarm_channels, config[i].top_value);
+            LOG_ERR("counter[%u] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);
+            k_panic();
+
+        }
+
+    }
 
 }

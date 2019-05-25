@@ -35,27 +35,6 @@ void main(void) {
     configure_i2c();
     configure_buttons();
 
-LOG_INF("counter frequency: %u Hz, is_counting_up: %d, alarm_channels: %u, top_value: %u",
-    counter_get_frequency(dev.rtc2), (int)counter_is_counting_up(dev.rtc2),
-    (unsigned)counter_get_num_of_channels(dev.rtc2), counter_get_top_value(dev.rtc2));
-k_sleep(10); // milliseconds
-LOG_INF("counter frequency: %u Hz, is_counting_up: %d, alarm_channels: %u, top_value: %u",
-    counter_get_frequency(dev.timer1), (int)counter_is_counting_up(dev.timer1),
-    (unsigned)counter_get_num_of_channels(dev.timer1), counter_get_top_value(dev.timer1));
-k_sleep(10); // milliseconds
-LOG_INF("counter frequency: %u Hz, is_counting_up: %d, alarm_channels: %u, top_value: %u",
-    counter_get_frequency(dev.timer2), (int)counter_is_counting_up(dev.timer2),
-    (unsigned)counter_get_num_of_channels(dev.timer2), counter_get_top_value(dev.timer2));
-k_sleep(10); // milliseconds
-LOG_INF("counter frequency: %u Hz, is_counting_up: %d, alarm_channels: %u, top_value: %u",
-    counter_get_frequency(dev.timer3), (int)counter_is_counting_up(dev.timer3),
-    (unsigned)counter_get_num_of_channels(dev.timer3), counter_get_top_value(dev.timer3));
-k_sleep(10); // milliseconds
-LOG_INF("counter frequency: %u Hz, is_counting_up: %d, alarm_channels: %u, top_value: %u",
-    counter_get_frequency(dev.timer4), (int)counter_is_counting_up(dev.timer4),
-    (unsigned)counter_get_num_of_channels(dev.timer4), counter_get_top_value(dev.timer4));
-k_sleep(10); // milliseconds
-
     u32_t count = 0;
     counter_start(dev.rtc2);
 
