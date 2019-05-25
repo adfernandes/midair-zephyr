@@ -171,9 +171,9 @@ static void verify_counter_configs(void) {
 
     for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
 
-        const struct device *port = config[i].port;
+        struct device *port = config[i].port;
 
-        const struct counter instance = {
+        struct counter instance = {
             .port = port,
             .frequency = counter_get_frequency(port),
             .is_counting_up = counter_is_counting_up(port),
