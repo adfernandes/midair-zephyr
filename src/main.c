@@ -15,7 +15,7 @@ static atomic_t grn_btn_state = ATOMIC_INIT(0);
 
 static struct spi_cs_control spi_cs = {
 	.gpio_pin = DT_NORDIC_NRF_SPI_0_CS_GPIOS_PIN,
-	.delay = 1, // microseconds
+	.delay = 0, // microseconds
 };
 
 static struct spi_config spi_cfg = {
@@ -30,9 +30,6 @@ LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 void main(void) {
 
     devices_init();
-
-    gpio_pin_configure(dev.red_led, RED_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL));
-    gpio_pin_configure(dev.grn_led, GRN_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL));
 
     configure_spi();
     configure_i2c();
@@ -85,8 +82,8 @@ static void configure_buttons(void) {
 
 	static struct gpio_callback button_cb;
 
-	gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
-    gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
+	gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
+    gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
 
     gpio_init_callback(&button_cb, button_changed, BIT(RED_BTN_PIN) | BIT(GRN_BTN_PIN));
 
@@ -134,7 +131,7 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
 static void configure_spi(void) {
 
-    // TODO: Bring CS high via zero-length xfer, wait, then reset the device, then wait
+    // TODO: BOOT and SW_RESET on Register CTRL3_C (12h)
 
     spi_cs.gpio_dev = dev.spi0cs;
 
@@ -165,8 +162,6 @@ static void configure_spi(void) {
 		.count = ARRAY_SIZE(rx_buffers)
 	};
 
-    // TODO: BOOT and SW_RESET on Register CTRL3_C (12h)
-
     int rv = spi_transceive(dev.spi0, &spi_cfg, &tx, &rx);
 
     LOG_INF("spi_transceive: %d, rx_data: 0x%02X -> %s", rv, rx_buffer[1],
@@ -177,15 +172,7 @@ static void configure_spi(void) {
 
 static void configure_i2c(void) {
 
-    const u32_t i2c_pullup_pin[] = { 9, 10, 11, 12, 14, 19 };
-
-    for (u32_t i = 0; i < ARRAY_SIZE(i2c_pullup_pin); i++) {
-        gpio_pin_configure(dev.gpio0, i2c_pullup_pin[i], (GPIO_DIR_IN | GPIO_PUD_PULL_UP));
-    }
-
-    k_sleep(2); // milliseconds
-
-    // TODO: Fully reset the device
+    // TODO: Fully software-reset the device
 
     const u16_t mmc5883ma_i2c_addr = 0b0110000;
 
