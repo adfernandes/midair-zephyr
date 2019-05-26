@@ -1,6 +1,9 @@
-#ifndef DEVICES_H
-#define DEVICES_H
-
+#ifndef INIT_H
+#define INIT_H
+//----------------------------------------------------------------------
+#ifdef __cplusplus
+extern "C" {
+#endif
 //----------------------------------------------------------------------
 
 struct devices {
@@ -51,5 +54,8 @@ void devices_init(void);
 #define GRN_BTN_PIN        DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
 //----------------------------------------------------------------------
-
-#endif // DEVICES_H
+#ifdef __cplusplus
+}
+#endif
+//----------------------------------------------------------------------
+#endif // INIT_H

@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 #include "main.h"
+#include "init.h"
 
 static void configure_spi(void);
 static void configure_i2c(void);

@@ -24,10 +24,6 @@
 
 //----------------------------------------------------------------------
 
-#include "devices.h"
-
-//----------------------------------------------------------------------
-
 // These 'include' directives are NOT needed by Zephyr.
 // They are only included so that Visual Studio Code's
 // "vscode-cpptools" intellisense can work properly.

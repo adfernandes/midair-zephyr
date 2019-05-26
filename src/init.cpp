@@ -1,4 +1,5 @@
 #include "main.h"
+#include "init.h"
 
 LOG_MODULE_DECLARE(midair);
 
