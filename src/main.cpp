@@ -22,8 +22,8 @@ static struct spi_cs_control spi_cs = {
 static struct spi_config spi_cfg = {
 	.frequency = 8000000, // MHz
 	.operation = SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) | SPI_LINES_SINGLE,
-	.cs = &spi_cs,
 	.slave = 0,
+	.cs = &spi_cs,
 };
 
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
@@ -78,7 +78,11 @@ static void configure_buttons(void) {
 
 static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32_t pins) {
 
-    static char *state[2] = { "released", "pressed" };
+    static const char * const state[2] = { "released", "pressed" };
+
+    /* static char *state[2] = {
+        { 'r','e','l','e','a','s','e','d','\0' },
+        { 'p','r','e','s','s','e','d','\0'     }}; */
 
     if (pins & BIT(RED_BTN_PIN)) {
 
