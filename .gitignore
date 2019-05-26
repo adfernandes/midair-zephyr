@@ -1,9 +1,9 @@
 _*
-.DS_Store
-
 !__*__.py
 
-*.jdebug
 *.jdebug.user
 
 .vscode/ipch
+
+.DS_Store
+

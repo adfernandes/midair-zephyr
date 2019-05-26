@@ -1,0 +1,15 @@
+diff --git a/cmake/toolchain/zephyr/0.10.0/generic.cmake b/cmake/toolchain/zephyr/0.10.0/generic.cmake
+index 6968e5930a..2fb3fba12e 100644
+--- a/cmake/toolchain/zephyr/0.10.0/generic.cmake
++++ b/cmake/toolchain/zephyr/0.10.0/generic.cmake
+@@ -5,8 +5,8 @@ set(TOOLCHAIN_HOME ${ZEPHYR_SDK_INSTALL_DIR})
+ set(COMPILER gcc)
+ set(LINKER ld)
+ 
+-set(CROSS_COMPILE_TARGET i586-${TOOLCHAIN_VENDOR}-elf)
+-set(SYSROOT_TARGET       i586-${TOOLCHAIN_VENDOR}-elf)
++set(CROSS_COMPILE_TARGET arm-${TOOLCHAIN_VENDOR}-eabi)
++set(SYSROOT_TARGET       arm-${TOOLCHAIN_VENDOR}-eabi)
+ 
+ set(CROSS_COMPILE ${TOOLCHAIN_HOME}/${CROSS_COMPILE_TARGET}/bin/${CROSS_COMPILE_TARGET}-)
+ set(SYSROOT_DIR ${ZEPHYR_SDK_INSTALL_DIR}/sysroots/${SYSROOT_TARGET}/usr)

@@ -19,8 +19,14 @@ if [[ -e "prj.conf" ]] ; then
     pip install cmake_format # optional, but useful, I think
     pip install gdbgui       # for debugging, of course
 
-    export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
-    export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major"
+    export ZEPHYR_TOOLCHAIN_VARIANT="zephyr"
+    export ZEPHYR_SDK_INSTALL_DIR="${HOME}/Developer/Toolchains/arm-zephyr-eabi"
+
+    #|export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb"
+    #|export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major"
+
+    #|export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # symlink all 'arm-zephyr-eabi' files to 'arm-none-eabi'
+    #|export GNUARMEMB_TOOLCHAIN_PATH="/Users/andrew/Developer/Toolchains/arm-zephyr-eabi/arm-zephyr-eabi"
 
     export PATH="${HOME}/Developer/Nordic/Tools/Latest/nrfjprog:${PATH}"
     export PATH="${HOME}/Developer/Nordic/Tools/Latest/mergehex:${PATH}"
