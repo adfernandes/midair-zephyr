@@ -34,7 +34,7 @@ config ADC
 config ADC_ASYNC
 	default y
 
-#|config BT_CTLR
-#|	default BT
+config BT_CTLR
+	default BT
 
 endif # BOARD_NRF52832_MIDAIR

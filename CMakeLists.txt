@@ -14,6 +14,7 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 
 project(midair)
 
-file(GLOB C_SOURCES src/*.c)
+file(GLOB C_SOURCES   "src/*.c")
+file(GLOB CXX_SOURCES "src/*.cpp")
 
-target_sources(app PRIVATE ${C_SOURCES})
+target_sources(app PRIVATE ${C_SOURCES} ${CXX_SOURCES})
