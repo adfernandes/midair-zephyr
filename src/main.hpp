@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MAIN_HPP
+#define MAIN_HPP
 //----------------------------------------------------------------------
 
 #include <zephyr.h>
@@ -36,4 +36,4 @@
 #endif
 
 //----------------------------------------------------------------------
-#endif // MAIN_H
+#endif // MAIN_HPP
