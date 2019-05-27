@@ -11,9 +11,6 @@ static void configure_i2c(void);
 static void configure_buttons(void);
 static void button_changed(struct device *dev, struct gpio_callback *cb, u32_t pins);
 
-static atomic_t red_btn_state = ATOMIC_INIT(0);
-static atomic_t grn_btn_state = ATOMIC_INIT(0);
-
 static struct spi_cs_control spi_cs = {
 	.gpio_pin = DT_NORDIC_NRF_SPI_0_CS_GPIOS_PIN,
 	.delay = 0, // microseconds
@@ -41,8 +38,8 @@ void main(void) {
 
     while (true) {
 
-        const bool current_red_btn_state = (bool)atomic_get(&red_btn_state);
-        const bool current_grn_btn_state = (bool)atomic_get(&grn_btn_state);
+        const bool current_red_btn_state = get_red_btn_state();
+        const bool current_grn_btn_state = get_grn_btn_state();
 
         LOG_DBG("count: %u, rtc: 0x%08x, red: %u, green: %u",
             count, counter_read(dev.rtc2), current_red_btn_state, current_grn_btn_state);

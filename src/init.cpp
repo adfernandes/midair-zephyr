@@ -20,6 +20,8 @@ void devices_init(void) {
 
     if (atomic_get(&is_initialized)) return;
 
+    DEVICE_GET_BINDING(dev.entropy, CONFIG_ENTROPY_NAME);
+
     DEVICE_GET_BINDING(dev.gpio0, DT_NORDIC_NRF_GPIO_0_LABEL);
 
     DEVICE_GET_BINDING(dev.red_led, RED_LED_CONTROLLER);

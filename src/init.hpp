@@ -3,7 +3,12 @@
 
 #include "main.hpp"
 
+#include "leds.hpp"
+#include "btns.hpp"
+
 struct devices {
+
+    struct device *entropy;
 
     struct device *gpio0;
 
@@ -35,19 +40,5 @@ struct devices {
 extern struct devices dev;
 
 void devices_init(void);
-
-//----------------------------------------------------------------------
-
-#define RED_LED_CONTROLLER DT_GPIO_LEDS_LED0_RED_GPIO_CONTROLLER
-#define RED_LED_PIN        DT_GPIO_LEDS_LED0_RED_GPIO_PIN
-
-#define GRN_LED_CONTROLLER DT_GPIO_LEDS_LED1_GREEN_GPIO_CONTROLLER
-#define GRN_LED_PIN        DT_GPIO_LEDS_LED1_GREEN_GPIO_PIN
-
-#define RED_BTN_CONTROLLER DT_GPIO_KEYS_BUTTON0_RED_GPIO_CONTROLLER
-#define RED_BTN_PIN        DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
-
-#define GRN_BTN_CONTROLLER DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_CONTROLLER
-#define GRN_BTN_PIN        DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
 //----------------------------------------------------------------------

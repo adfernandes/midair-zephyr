@@ -8,6 +8,8 @@
 #include <gpio.h>
 #include <spi.h>
 #include <i2c.h>
+// FIXME #include <adc.h>
+#include <pwm.h>
 
 #include <logging/log.h>
 

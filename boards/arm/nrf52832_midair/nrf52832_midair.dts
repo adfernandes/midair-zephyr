@@ -80,6 +80,18 @@
     enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>;
 };
 
+&pwm0 {
+    status = "ok";
+};
+
+&pwm1 {
+    status = "ok";
+};
+
+&pwm2 {
+    status = "ok";
+};
+
 &spi0 {
     status = "ok";
     sck-pin  = <5>;
