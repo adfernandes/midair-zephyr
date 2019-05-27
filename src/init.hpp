@@ -1,5 +1,4 @@
-#ifndef INIT_HPP
-#define INIT_HPP
+#pragma once
 //----------------------------------------------------------------------
 
 #include "main.hpp"
@@ -52,4 +51,3 @@ void devices_init(void);
 #define GRN_BTN_PIN        DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
 //----------------------------------------------------------------------
-#endif // INIT_HPP
