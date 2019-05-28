@@ -3,13 +3,13 @@
 
 #include "main.hpp"
 
-#define RED_BTN_CONTROLLER DT_GPIO_KEYS_BUTTON0_RED_GPIO_CONTROLLER
-#define RED_BTN_PIN        DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
+#define RED_BTN_PIN DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
+#define GRN_BTN_PIN DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
-#define GRN_BTN_CONTROLLER DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_CONTROLLER
-#define GRN_BTN_PIN        DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
-
-enum class btn_id { red, green };
+enum class btn_pin : u32_t {
+    red = RED_BTN_PIN,
+    green = GRN_BTN_PIN,
+};
 
 extern atomic_t red_btn_state;
 extern atomic_t grn_btn_state;

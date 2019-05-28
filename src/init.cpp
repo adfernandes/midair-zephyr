@@ -6,14 +6,16 @@ struct devices dev = {  };
 
 static atomic_t is_initialized = ATOMIC_INIT(false);;
 
-#define DEVICE_GET_BINDING(var, label)   \
-    (var) = device_get_binding((label)); \
-    if ((var) == NULL) {                                       \
-        LOG_ERR("device_get_binding(\"%s\") failed", (label)); \
-        k_panic();                                             \
+#define DEVICE_GET_BINDING(port, name)   \
+    (port) = device_get_binding((name)); \
+    if ((port) == NULL) {                                     \
+        LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
+        k_panic();                                            \
     }
 
 static void configure_gpio_pins(void);
+
+static void verify_pwm_configs(void);
 static void verify_counter_configs(void);
 
 void devices_init(void) {
@@ -24,18 +26,21 @@ void devices_init(void) {
 
     DEVICE_GET_BINDING(dev.gpio0, DT_NORDIC_NRF_GPIO_0_LABEL);
 
-    DEVICE_GET_BINDING(dev.red_led, RED_LED_CONTROLLER);
-    DEVICE_GET_BINDING(dev.grn_led, GRN_LED_CONTROLLER);
+    DEVICE_GET_BINDING(dev.red_led, DT_GPIO_LEDS_LED0_RED_GPIO_CONTROLLER);
+    DEVICE_GET_BINDING(dev.grn_led, DT_GPIO_LEDS_LED1_GREEN_GPIO_CONTROLLER);
 
-    DEVICE_GET_BINDING(dev.red_btn, RED_BTN_CONTROLLER);
-    DEVICE_GET_BINDING(dev.grn_btn, GRN_BTN_CONTROLLER);
+    DEVICE_GET_BINDING(dev.pwm0, DT_NORDIC_NRF_PWM_0_LABEL);
+    DEVICE_GET_BINDING(dev.pwm1, DT_NORDIC_NRF_PWM_1_LABEL);
+
+    DEVICE_GET_BINDING(dev.red_btn, DT_GPIO_KEYS_BUTTON0_RED_GPIO_CONTROLLER);
+    DEVICE_GET_BINDING(dev.grn_btn, DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_CONTROLLER);
 
     DEVICE_GET_BINDING(dev.saadc0, DT_NORDIC_NRF_SAADC_0_LABEL);
 
-    DEVICE_GET_BINDING(dev.spi0, DT_SPI_0_NAME);
+    DEVICE_GET_BINDING(dev.spi0,   DT_NORDIC_NRF_SPI_SPI_0_LABEL);
     DEVICE_GET_BINDING(dev.spi0cs, DT_NORDIC_NRF_SPI_0_CS_GPIOS_CONTROLLER);
 
-    DEVICE_GET_BINDING(dev.i2c1, DT_I2C_1_NAME);
+    DEVICE_GET_BINDING(dev.i2c1, DT_NORDIC_NRF_I2C_I2C_1_LABEL);
 
     DEVICE_GET_BINDING(dev.rtc2, DT_NORDIC_NRF_RTC_RTC_2_LABEL);
 
@@ -45,6 +50,8 @@ void devices_init(void) {
     DEVICE_GET_BINDING(dev.timer4, DT_NORDIC_NRF_TIMER_TIMER_4_LABEL);
 
     configure_gpio_pins();
+
+    verify_pwm_configs();
     verify_counter_configs();
 
     atomic_set(&is_initialized, true);
@@ -147,6 +154,40 @@ static void configure_gpio_pins(void) {
     }
 
     k_sleep(100); // this delay ensures that the SPI and I2C bus states are reset
+
+}
+
+
+static void verify_pwm_configs(void) {
+
+    struct {
+
+        struct device *port;
+        u32_t pin;
+
+    } const config[] = {
+
+        { dev.pwm0, to_underlying(led_pin::red) },
+        { dev.pwm1, to_underlying(led_pin::green) },
+
+    };
+
+    for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
+
+        u64_t cycles;
+        int failed = pwm_get_cycles_per_sec(dev.pwm0, to_underlying(led_pin::red), &cycles);
+
+        if (failed) {
+            LOG_ERR("pwm_get_cycles_per_sec failed for config[%u]", i);
+            k_panic();
+        }
+
+        if (cycles != UINT64_C(16000000)) {
+            LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
+            k_panic();
+        }
+
+    }
 
 }
 

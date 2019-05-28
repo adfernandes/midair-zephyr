@@ -15,6 +15,9 @@ struct devices {
     struct device *red_led;
     struct device *grn_led;
 
+    struct device *pwm0;
+    struct device *pwm1;
+
     struct device *red_btn;
     struct device *grn_btn;
 
