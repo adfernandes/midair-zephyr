@@ -8,7 +8,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
 
 #define DEVICE_GET_BINDING(port, name)   \
     (port) = device_get_binding((name)); \
-    if ((port) == NULL) {                                     \
+    if (unlikely((port) == NULL)) {                           \
         LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
         k_panic();                                            \
     }
@@ -136,7 +136,7 @@ static void configure_gpio_pins(void) {
         int err;
 
         err = gpio_pin_configure(config[i].port, config[i].pin, config[i].flags);
-        if (err != 0) {
+        if (unlikely(err != 0)) {
             LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
             k_panic();
         }
@@ -144,7 +144,7 @@ static void configure_gpio_pins(void) {
         if (config[i].flags & GPIO_DIR_OUT) {
 
             err = gpio_pin_write(config[i].port, config[i].pin, config[i].state);
-            if (err != 0) {
+            if (unlikely(err != 0)) {
                 LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
                 k_panic();
             }
@@ -177,12 +177,12 @@ static void verify_pwm_configs(void) {
         u64_t cycles;
         int failed = pwm_get_cycles_per_sec(dev.pwm0, to_underlying(led_pin::red), &cycles);
 
-        if (failed) {
+        if (unlikely(failed)) {
             LOG_ERR("pwm_get_cycles_per_sec failed for config[%u]", i);
             k_panic();
         }
 
-        if (cycles != UINT64_C(16000000)) {
+        if (unlikely(cycles != UINT64_C(16000000))) {
             LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
             k_panic();
         }
@@ -224,13 +224,13 @@ static void verify_counter_configs(void) {
             .top_value = counter_get_top_value(port),
         };
 
-        if (
+        if (unlikely(
             (instance.port != config[i].port) ||
             (instance.frequency != config[i].frequency) ||
             (instance.is_counting_up != config[i].is_counting_up) ||
             (instance.alarm_channels != config[i].alarm_channels) ||
             (instance.top_value != config[i].top_value)
-        ) {
+        )) {
 
             LOG_ERR("counter[%u] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i, config[i].frequency, config[i].is_counting_up, config[i].alarm_channels, config[i].top_value);
             LOG_ERR("counter[%u] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);

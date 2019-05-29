@@ -163,13 +163,13 @@ static void configure_mmc5883ma(void) {
     const u32_t i2c1_cfg = (I2C_SPEED_SET(I2C_SPEED_FAST) | I2C_MODE_MASTER);
 
     failed = i2c_configure(dev.i2c1, i2c1_cfg);
-    if (failed) {
+    if (unlikely(failed)) {
         LOG_ERR("i2c_configure: failed");
         k_panic();
     }
 
     failed = i2c_burst_write(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_internal_control_1_register, &mmc5883ma_internal_control_1_sw_reset_value, 1);
-    if (failed) {
+    if (unlikely(failed)) {
         LOG_ERR("i2c_burst_write: mmc5883ma_internal_control_1(sw_reset) failed");
         k_panic();
     }
@@ -178,11 +178,11 @@ static void configure_mmc5883ma(void) {
 
     u8_t rx_buffer[1] = { 0 };
     failed = i2c_burst_read(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_product_id_register, rx_buffer, 1);
-    if (failed) {
+    if (unlikely(failed)) {
         LOG_ERR("i2c_burst_read: mmc5883ma_product_id_register failed");
         k_panic();
     }
-    if (rx_buffer[0] != mmc5883ma_product_id_reset_value) {
+    if (unlikely(rx_buffer[0] != mmc5883ma_product_id_reset_value)) {
         LOG_ERR("i2c_burst_read: mmc5883ma_product_id_register != mmc5883ma_product_id_reset_value");
         k_panic();
     }
