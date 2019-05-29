@@ -4,3 +4,6 @@
 [submodule ".west/west"]
 	path = .west/west
 	url = https://github.com/zephyrproject-rtos/west.git
+[submodule "modules/segger"]
+	path = modules/segger
+	url = git@github.com:zephyrproject-rtos/segger.git

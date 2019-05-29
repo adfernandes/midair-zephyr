@@ -10,6 +10,12 @@ set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/
 
 set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeRel
 
+# https://docs.zephyrproject.org/latest/guides/modules.html#without-west
+#
+# See the list of current modules in "${CMAKE_SOURCE_DIR}/zephyr/west.yml"
+#
+set(ZEPHYR_MODULES "${CMAKE_SOURCE_DIR}/modules/segger")
+#
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 
 project(midair)
