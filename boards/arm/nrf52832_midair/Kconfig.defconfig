@@ -16,6 +16,12 @@ config SERIAL
 config GPIO_NRFX
 	default y
 
+config NRFX_GPIOTE
+	default y
+
+config NRFX_PPI
+	default y
+
 config GPIO_AS_PINRESET
 	default y
 

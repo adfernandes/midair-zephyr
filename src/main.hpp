@@ -4,6 +4,8 @@
 
 #include <zephyr.h>
 
+#include <logging/log.h>
+
 #include <device.h>
 #include <counter.h>
 #include <gpio.h>
@@ -12,7 +14,22 @@
 #include <adc.h>
 #include <pwm.h>
 
-#include <logging/log.h>
+//----------------------------------------------------------------------
+// Nordic specific drivers and HAL subsystems
+
+#include <nrfx.h>
+#include <nrfx_glue.h>
+
+#include <nrfx_ppi.h>
+#include <nrfx_gpiote.h>
+#include <nrfx_saadc.h>
+
+#include <nrfx/hal/nrf_ficr.h>
+#include <nrfx/hal/nrf_saadc.h>
+#include <nrfx/hal/nrf_radio.h>
+
+//----------------------------------------------------------------------
+// Standard C and C++ header
 
 #include <stdint.h>
 

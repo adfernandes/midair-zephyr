@@ -180,7 +180,7 @@ static void configure_mmc5883ma(void) {
 
     k_sleep(10); // milliseconds, the MMC5883MA SW_RESET time is 5 milliseconds
 
-    LOG_DBG("SW_RESET initiated and completed");
+    LOG_DBG("sw_reset initiated and completed");
 
     u8_t rx_buffer[1] = { 0 };
     failed = i2c_burst_read(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_product_id_register, rx_buffer, 1);
