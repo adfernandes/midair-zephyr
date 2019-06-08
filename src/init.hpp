@@ -6,6 +6,9 @@
 #include "leds.hpp"
 #include "btns.hpp"
 
+#include "lsm6dsox.hpp"
+#include "mmc5883ma.hpp"
+
 struct devices {
 
     struct device *entropy;

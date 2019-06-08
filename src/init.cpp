@@ -1,6 +1,6 @@
 #include "init.hpp"
 
-LOG_MODULE_DECLARE(midair);
+LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 struct devices dev = {  };
 
