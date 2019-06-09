@@ -7,11 +7,13 @@ LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 atomic_t red_btn_state = ATOMIC_INIT(0);
 atomic_t grn_btn_state = ATOMIC_INIT(0);
 
+static struct gpio_callback button_cb;
+static const char * const state[2] = { "released", "pressed" };
+
 //----------------------------------------------------------------------
 
 static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32_t pins) {
 
-    static const char * const state[2] = { "released", "pressed" };
 
     if (pins & BIT(RED_BTN_PIN)) {
 
@@ -45,7 +47,9 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
 void configure_buttons(void) {
 
-	static struct gpio_callback button_cb;
+    int failed = true;
+
+    // TODO Check all return codes...
 
 	gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
     gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE));
@@ -57,6 +61,8 @@ void configure_buttons(void) {
 
 	gpio_pin_enable_callback(dev.red_btn, RED_BTN_PIN);
 	gpio_pin_enable_callback(dev.grn_btn, GRN_BTN_PIN);
+
+    LOG_DBG("success");
 
 }
 

@@ -4,12 +4,6 @@
 
 #include "main.hpp"
 
-#include "leds.hpp"
-#include "buttons.hpp"
-
-#include "lsm6dsox.hpp"
-#include "mmc5883ma.hpp"
-
 struct devices {
 
     struct device *entropy;
@@ -47,5 +41,13 @@ struct devices {
 extern struct devices dev;
 
 void devices_init(void);
+
+//----------------------------------------------------------------------
+
+#define RED_LED_PIN DT_GPIO_LEDS_LED0_RED_GPIO_PIN
+#define GRN_LED_PIN DT_GPIO_LEDS_LED1_GREEN_GPIO_PIN
+
+#define RED_BTN_PIN DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
+#define GRN_BTN_PIN DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
 //----------------------------------------------------------------------

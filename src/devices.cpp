@@ -175,15 +175,15 @@ static void verify_pwm_configs(void) {
 
     } const config[] = {
 
-        { dev.pwm0, to_underlying(led_pin::red) },
-        { dev.pwm1, to_underlying(led_pin::green) },
+        { dev.pwm0, RED_LED_PIN },
+        { dev.pwm1, GRN_LED_PIN },
 
     };
 
     for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
 
         u64_t cycles;
-        int failed = pwm_get_cycles_per_sec(dev.pwm0, to_underlying(led_pin::red), &cycles);
+        int failed = pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles);
 
         if (unlikely(failed)) {
             LOG_ERR("pwm_get_cycles_per_sec failed for config[%u]", i);

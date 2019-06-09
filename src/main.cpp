@@ -6,14 +6,20 @@
 #include "main.hpp"
 #include "devices.hpp"
 
+#include "leds.hpp"
+#include "buttons.hpp"
+
+#include "lsm6dsox.hpp"
+#include "mmc5883ma.hpp"
+
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 
 void main(void) {
 
     devices_init();
 
+    configure_leds();
     configure_buttons();
-
     configure_lsm6dsox();
     configure_mmc5883ma();
 
@@ -28,8 +34,8 @@ void main(void) {
         LOG_DBG("count: %u, rtc: 0x%08x, red: %u, green: %u",
             count, counter_read(dev.rtc2), current_red_btn_state, current_grn_btn_state);
 
-        gpio_pin_write(dev.red_led, RED_LED_PIN,  (count & 1) || current_red_btn_state);
-        gpio_pin_write(dev.grn_led, GRN_LED_PIN, !(count & 1) || current_grn_btn_state);
+        // gpio_pin_write(dev.red_led, RED_LED_PIN,  (count & 1) || current_red_btn_state);
+        // gpio_pin_write(dev.grn_led, GRN_LED_PIN, !(count & 1) || current_grn_btn_state);
 
         k_sleep(1000); // milliseconds
         count++;
