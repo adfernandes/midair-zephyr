@@ -2,6 +2,8 @@
 
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
+//----------------------------------------------------------------------
+
 static struct spi_cs_control spi_cs = {
 	.gpio_pin = DT_NORDIC_NRF_SPI_0_CS_GPIOS_PIN,
 	.delay = 0, // microseconds
@@ -14,6 +16,7 @@ static struct spi_config spi_cfg = {
 	.cs = &spi_cs,
 };
 
+//----------------------------------------------------------------------
 
 int spi_simple_transceive(struct device *dev, const struct spi_config *config, u8_t *tx_buffer, u8_t *rx_buffer, size_t length) {
 
@@ -45,6 +48,7 @@ int spi_simple_transceive(struct device *dev, const struct spi_config *config, u
 
 }
 
+//----------------------------------------------------------------------
 
 void configure_lsm6dsox(void) {
 
@@ -91,3 +95,4 @@ void configure_lsm6dsox(void) {
 
 }
 
+//----------------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
+//----------------------------------------------------------------------
+
 void configure_mmc5883ma(void) {
 
     int failed = true;
@@ -50,3 +52,5 @@ void configure_mmc5883ma(void) {
     LOG_DBG("product_id read and verified");
 
 }
+
+//----------------------------------------------------------------------

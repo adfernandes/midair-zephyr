@@ -1,6 +1,8 @@
-#include "init.hpp"
+#include "devices.hpp"
 
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
+
+//----------------------------------------------------------------------
 
 struct devices dev = {  };
 
@@ -13,10 +15,14 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
         k_panic();                                            \
     }
 
+//----------------------------------------------------------------------
+
 static void configure_gpio_pins(void);
 
 static void verify_pwm_configs(void);
 static void verify_counter_configs(void);
+
+//----------------------------------------------------------------------
 
 void devices_init(void) {
 
@@ -58,6 +64,7 @@ void devices_init(void) {
 
 }
 
+//----------------------------------------------------------------------
 
 // Santity check the hard-coded pin numbers, below:
 //
@@ -157,6 +164,7 @@ static void configure_gpio_pins(void) {
 
 }
 
+//----------------------------------------------------------------------
 
 static void verify_pwm_configs(void) {
 
@@ -191,6 +199,7 @@ static void verify_pwm_configs(void) {
 
 }
 
+//----------------------------------------------------------------------
 
 static void verify_counter_configs(void) {
 
@@ -241,3 +250,5 @@ static void verify_counter_configs(void) {
     }
 
 }
+
+//----------------------------------------------------------------------

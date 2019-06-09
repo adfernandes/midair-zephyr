@@ -1,10 +1,11 @@
 #pragma once
+
 //----------------------------------------------------------------------
 
 #include "main.hpp"
 
 #include "leds.hpp"
-#include "btns.hpp"
+#include "buttons.hpp"
 
 #include "lsm6dsox.hpp"
 #include "mmc5883ma.hpp"

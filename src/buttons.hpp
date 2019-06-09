@@ -1,7 +1,9 @@
 #pragma once
+
 //----------------------------------------------------------------------
 
 #include "main.hpp"
+#include "devices.hpp"
 
 #define RED_BTN_PIN DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
 #define GRN_BTN_PIN DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
@@ -22,6 +24,6 @@ inline bool get_grn_btn_state(void) {
     return bool(atomic_get(&grn_btn_state));
 }
 
-// TODO: START HERE
+void configure_buttons(void);
 
 //----------------------------------------------------------------------
