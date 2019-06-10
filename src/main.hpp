@@ -63,6 +63,18 @@ constexpr auto to_underlying(E e) noexcept
 }
 
 //----------------------------------------------------------------------
+// A helper function for something that we do a lot, note that
+// STRINGIFY is defined in 'zephyr/include/toolchain/common.h'
+
+#define insist(function)  {        \
+    const int failed = (function);         \
+    if (unlikely(failed)) {                \
+        LOG_ERR("failed '" STRINGIFY(function) "' at " __FILE__  ":" STRINGIFY(__LINE__)); \
+        sys_panic();                       \
+    }                                      \
+}
+
+//----------------------------------------------------------------------
 // These 'include' directives are NOT needed by Zephyr.
 //
 // They are only included so that Visual Studio Code's

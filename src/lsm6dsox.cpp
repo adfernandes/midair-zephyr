@@ -52,8 +52,6 @@ int spi_simple_transceive(struct device *dev, const struct spi_config *config, u
 
 void configure_lsm6dsox(void) {
 
-    int failed = true;
-
     spi_cs.gpio_dev = dev.spi0cs;
 
     const u8_t lsm6dsox_ctrl3_c_register = spi_write_register(0x12);
@@ -70,22 +68,15 @@ void configure_lsm6dsox(void) {
 
     LOG_DBG("initiating boot and sw_reset from spi idle");
 
-    failed = spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length);
-    if (unlikely(failed)) {
-        LOG_ERR("spi_simple_transceive: boot and sw_reset failed");
-        sys_panic();
-    }
+    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
 
     k_sleep(10); // milliseconds, should be adequate for the device to reset
 
     tx_buffer[0] = lsm6dsox_who_am_i_register; tx_buffer[1] = spi_orc;
     rx_buffer[0] = 0; rx_buffer[1] = 0;
 
-    failed = spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length);
-    if (unlikely(failed)) {
-        LOG_ERR("spi_simple_transceive: who_am_i read failed");
-        sys_panic();
-    }
+    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
+
     if (unlikely(rx_buffer[1] != lsm6dsox_who_am_i_reply_value)) {
         LOG_ERR("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
         sys_panic();

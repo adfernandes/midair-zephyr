@@ -12,7 +12,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
     (port) = device_get_binding((name)); \
     if (unlikely((port) == NULL)) {                           \
         LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
-        sys_panic();                                            \
+        sys_panic();                                          \
     }
 
 //----------------------------------------------------------------------
@@ -140,21 +140,11 @@ static void configure_gpio_pins(void) {
 
     for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
 
-        int err;
-
-        err = gpio_pin_configure(config[i].port, config[i].pin, config[i].flags);
-        if (unlikely(err != 0)) {
-            LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
-            sys_panic();
-        }
+        insist(gpio_pin_configure(config[i].port, config[i].pin, config[i].flags));
 
         if (config[i].flags & GPIO_DIR_OUT) {
 
-            err = gpio_pin_write(config[i].port, config[i].pin, config[i].state);
-            if (unlikely(err != 0)) {
-                LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
-                sys_panic();
-            }
+            insist(gpio_pin_write(config[i].port, config[i].pin, config[i].state));
 
         }
 
@@ -182,15 +172,8 @@ static void verify_pwm_configs(void) {
 
     for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
 
-        int failed = true;
-
         u64_t cycles;
-        failed = pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles);
-
-        if (unlikely(failed)) {
-            LOG_ERR("pwm_get_cycles_per_sec failed for config[%u]", i);
-            sys_panic();
-        }
+        insist(pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles));
 
         if (unlikely(cycles != UINT64_C(16000000))) {
             LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));

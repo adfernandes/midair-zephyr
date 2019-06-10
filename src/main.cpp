@@ -23,10 +23,9 @@ void main(void) {
     configure_lsm6dsox();
     configure_mmc5883ma();
 
-    if (unlikely(counter_start(dev.rtc2))) {
-        LOG_ERR("could not start the rtc2 counter");
-        sys_panic();
-    }
+    int failed = true;
+
+    insist(counter_start(dev.rtc2));
 
     while (true) {
 
