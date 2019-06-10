@@ -6,6 +6,7 @@
 #include <zephyr.h>
 
 #include <logging/log.h>
+#include <logging/log_ctrl.h>
 
 #include <device.h>
 #include <counter.h>
@@ -14,6 +15,8 @@
 #include <i2c.h>
 #include <adc.h>
 #include <pwm.h>
+
+#define sys_panic() { log_panic(); k_panic(); }
 
 //----------------------------------------------------------------------
 // Nordic specific drivers and HAL subsystems
@@ -30,9 +33,13 @@
 #include <nrfx/hal/nrf_radio.h>
 
 //----------------------------------------------------------------------
-// Standard C and C++ header
+// Standard C and C++ headers
 
 #include <stdint.h>
+#include <math.h>
+
+#include <algorithm>
+#include <type_traits>
 
 //----------------------------------------------------------------------
 // Static assertions, for C and C++ both
@@ -48,8 +55,6 @@
 //----------------------------------------------------------------------
 // A C++14 safe way of casting an 'enum class' to it's underlying type,
 // see https://stackoverflow.com/a/33083231/1229371 for details
-
-#include <type_traits>
 
 template <typename E>
 constexpr auto to_underlying(E e) noexcept

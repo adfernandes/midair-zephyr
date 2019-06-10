@@ -12,4 +12,7 @@ enum class led_pin : u32_t {
 
 void configure_leds(void);
 
+void set_red_led_state(u8_t brightness);
+void set_grn_led_state(u8_t brightness);
+
 //----------------------------------------------------------------------

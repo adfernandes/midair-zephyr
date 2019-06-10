@@ -12,7 +12,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
     (port) = device_get_binding((name)); \
     if (unlikely((port) == NULL)) {                           \
         LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
-        k_panic();                                            \
+        sys_panic();                                            \
     }
 
 //----------------------------------------------------------------------
@@ -35,8 +35,8 @@ void devices_init(void) {
     DEVICE_GET_BINDING(dev.red_led, DT_GPIO_LEDS_LED0_RED_GPIO_CONTROLLER);
     DEVICE_GET_BINDING(dev.grn_led, DT_GPIO_LEDS_LED1_GREEN_GPIO_CONTROLLER);
 
-    DEVICE_GET_BINDING(dev.pwm0, DT_NORDIC_NRF_PWM_0_LABEL);
-    DEVICE_GET_BINDING(dev.pwm1, DT_NORDIC_NRF_PWM_1_LABEL);
+    DEVICE_GET_BINDING(dev.red_pwm, DT_NORDIC_NRF_PWM_0_LABEL);
+    DEVICE_GET_BINDING(dev.grn_pwm, DT_NORDIC_NRF_PWM_1_LABEL);
 
     DEVICE_GET_BINDING(dev.red_btn, DT_GPIO_KEYS_BUTTON0_RED_GPIO_CONTROLLER);
     DEVICE_GET_BINDING(dev.grn_btn, DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_CONTROLLER);
@@ -145,7 +145,7 @@ static void configure_gpio_pins(void) {
         err = gpio_pin_configure(config[i].port, config[i].pin, config[i].flags);
         if (unlikely(err != 0)) {
             LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
-            k_panic();
+            sys_panic();
         }
 
         if (config[i].flags & GPIO_DIR_OUT) {
@@ -153,7 +153,7 @@ static void configure_gpio_pins(void) {
             err = gpio_pin_write(config[i].port, config[i].pin, config[i].state);
             if (unlikely(err != 0)) {
                 LOG_ERR("failed config[%u] pin %u with errno %d", i, config[i].pin, err);
-                k_panic();
+                sys_panic();
             }
 
         }
@@ -175,24 +175,26 @@ static void verify_pwm_configs(void) {
 
     } const config[] = {
 
-        { dev.pwm0, RED_LED_PIN },
-        { dev.pwm1, GRN_LED_PIN },
+        { dev.red_pwm, RED_LED_PIN },
+        { dev.grn_pwm, GRN_LED_PIN },
 
     };
 
     for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
 
+        int failed = true;
+
         u64_t cycles;
-        int failed = pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles);
+        failed = pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles);
 
         if (unlikely(failed)) {
             LOG_ERR("pwm_get_cycles_per_sec failed for config[%u]", i);
-            k_panic();
+            sys_panic();
         }
 
         if (unlikely(cycles != UINT64_C(16000000))) {
             LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
-            k_panic();
+            sys_panic();
         }
 
     }
@@ -213,11 +215,11 @@ static void verify_counter_configs(void) {
 
     } const config[] = {
 
-        { .port = dev.rtc2,   .frequency = 32768,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
-        { .port = dev.timer1, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer2, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer3, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer4, .frequency = 1000000, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        { .port = dev.rtc2,   .frequency = rtc2_frequency,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
+        { .port = dev.timer1, .frequency = timer1_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer2, .frequency = timer2_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer3, .frequency = timer3_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer4, .frequency = timer4_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
 
     };
 
@@ -243,7 +245,7 @@ static void verify_counter_configs(void) {
 
             LOG_ERR("counter[%u] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i, config[i].frequency, config[i].is_counting_up, config[i].alarm_channels, config[i].top_value);
             LOG_ERR("counter[%u] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);
-            k_panic();
+            sys_panic();
 
         }
 

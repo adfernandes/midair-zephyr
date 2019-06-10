@@ -23,7 +23,7 @@ void configure_mmc5883ma(void) {
     failed = i2c_configure(dev.i2c1, i2c1_cfg);
     if (unlikely(failed)) {
         LOG_ERR("i2c_configure: failed");
-        k_panic();
+        sys_panic();
     }
 
     LOG_DBG("i2c bus configuration succeeded");
@@ -31,7 +31,7 @@ void configure_mmc5883ma(void) {
     failed = i2c_burst_write(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_internal_control_1_register, &mmc5883ma_internal_control_1_sw_reset_value, 1);
     if (unlikely(failed)) {
         LOG_ERR("i2c_burst_write: mmc5883ma_internal_control_1(sw_reset) failed");
-        k_panic();
+        sys_panic();
     }
 
     k_sleep(10); // milliseconds, the MMC5883MA SW_RESET time is 5 milliseconds
@@ -42,11 +42,11 @@ void configure_mmc5883ma(void) {
     failed = i2c_burst_read(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_product_id_register, rx_buffer, 1);
     if (unlikely(failed)) {
         LOG_ERR("i2c_burst_read: mmc5883ma_product_id_register failed");
-        k_panic();
+        sys_panic();
     }
     if (unlikely(rx_buffer[0] != mmc5883ma_product_id_reset_value)) {
         LOG_ERR("i2c_burst_read: mmc5883ma_product_id_register != mmc5883ma_product_id_reset_value");
-        k_panic();
+        sys_panic();
     }
 
     LOG_DBG("product_id read and verified");

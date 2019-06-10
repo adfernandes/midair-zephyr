@@ -40,6 +40,9 @@ config ADC
 config ADC_ASYNC
 	default y
 
+config ENTROPY_GENERATOR
+	default y
+
 config BT_CTLR
 	default BT
 

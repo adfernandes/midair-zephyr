@@ -4,38 +4,40 @@ LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------
 
-static struct {
-
-        struct device *port;
-        u32_t pin;
-
-    } const red_led = { dev.pwm0, to_underlying(led_pin::red) },
-            grn_led = { dev.pwm1, to_underlying(led_pin::grn) };
-
-const  u32_t       period = 1024 * 1024;    // microseconds
-static atomic_t red_pulse = ATOMIC_INIT(0); // microseconds
-static atomic_t grn_pulse = ATOMIC_INIT(0); // microseconds
+static const u32_t multiplier = 32;
+static const u32_t period = (0xFF * multiplier); // microseconds
 
 //----------------------------------------------------------------------
 
 void configure_leds(void) {
 
-    int failed = true;
+    set_red_led_state(0x00);
+    set_grn_led_state(0x00);
 
-    u32_t current_red_pulse = atomic_get(&red_pulse);
-LOG_DBG("====> FOO");
-    failed = pwm_pin_set_usec(red_led.port, red_led.pin, period, current_red_pulse);
-LOG_DBG("====> BAR %d", failed);
+    LOG_DBG("all leds successfully configured");
+
+}
+
+//----------------------------------------------------------------------
+
+void set_red_led_state(u8_t brightness) {
+
+    const u32_t pulse = (brightness * multiplier);
+    int failed = pwm_pin_set_usec(dev.red_pwm, to_underlying(led_pin::red), period, pulse);
     if (unlikely(failed)) {
-        LOG_ERR("failed pwm_pin_set_usec(red_led.port, red_led.pin, %u, %u)", period, current_red_pulse);
-        k_panic();
+        LOG_ERR("failed pwm_pin_set_usec(red_led.port, red_led.pin, %u, %u)", period, pulse);
+        sys_panic();
     }
 
-    u32_t current_grn_pulse = atomic_get(&grn_pulse);
-    failed = pwm_pin_set_usec(grn_led.port, grn_led.pin, 0, 1024*1024);
+}
+
+void set_grn_led_state(u8_t brightness) {
+
+    const u32_t pulse = (brightness * multiplier);
+    int failed = pwm_pin_set_usec(dev.grn_pwm, to_underlying(led_pin::grn), period, pulse);
     if (unlikely(failed)) {
-        LOG_ERR("failed pwm_pin_set_usec(grn_led.port, grn_led.pin, %u, %u)", period, current_grn_pulse);
-        k_panic();
+        LOG_ERR("failed pwm_pin_set_usec(grn_led.port, grn_led.pin, %u, %u)", period, pulse);
+        sys_panic();
     }
 
 }

@@ -22,6 +22,7 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
+  Edit.Preference (PREF_TERMINAL_CLEAR_ON_RESET, 1);
   File.Open ("$(HOME)/Projects/Nordic/midair/_build/zephyr/zephyr.elf");
 }
 

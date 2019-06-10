@@ -62,7 +62,7 @@ void configure_buttons(void) {
 	gpio_pin_enable_callback(dev.red_btn, RED_BTN_PIN);
 	gpio_pin_enable_callback(dev.grn_btn, GRN_BTN_PIN);
 
-    LOG_DBG("success");
+    LOG_DBG("buttons successfully configured");
 
 }
 

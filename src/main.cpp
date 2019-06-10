@@ -23,22 +23,26 @@ void main(void) {
     configure_lsm6dsox();
     configure_mmc5883ma();
 
-    u32_t count = 0;
-    counter_start(dev.rtc2);
+    if (unlikely(counter_start(dev.rtc2))) {
+        LOG_ERR("could not start the rtc2 counter");
+        sys_panic();
+    }
 
     while (true) {
 
-        const bool current_red_btn_state = get_red_btn_state();
-        const bool current_grn_btn_state = get_grn_btn_state();
+        const bool red_pushed = get_red_btn_state();
+        const bool grn_pushed = get_grn_btn_state();
 
-        LOG_DBG("count: %u, rtc: 0x%08x, red: %u, green: %u",
-            count, counter_read(dev.rtc2), current_red_btn_state, current_grn_btn_state);
+        const float seconds = rtc2_rate * counter_read(dev.rtc2);
+        const float radians = 3.14159265358979323846f * seconds;
 
-        // gpio_pin_write(dev.red_led, RED_LED_PIN,  (count & 1) || current_red_btn_state);
-        // gpio_pin_write(dev.grn_led, GRN_LED_PIN, !(count & 1) || current_grn_btn_state);
+        u8_t red_bright = u8_t(255.0f * (0.5f * (sin(radians) + 1.0f)) + 0.5f);
+        u8_t grn_bright = u8_t(255.0f * (0.5f * (cos(radians) + 1.0f)) + 0.5f);
 
-        k_sleep(1000); // milliseconds
-        count++;
+        set_red_led_state(red_bright | (red_pushed ? 0x80 : 0x00));
+        set_grn_led_state(grn_bright | (grn_pushed ? 0x80 : 0x00));
+
+        k_sleep(32); // milliseconds
 
     }
 

@@ -13,8 +13,8 @@ struct devices {
     struct device *red_led;
     struct device *grn_led;
 
-    struct device *pwm0;
-    struct device *pwm1;
+    struct device *red_pwm;
+    struct device *grn_pwm;
 
     struct device *red_btn;
     struct device *grn_btn;
@@ -44,8 +44,21 @@ void devices_init(void);
 
 //----------------------------------------------------------------------
 
+const u32_t rtc2_frequency = 32768; // Hz
+const float rtc2_rate = 1.0f / float(rtc2_frequency);
+
+const u32_t timer1_frequency = 1000000; // Hz
+const u32_t timer2_frequency = 1000000; // Hz
+const u32_t timer3_frequency = 1000000; // Hz
+const u32_t timer4_frequency = 1000000; // Hz
+
+//----------------------------------------------------------------------
+
 #define RED_LED_PIN DT_GPIO_LEDS_LED0_RED_GPIO_PIN
 #define GRN_LED_PIN DT_GPIO_LEDS_LED1_GREEN_GPIO_PIN
+
+#define RED_LED_PWM DT_NORDIC_NRF_PWM_0_LABEL
+#define GRN_LED_PWM DT_NORDIC_NRF_PWM_1_LABEL
 
 #define RED_BTN_PIN DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
 #define GRN_BTN_PIN DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN

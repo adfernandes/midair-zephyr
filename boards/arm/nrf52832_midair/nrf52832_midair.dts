@@ -82,10 +82,14 @@
 
 &pwm0 {
     status = "ok";
+    ch0-pin = <31>;
+    label = "pwm0-red";
 };
 
 &pwm1 {
     status = "ok";
+    ch0-pin = <30>;
+    label = "pwm1-green";
 };
 
 &pwm2 {

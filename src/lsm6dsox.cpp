@@ -73,7 +73,7 @@ void configure_lsm6dsox(void) {
     failed = spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length);
     if (unlikely(failed)) {
         LOG_ERR("spi_simple_transceive: boot and sw_reset failed");
-        k_panic();
+        sys_panic();
     }
 
     k_sleep(10); // milliseconds, should be adequate for the device to reset
@@ -84,11 +84,11 @@ void configure_lsm6dsox(void) {
     failed = spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length);
     if (unlikely(failed)) {
         LOG_ERR("spi_simple_transceive: who_am_i read failed");
-        k_panic();
+        sys_panic();
     }
     if (unlikely(rx_buffer[1] != lsm6dsox_who_am_i_reply_value)) {
         LOG_ERR("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
-        k_panic();
+        sys_panic();
     }
 
     LOG_DBG("who_am_i register value read and verified");
