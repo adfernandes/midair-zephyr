@@ -23,8 +23,6 @@ void main(void) {
     configure_lsm6dsox();
     configure_mmc5883ma();
 
-    int failed = true;
-
     insist(counter_start(dev.rtc2));
 
     while (true) {
