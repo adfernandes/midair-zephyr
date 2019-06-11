@@ -31,6 +31,7 @@
 #include <nrfx/hal/nrf_ficr.h>
 #include <nrfx/hal/nrf_saadc.h>
 #include <nrfx/hal/nrf_radio.h>
+#include <nrfx/hal/nrf_systick.h>
 
 //----------------------------------------------------------------------
 // Standard C and C++ headers

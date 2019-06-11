@@ -22,6 +22,9 @@ config NRFX_GPIOTE
 config NRFX_PPI
 	default y
 
+config NRFX_SYSTICK
+	default y
+
 config GPIO_AS_PINRESET
 	default y
 

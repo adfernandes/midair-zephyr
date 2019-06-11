@@ -77,7 +77,8 @@
 
 &adc {
     status = "ok";
-    enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>;
+    enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // AIN2
+    label = "saadc-battery";
 };
 
 &pwm0 {
