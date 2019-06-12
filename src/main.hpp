@@ -37,10 +37,13 @@
 // Standard C and C++ headers
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include <algorithm>
 #include <type_traits>
+
+extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
 
 //----------------------------------------------------------------------
 // Static assertions, for C and C++ both
@@ -67,7 +70,7 @@ constexpr auto to_underlying(E e) noexcept
 // A helper function for something that we do a lot, note that
 // STRINGIFY is defined in 'zephyr/include/toolchain/common.h'
 
-#define insist(function)  {        \
+#define insist(function)  {                \
     const int failed = (function);         \
     if (unlikely(failed)) {                \
         LOG_ERR("failed '" STRINGIFY(function) "' at " __FILE__  ":" STRINGIFY(__LINE__)); \

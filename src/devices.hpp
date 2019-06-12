@@ -63,4 +63,6 @@ const u32_t timer4_frequency = 1000000; // Hz
 #define RED_BTN_PIN DT_GPIO_KEYS_BUTTON0_RED_GPIO_PIN
 #define GRN_BTN_PIN DT_GPIO_KEYS_BUTTON1_GREEN_GPIO_PIN
 
+#define BATTERY_ADC_INPUT NRF_SAADC_INPUT_AIN2
+
 //----------------------------------------------------------------------
