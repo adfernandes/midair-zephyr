@@ -20,7 +20,7 @@ if [[ -e "prj.conf" ]] ; then
     pip install gdbgui       # for debugging, of course
 
     export ZEPHYR_TOOLCHAIN_VARIANT="zephyr"
-    export ZEPHYR_SDK_INSTALL_DIR="${HOME}/Developer/Toolchains/arm-zephyr-eabi"
+    export ZEPHYR_SDK_INSTALL_DIR="${HOME}/Developer/Toolchains/zephyr-sdk-ng"
 
     #|export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb"
     #|export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major"

@@ -3,8 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-cmake_minimum_required(VERSION 3.14.4)
+cmake_minimum_required(VERSION 3.14.5)
 
 set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/Standards.html
 

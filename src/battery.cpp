@@ -34,9 +34,9 @@ static const struct adc_sequence sequence = {
     .channels     = BIT(channel_cfg.channel_id),
     .buffer       = sample_buffer,
     .buffer_size  = sizeof(sample_buffer),
-    .resolution   = 14, // in bits and is usually 10, 12, or 14
-    .oversampling = 4,  // the actual factor is 2^.oversampling
-    .calibrate    = true,
+    .resolution   = 14,   // in bits and is usually 10, 12, or 14
+    .oversampling = 5,    // the actual factor is 2^.oversampling
+    .calibrate    = true, // temperature compensation calibration
 };
 
 const float factor = 3.0f / float(1 << (sequence.resolution - 1));

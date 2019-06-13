@@ -1,7 +1,7 @@
-diff --git a/cmake/toolchain/zephyr/0.10.0/generic.cmake b/cmake/toolchain/zephyr/0.10.0/generic.cmake
+diff --git a/cmake/toolchain/zephyr/0.10.1/generic.cmake b/cmake/toolchain/zephyr/0.10.1/generic.cmake
 index 6968e5930a..2fb3fba12e 100644
---- a/cmake/toolchain/zephyr/0.10.0/generic.cmake
-+++ b/cmake/toolchain/zephyr/0.10.0/generic.cmake
+--- a/cmake/toolchain/zephyr/0.10.1/generic.cmake
++++ b/cmake/toolchain/zephyr/0.10.1/generic.cmake
 @@ -5,8 +5,8 @@ set(TOOLCHAIN_HOME ${ZEPHYR_SDK_INSTALL_DIR})
  set(COMPILER gcc)
  set(LINKER ld)
