@@ -34,7 +34,7 @@ extern "C" enum adc_action adc_callback(
 
     char voltage[32];
     gcvtf(factor * float(sample_buffer[0]), 9, voltage);
-    LOG_DBG("saadc: (%d/%u)*6 V = %s V", sample_buffer[0], (1 << bits_resolution), log_strdup(voltage));
+    LOG_DBG("read (%d/%u)*6 V = %s V", sample_buffer[0], (1 << bits_resolution), log_strdup(voltage));
     return ADC_ACTION_CONTINUE;
 
 }

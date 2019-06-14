@@ -19,7 +19,20 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 
 project(midair)
 
-file(GLOB C_SOURCES   "src/*.c")
-file(GLOB CXX_SOURCES "src/*.cpp")
+include_directories(
+    "src"
+    "src/dev"
+    "src/ble"
+)
 
-target_sources(app PRIVATE ${C_SOURCES} ${CXX_SOURCES})
+set(SOURCES
+    "src/main.cpp"
+    "src/dev/devices.cpp"
+    "src/dev/leds.cpp"
+    "src/dev/buttons.cpp"
+    "src/dev/battery.cpp"
+    "src/dev/lsm6dsox.cpp"
+    "src/dev/mmc5883ma.cpp"
+)
+
+target_sources(app PRIVATE ${SOURCES})
