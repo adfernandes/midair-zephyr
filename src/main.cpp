@@ -36,7 +36,7 @@ void main(void) {
         const float radians = 3.14159265358979323846f * seconds;
 
         u8_t red_bright = u8_t(255.0f * (0.5f * (sin(radians) + 1.0f)) + 0.5f);
-        u8_t grn_bright = 255 - red_bright;
+        u8_t grn_bright = UINT8_MAX - red_bright;
 
         set_red_led_state(red_bright | (red_pushed ? 0x80 : 0x00));
         set_grn_led_state(grn_bright | (grn_pushed ? 0x80 : 0x00));
