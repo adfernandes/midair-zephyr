@@ -9,9 +9,9 @@ set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeR
 
 # -----------------------------------------------------------------------------
 
-set(USE_PRESETS true CACHE BOOL "Use the 'CMakeLists.txt' presets")
+set(USE_PRESETS True CACHE BOOL "Use the 'CMakeLists.txt' presets")
 
-if(NOT USE_PRESETS)
+if(USE_PRESETS)
 
     message("Using the 'CMakeLists.txt' presets for CMake")
 
@@ -34,7 +34,7 @@ if(NOT USE_PRESETS)
     set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/nrfjprog:$ENV{PATH}")
     set(ENV{PATH} "$ENV{PROJECT_DIR}/zephyr/scripts:$ENV{PATH}")
 
-endif(NOT USE_PRESETS)
+endif(USE_PRESETS)
 
 # -----------------------------------------------------------------------------
 

@@ -8,7 +8,7 @@ mkdir  "_build"     && \
 cd     "_build"     && \
 cmake \
     -G"Ninja" \
-    -DUSE_PRESETS:BOOL=false \
+    -DUSE_PRESETS:BOOL=False \
     -DBOARD="nrf52832_midair" \
     -DBOARD_ROOT="${PROJECT_DIR}" \
     "${PROJECT_DIR}"

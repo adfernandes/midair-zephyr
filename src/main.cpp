@@ -15,6 +15,9 @@
 
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
+//
 void main(void) {
 
     devices_init();
@@ -46,4 +49,5 @@ void main(void) {
     }
 
 }
-
+//
+#pragma clang diagnostic pop
