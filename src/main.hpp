@@ -63,6 +63,9 @@ extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
 // see https://stackoverflow.com/a/33083231/1229371 for details
 
 template <typename E>
+constexpr auto to_underlying(E e) noexcept;
+
+template<typename E>
 constexpr auto to_underlying(E e) noexcept
 {
     return static_cast<std::underlying_type_t<E>>(e);
@@ -72,13 +75,13 @@ constexpr auto to_underlying(E e) noexcept
 // A helper function for something that we do a lot, note that
 // STRINGIFY is defined in 'zephyr/include/toolchain/common.h'
 
-#define insist(function)  {                \
+#define insist(function) do {              \
     const int failed = (function);         \
     if (unlikely(failed)) {                \
         LOG_ERR("failed '" STRINGIFY(function) "' at " __FILE__  ":" STRINGIFY(__LINE__)); \
         sys_panic();                       \
     }                                      \
-}
+} while (false)
 
 //----------------------------------------------------------------------
 // These 'include' directives are NOT needed by Zephyr.

@@ -8,7 +8,7 @@
             "defines": [
                 "VSCODE_CPPTOOLS_INTELLISENSE"
             ],
-            "compilerPath": "${env:HOME}/Developer/Toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc",
+            "compilerPath": "${env:HOME}/Developer/Toolchains/zephyr-sdk-ng/arm-zephyr-eabi/bin",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x64"

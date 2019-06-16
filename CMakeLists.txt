@@ -5,9 +5,42 @@
 #
 cmake_minimum_required(VERSION 3.14.5)
 
-set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/Standards.html
-
 set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeRel
+
+# -----------------------------------------------------------------------------
+
+set(USE_PRESETS true CACHE BOOL "Use the 'CMakeLists.txt' presets")
+
+if(NOT USE_PRESETS)
+
+    message("Using the 'CMakeLists.txt' presets for CMake")
+
+    set(ENV{PROJECT_DIR} "$ENV{HOME}/Projects/Nordic/midair")
+    set(ENV{ZEPHYR_BASE} "$ENV{PROJECT_DIR}/zephyr")
+
+    set(ENV{ZEPHYR_TOOLCHAIN_VARIANT} "zephyr")
+    set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
+
+    unset(ENV{ZEPHYR_MODULES})
+    set(ENV{WEST_DIR} "$ENV{PROJECT_DIR}/.west/west")
+
+    set(BOARD      "nrf52832_midair")
+    set(BOARD_ROOT "$ENV{PROJECT_DIR}")
+
+    set(ENV{PATH} "/opt/conda/envs/zephyr/bin:$ENV{PATH}")
+    set(PYTHON_EXECUTABLE "/opt/conda/envs/zephyr/bin/python")
+
+    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/mergehex:$ENV{PATH}")
+    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/nrfjprog:$ENV{PATH}")
+    set(ENV{PATH} "$ENV{PROJECT_DIR}/zephyr/scripts:$ENV{PATH}")
+
+endif(NOT USE_PRESETS)
+
+# -----------------------------------------------------------------------------
+
+# The C++ Standard version is set in 'prj.conf' via the 'CONFIG_STD_CPP17' setting
+#
+set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/Standards.html
 
 # https://docs.zephyrproject.org/latest/guides/modules.html#without-west
 #
@@ -16,6 +49,8 @@ set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeR
 set(ZEPHYR_MODULES "${CMAKE_SOURCE_DIR}/modules/segger")
 #
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
+
+# -----------------------------------------------------------------------------
 
 project(midair)
 
@@ -36,3 +71,6 @@ set(SOURCES
 )
 
 target_sources(app PRIVATE ${SOURCES})
+
+# -----------------------------------------------------------------------------
+# Done
