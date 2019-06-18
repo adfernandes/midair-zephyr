@@ -15,6 +15,7 @@
 
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 
+#if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
 //
@@ -51,3 +52,4 @@ void main(void) {
 }
 //
 #pragma clang diagnostic pop
+#endif // !defined(__clang__)

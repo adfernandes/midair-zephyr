@@ -5,7 +5,7 @@ LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 //----------------------------------------------------------------------
 
 static struct spi_cs_control spi_cs = {
-	.gpio_pin = DT_NORDIC_NRF_SPI_0_CS_GPIOS_PIN,
+	.gpio_pin = DT_NORDIC_NRF_SPI_SPI_0_CS_GPIOS_PIN,
 	.delay = 0, // microseconds
 };
 
