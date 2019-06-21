@@ -54,6 +54,8 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 
 project(midair)
 
+add_compile_definitions(NRF52_PAN_74) # nRF52832 SAADC: False EVENTS_STARTED if TACQ <= 5 us
+
 include_directories(
     "src"
     "src/dev"
