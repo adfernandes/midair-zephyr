@@ -68,37 +68,37 @@
 };
 
 &gpio0 {
-    status = "ok";
+    status = "okay";
 };
 
 &gpiote {
-    status = "ok";
+    status = "okay";
 };
 
 &adc {
-    status = "ok";
+    status = "okay";
     enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // AIN2
     label = "saadc-battery";
 };
 
 &pwm0 {
-    status = "ok";
+    status = "okay";
     ch0-pin = <31>;
     label = "pwm0-red";
 };
 
 &pwm1 {
-    status = "ok";
+    status = "okay";
     ch0-pin = <30>;
     label = "pwm1-green";
 };
 
 &pwm2 {
-    status = "ok";
+    status = "okay";
 };
 
 &spi0 {
-    status = "ok";
+    status = "okay";
     sck-pin  = <5>;
     mosi-pin = <6>;
     miso-pin = <8>;
@@ -109,7 +109,7 @@
 };
 
 &i2c1 {
-    status = "ok";
+    status = "okay";
     scl-pin =  <9>; // P0.12 and P0.19 should be set as inputs with pull-up
     sda-pin = <10>; // P0.11 and P0.14 should be set as inputs with pull-up
     enable-gpios = <&gpio0 12 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 19 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,

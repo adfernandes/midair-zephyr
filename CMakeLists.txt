@@ -46,7 +46,10 @@ set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/
 #
 # See the list of current modules in "${CMAKE_SOURCE_DIR}/zephyr/west.yml"
 #
-set(ZEPHYR_MODULES "${CMAKE_SOURCE_DIR}/modules/segger")
+set(ZEPHYR_MODULES
+    "${CMAKE_SOURCE_DIR}/modules/nordic"
+    "${CMAKE_SOURCE_DIR}/modules/segger"
+)
 #
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 

@@ -7,3 +7,6 @@
 [submodule "modules/segger"]
 	path = modules/segger
 	url = git@github.com:zephyrproject-rtos/segger.git
+[submodule "modules/nordic"]
+	path = modules/nordic
+	url = git@github.com:zephyrproject-rtos/hal_nordic.git
