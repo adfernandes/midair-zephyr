@@ -15,7 +15,7 @@ if(USE_PRESETS)
 
     message("Using the 'CMakeLists.txt' presets for CMake")
 
-    set(ENV{PROJECT_DIR} "$ENV{HOME}/Projects/Nordic/midair~zephyr")
+    set(ENV{PROJECT_DIR} "$ENV{HOME}/Projects/Nordic/midair/rtos")
     set(ENV{ZEPHYR_BASE} "$ENV{PROJECT_DIR}/zephyr")
 
     set(ENV{ZEPHYR_TOOLCHAIN_VARIANT} "zephyr")
