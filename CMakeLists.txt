@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-cmake_minimum_required(VERSION 3.14.5)
+cmake_minimum_required(VERSION 3.15.3)
 
 set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeRel
 
