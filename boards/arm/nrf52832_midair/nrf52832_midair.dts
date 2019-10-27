@@ -77,7 +77,7 @@
 
 &adc {
     status = "okay";
-    enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // AIN2
+ // enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // AIN2
     label = "saadc-battery";
 };
 
@@ -98,24 +98,26 @@
 };
 
 &spi0 {
+    label = "accelerometer";
+    compatible = "nordic,nrf-spim";
     status = "okay";
     sck-pin  = <5>;
     mosi-pin = <6>;
     miso-pin = <8>;
     cs-gpios = <&gpio0 3 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
-    enable-gpios = <&gpio0 22 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>, // INT1
-                   <&gpio0  2 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT2
-    label = "accelerometer";
+ // enable-gpios = <&gpio0 22 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>, // INT1
+ //                <&gpio0  2 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT2
 };
 
 &i2c1 {
+    label = "magnetometer";
+    compatible = "nordic,nrf-twim";
     status = "okay";
     scl-pin =  <9>; // P0.12 and P0.19 should be set as inputs with pull-up
     sda-pin = <10>; // P0.11 and P0.14 should be set as inputs with pull-up
-    enable-gpios = <&gpio0 12 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 19 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
-                   <&gpio0 11 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 14 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
-                   <&gpio0 26 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT
-    label = "magnetometer";
+ // enable-gpios = <&gpio0 12 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 19 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
+ //                <&gpio0 11 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 14 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>,
+ //                <&gpio0 26 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT
 };
 
 &timer1 {
