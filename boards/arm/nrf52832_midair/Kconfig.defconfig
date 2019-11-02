@@ -34,6 +34,9 @@ config NFCT_PINS_AS_GPIOS
 config SPI
 	default y
 
+config SPI_ASYNC
+	default y
+
 config I2C
 	default y
 
