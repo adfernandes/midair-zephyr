@@ -7,6 +7,8 @@ cmake_minimum_required(VERSION 3.15.5)
 
 set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeRel
 
+set(NO_BUILD_TYPE_WARNING "YES") # Zephyr builds the 'Debug' target with '-Os'
+
 # -----------------------------------------------------------------------------
 
 set(USE_PRESETS True CACHE BOOL "Use the 'CMakeLists.txt' presets")
@@ -27,9 +29,9 @@ if(USE_PRESETS)
     set(BOARD      "nrf52832_midair")
     set(BOARD_ROOT "$ENV{PROJECT_DIR}")
 
-    set(ENV{PATH} "/opt/conda/envs/zephyr/bin:$ENV{PATH}")
     set(PYTHON_EXECUTABLE "/opt/conda/envs/zephyr/bin/python")
 
+    set(ENV{PATH} "/opt/conda/envs/zephyr/bin:$ENV{PATH}")
     set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/mergehex:$ENV{PATH}")
     set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/nrfjprog:$ENV{PATH}")
     set(ENV{PATH} "$ENV{PROJECT_DIR}/zephyr/scripts:$ENV{PATH}")
@@ -56,8 +58,6 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 # -----------------------------------------------------------------------------
 
 project(midair)
-
-add_compile_definitions(NRF52_PAN_74) # nRF52832 SAADC: False EVENTS_STARTED if TACQ <= 5 us
 
 include_directories(
     "src"

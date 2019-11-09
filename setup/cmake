@@ -1,5 +1,12 @@
 # -*- mode: bash -*-
 
+# NOTE https://blog.jetbrains.com/clion/2019/10/clion-2019-3-eap-ninja-cmake-generators/
+#
+#      Soon CLion will support the 'Ninja' generator,
+#      which means that this script can share the build
+#      directory with the CLion build directory!
+#
+
 set -xu
 cd "${PROJECT_DIR}"      && \
 test -e  "prj.conf"      && \
