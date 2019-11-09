@@ -16,7 +16,9 @@
 #include <adc.h>
 #include <pwm.h>
 
+#ifdef CONFIG_BT
 #include "ble.hpp"
+#endif
 
 #define sys_panic() { log_panic(); k_panic(); }
 

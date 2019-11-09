@@ -1,6 +1,6 @@
 # -*- mode: bash -*-
 
-set -x
+set -xu
 cd "${PROJECT_DIR}"      && \
 test -e  "prj.conf"      && \
 rm   -rf "_build"        && \
@@ -12,4 +12,4 @@ cmake \
     -DBOARD="nrf52832_midair" \
     -DBOARD_ROOT="${PROJECT_DIR}" \
     "${PROJECT_DIR}"
-set +x
+set +xu
