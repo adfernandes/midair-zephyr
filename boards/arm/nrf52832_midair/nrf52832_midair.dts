@@ -33,6 +33,20 @@
 
     };
 
+    pwmleds {
+
+        compatible = "pwm-leds";
+
+        pwm0_led0: pwm_led_0 {
+            pwms = <&pwm0 31>;
+        };
+
+        pwm1_led1: pwm_led_1 {
+            pwms = <&pwm1 30>;
+        };
+
+    };
+
     buttons {
 
         compatible = "gpio-keys";
@@ -57,11 +71,26 @@
         led0-red   = &led0_red;
         led1-green = &led1_green;
 
+        pwm0-led0 = &pwm0_led0;
+        pwm1-led1 = &pwm1_led1;
+
+        pwm0-red = &pwm0_led0;
+        pwm1-green = &pwm1_led1;
+
+        pwm0-led0-red = &pwm0_led0;
+        pwm1-led1-green = &pwm1_led1;
+
         button0 = &button0_red;
         button1 = &button1_green;
 
         button0-red   = &button0_red;
         button1-green = &button1_green;
+
+        sw0 = &button0_red;
+        sw1 = &button1_green;
+
+        sw0-red = &button0_red;
+        sw1-green  = &button1_green;
 
     };
 
