@@ -70,7 +70,7 @@ void configure_lsm6dsox(void) {
 
     insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
 
-    k_sleep(10); // milliseconds, should be adequate for the device to reset
+    k_sleep(20); // milliseconds, the reboot time fo the LSM6DSOX is 10 milliseconds
 
     tx_buffer[0] = lsm6dsox_who_am_i_register; tx_buffer[1] = spi_orc;
     rx_buffer[0] = 0; rx_buffer[1] = 0;
@@ -78,8 +78,9 @@ void configure_lsm6dsox(void) {
     insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
 
     if (unlikely(rx_buffer[1] != lsm6dsox_who_am_i_reply_value)) {
+        log_panic();
         LOG_ERR("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
-        sys_panic();
+        k_panic();
     }
 
     LOG_DBG("who_am_i register value read and verified");

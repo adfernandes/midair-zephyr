@@ -10,3 +10,6 @@
 [submodule "modules/nordic"]
 	path = modules/nordic
 	url = git@github.com:zephyrproject-rtos/hal_nordic.git
+[submodule "modules/stmemsc"]
+	path = modules/stmemsc
+	url = git@github.com:zephyrproject-rtos/hal_st.git

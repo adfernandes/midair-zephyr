@@ -49,6 +49,12 @@ config ADC_ASYNC
 config ENTROPY_GENERATOR
 	default y
 
+config HAS_STMEMSC
+	default y
+
+config USE_STDC_LSM6DSOX
+	default y
+
 config BT_CTLR
 	default BT
 
