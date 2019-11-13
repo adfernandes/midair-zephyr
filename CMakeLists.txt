@@ -51,6 +51,7 @@ set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/
 set(ZEPHYR_MODULES
     "${CMAKE_SOURCE_DIR}/modules/nordic"
     "${CMAKE_SOURCE_DIR}/modules/segger"
+    "${CMAKE_SOURCE_DIR}/modules/stmemsc"
 )
 #
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
@@ -73,6 +74,7 @@ set(SOURCES
     "src/dev/battery.cpp"
     "src/dev/lsm6dsox.cpp"
     "src/dev/mmc5883ma.cpp"
+    "src/dev/nrf52clock.c"
 )
 
 target_sources(app PRIVATE ${SOURCES})

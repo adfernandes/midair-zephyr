@@ -10,6 +10,7 @@
 
 #include <device.h>
 #include <counter.h>
+#include <power.h>
 #include <gpio.h>
 #include <spi.h>
 #include <i2c.h>
@@ -20,22 +21,22 @@
 #include "ble.hpp"
 #endif
 
-#define sys_panic() { log_panic(); k_panic(); }
-
 //----------------------------------------------------------------------
 // Nordic specific drivers and HAL subsystems
 
 #include <nrfx.h>
-#include <nrfx_glue.h>
 
 #include <nrfx_ppi.h>
 #include <nrfx_gpiote.h>
 #include <nrfx_saadc.h>
 
 #include <nrfx/hal/nrf_ficr.h>
+#include <nrfx/hal/nrf_clock.h>
 #include <nrfx/hal/nrf_saadc.h>
 #include <nrfx/hal/nrf_radio.h>
 #include <nrfx/hal/nrf_systick.h>
+
+#include <lsm6dsox_reg.h>
 
 //----------------------------------------------------------------------
 // Standard C and C++ headers
@@ -48,17 +49,6 @@
 #include <type_traits>
 
 extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
-
-//----------------------------------------------------------------------
-// Static assertions, for C and C++ both
-
-#ifdef __cplusplus
-    #ifndef _Static_assert
-        #define _Static_assert static_assert
-    #endif // _Static_assert
-#endif // __cplusplus
-
-#define STATIC_ASSERT(is_true) _Static_assert((is_true), #is_true )
 
 //----------------------------------------------------------------------
 // A C++14 safe way of casting an 'enum class' to it's underlying type,
@@ -74,16 +64,9 @@ constexpr auto to_underlying(E e) noexcept
 }
 
 //----------------------------------------------------------------------
-// A helper function for something that we do a lot, note that
-// STRINGIFY is defined in 'zephyr/include/toolchain/common.h'
+// Static and dynamic assertion and verification macros and functions
 
-#define insist(function) do {              \
-    const int failed = (function);         \
-    if (unlikely(failed)) {                \
-        LOG_ERR("failed '" STRINGIFY(function) "' at " __FILE__  ":" STRINGIFY(__LINE__)); \
-        sys_panic();                       \
-    }                                      \
-} while (false)
+#include "insist.h" // valid for C and C++ both
 
 //----------------------------------------------------------------------
 // These 'include' directives are NOT needed by Zephyr.
