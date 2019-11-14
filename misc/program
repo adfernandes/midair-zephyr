@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eux -o pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+HEX_FILE_SENSOR="${1}"
+#|HEX_FILE_STATION="${2}"
+
+# Later: Use the 'nrfjprog --recover' option if we ever enable 'read-back protection'
+
+NRFJPROG="${HOME}/Developer/Nordic/Tools/Latest/nrfjprog/nrfjprog"
+
+"${SCRIPT_DIR}/power" on
+
+"${NRFJPROG}" --program "${HEX_FILE_SENSOR}"  --chiperase --snr 260114307 # Sensor
+#|"${NRFJPROG}" --program "${HEX_FILE_STATION}" --chiperase --snr 260111065 # Station
+
+"${SCRIPT_DIR}/power" off perm
+
+# Done

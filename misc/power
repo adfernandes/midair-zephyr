@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+if (( $# < 1 )) ; then
+    echo "error: required argument(s) are missing"
+    exit 1
+fi
+
+case "${*}" in
+
+    "on"|"off"|"on perm"|"off perm")
+        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN 260114307 > "/dev/null" # Sensor
+        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN 260111065 > "/dev/null" # Station
+    ;;
+
+    *)
+        echo "error: argument(s) must be 'on', 'off', 'on perm', or 'off perm'"
+        exit 1
+    ;;
+
+esac
+
+echo -ne "q\n" | JLinkExe -SelectEmuBySN 260114307 # Sensor
+echo -ne "q\n" | JLinkExe -SelectEmuBySN 260111065 # Station
+
+# Done

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eux -o pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+# Later: Use the 'nrfjprog --recover' option if we ever enable 'read-back protection'
+
+NRFJPROG="${HOME}/Developer/Nordic/Tools/Latest/nrfjprog/nrfjprog"
+
+"${SCRIPT_DIR}/power" on
+
+"${NRFJPROG}" --chiperase --snr 260114307 # Sensor
+"${NRFJPROG}" --chiperase --snr 260111065 # Station
+
+"${SCRIPT_DIR}/power" off perm
+
+# Done
