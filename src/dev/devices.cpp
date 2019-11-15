@@ -4,6 +4,10 @@
 #include <drivers/clock_control/nrf_clock_control.h>
 #include <hal/nrf_power.h>
 
+#include <array>
+
+using std::array;
+
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------
@@ -15,7 +19,7 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
 #define DEVICE_GET_BINDING(port, name)   \
     (port) = device_get_binding((name)); \
     if (unlikely((port) == NULL)) {                           \
-        log_panic();                                          \
+        LOG_PANIC();                                          \
         LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
         k_panic();                                            \
     }
@@ -91,6 +95,10 @@ static void configure_clocks(void) {
     clock_control_on(dev.clock_16m, (void *)1);
     clock_control_on(dev.clock_32k, (void *)CLOCK_CONTROL_NRF_K32SRC);
 
+    // Disable automatic sleep state transitions, staying always in the "active" state
+
+    sys_pm_force_power_state(SYS_POWER_STATE_ACTIVE);
+
     // Now wait until the HFXO and LFXO have both started
     //
     // According to the nRF52832 data sheet:
@@ -128,14 +136,16 @@ STATIC_ASSERT(DT_NORDIC_NRF_TWIM_I2C_1_SDA_PIN      == 10);
 //
 static void configure_gpio_pins(void) {
 
-    struct {
+    struct gpio {
 
         struct device *port;
         u32_t pin;
         int flags;
         u32_t state;
 
-    } const config[] = {
+    };
+
+    const array<const gpio, 15> configs {{
 
         // LED Output Pins ---------------------------------------------
 
@@ -190,15 +200,15 @@ static void configure_gpio_pins(void) {
 
         // -------------------------------------------------------------
 
-    };
+    }};
 
-    for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
+    for (const auto config : configs) {
 
-        insist(gpio_pin_configure(config[i].port, config[i].pin, config[i].flags));
+        insist(gpio_pin_configure(config.port, config.pin, config.flags));
 
-        if (config[i].flags & GPIO_DIR_OUT) {
+        if (config.flags & GPIO_DIR_OUT) {
 
-            insist(gpio_pin_write(config[i].port, config[i].pin, config[i].state));
+            insist(gpio_pin_write(config.port, config.pin, config.state));
 
         }
 
@@ -212,25 +222,27 @@ static void configure_gpio_pins(void) {
 
 static void verify_pwm_configs(void) {
 
-    struct {
+    struct pwm {
 
         struct device *port;
         u32_t pin;
 
-    } const config[] = {
+    };
+
+    const array<const pwm, 2> configs {{
 
         { dev.red_pwm, RED_LED_PIN },
         { dev.grn_pwm, GRN_LED_PIN },
 
-    };
+    }};
 
-    for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
+    for (const auto config : configs) {
 
-        u64_t cycles;
-        insist(pwm_get_cycles_per_sec(config[i].port, config[i].pin, &cycles));
+        u64_t cycles = 0;
+        insist(pwm_get_cycles_per_sec(config.port, config.pin, &cycles));
 
         if (unlikely(cycles != UINT64_C(16000000))) {
-            log_panic();
+            LOG_PANIC();
             LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
             k_panic();
         }
@@ -246,24 +258,27 @@ static void verify_counter_configs(void) {
     struct counter {
 
         struct device *port;
+        const char *name;
         u32_t frequency;
         bool is_counting_up;
         u8_t alarm_channels;
         u32_t top_value;
 
-    } const config[] = {
-
-        { .port = dev.rtc2,   .frequency = rtc2_frequency,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
-        { .port = dev.timer1, .frequency = timer1_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer2, .frequency = timer2_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer3, .frequency = timer3_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer4, .frequency = timer4_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
-
     };
 
-    for (u32_t i = 0; i < ARRAY_SIZE(config); i++) {
+    const array<const counter, 5> configs {{
 
-        struct device *port = config[i].port;
+        { .port = dev.rtc2,   .name = "rtc2",   .frequency = rtc2_frequency,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
+        { .port = dev.timer1, .name = "timer1", .frequency = timer1_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer2, .name = "timer2", .frequency = timer2_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer3, .name = "timer3", .frequency = timer3_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        { .port = dev.timer4, .name = "timer4", .frequency = timer4_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+
+    }};
+
+    for (const auto config : configs) {
+
+        struct device *port = config.port;
 
         struct counter instance = {
             .port = port,
@@ -274,15 +289,15 @@ static void verify_counter_configs(void) {
         };
 
         if (unlikely(
-            (instance.port != config[i].port) ||
-            (instance.frequency != config[i].frequency) ||
-            (instance.is_counting_up != config[i].is_counting_up) ||
-            (instance.alarm_channels != config[i].alarm_channels) ||
-            (instance.top_value != config[i].top_value)
+            (instance.port != config.port) ||
+            (instance.frequency != config.frequency) ||
+            (instance.is_counting_up != config.is_counting_up) ||
+            (instance.alarm_channels != config.alarm_channels) ||
+            (instance.top_value != config.top_value)
         )) {
-            log_panic();
-            LOG_ERR("counter[%u] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i, config[i].frequency, config[i].is_counting_up, config[i].alarm_channels, config[i].top_value);
-            LOG_ERR("counter[%u] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", i,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);
+            LOG_PANIC();
+            LOG_ERR("counter[%s] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", config.name, config.frequency, config.is_counting_up, config.alarm_channels, config.top_value);
+            LOG_ERR("counter[%s] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", config.name,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);
             k_panic();
 
         }

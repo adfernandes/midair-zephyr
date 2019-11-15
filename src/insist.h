@@ -18,7 +18,7 @@
 #define insist(function) do {              \
     const int failed = (function);         \
     if (unlikely(failed)) {                \
-        log_panic();                       \
+        LOG_PANIC();                       \
         LOG_ERR("failed '" STRINGIFY(function) "' at " __FILE__  ":" STRINGIFY(__LINE__)); \
         k_panic();                         \
     }                                      \
