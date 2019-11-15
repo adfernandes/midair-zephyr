@@ -12,7 +12,6 @@
 
 #include "lsm6dsox.hpp"
 #include "mmc5883ma.hpp"
-#include "nrf52clock.h"
 
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 
@@ -22,8 +21,6 @@ LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 #endif // !defined(__clang__)
 //
 void main(void) {
-
-    nrf52_enable_maximum_performance();
 
     devices_init();
 

@@ -6,6 +6,9 @@
 
 struct devices {
 
+    struct device *clock_16m;
+    struct device *clock_32k;
+
     struct device *entropy;
 
     struct device *gpio0;

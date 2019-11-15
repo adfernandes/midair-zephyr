@@ -1,5 +1,9 @@
 #include "devices.hpp"
 
+#include <drivers/clock_control.h>
+#include <drivers/clock_control/nrf_clock_control.h>
+#include <hal/nrf_power.h>
+
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------
@@ -18,9 +22,12 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
 
 //----------------------------------------------------------------------
 
+static void configure_clocks(void);
+
 static void configure_gpio_pins(void);
 
 static void verify_pwm_configs(void);
+
 static void verify_counter_configs(void);
 
 //----------------------------------------------------------------------
@@ -28,6 +35,9 @@ static void verify_counter_configs(void);
 void devices_init(void) {
 
     if (atomic_get(&is_initialized)) return;
+
+    DEVICE_GET_BINDING(dev.clock_16m, DT_INST_0_NORDIC_NRF_CLOCK_LABEL "_16M");
+    DEVICE_GET_BINDING(dev.clock_32k, DT_INST_0_NORDIC_NRF_CLOCK_LABEL "_32K");
 
     DEVICE_GET_BINDING(dev.entropy, CONFIG_ENTROPY_NAME);
 
@@ -56,12 +66,55 @@ void devices_init(void) {
     DEVICE_GET_BINDING(dev.timer3, DT_NORDIC_NRF_TIMER_TIMER_3_LABEL);
     DEVICE_GET_BINDING(dev.timer4, DT_NORDIC_NRF_TIMER_TIMER_4_LABEL);
 
+    configure_clocks();
+
     configure_gpio_pins();
 
     verify_pwm_configs();
+
     verify_counter_configs();
 
     atomic_set(&is_initialized, true);
+
+}
+
+//----------------------------------------------------------------------
+
+static void configure_clocks(void) {
+
+    // Start both the high-accuracy HF Clock and the LF Clock oscillators, telling the kernel not
+    // to change the clocking mode since we are going to use both clocks in "high performance" mode
+    //
+    // See "zephyr/.../nrf52_clock.{h,c}" for an example on how to use the 'clock_control_*'
+    // API function calls as well as online information such as https://tinyurl.com/u8twby7
+
+    clock_control_on(dev.clock_16m, (void *)1);
+    clock_control_on(dev.clock_32k, (void *)CLOCK_CONTROL_NRF_K32SRC);
+
+    // Now wait until the HFXO and LFXO have both started
+    //
+    // According to the nRF52832 data sheet:
+    //  - the typical HFXO startup time is 360 us
+    //  - the typical LFXO startup time is 600 us
+
+    k_busy_wait(1285);
+
+    // Verify that everything is running as we expected
+
+    insist_true(nrf_clock_lf_is_running(NRF_CLOCK));
+    insist_true(nrf_clock_hf_is_running(NRF_CLOCK, NRF_CLOCK_HFCLK_HIGH_ACCURACY));
+
+    const nrf_clock_lfclk_t nrf_clock_lfclk = nrf_clock_lf_src_get(NRF_CLOCK);
+    insist_true(nrf_clock_lfclk == NRF_CLOCK_LFCLK_Xtal || nrf_clock_lfclk == NRF_CLOCK_LFCLK_Synth);
+
+    // Setup the high-performance "constant latency" mode (which is probably moot since we are
+    // disabling any sort of power-down or sleep mode that turns off the HFXO or LFXO clocks)
+
+    nrf_power_task_trigger(NRF_POWER, NRF_POWER_TASK_CONSTLAT);
+
+    // Done
+
+    LOG_DBG("configured for maximum performance");
 
 }
 
@@ -121,7 +174,7 @@ static void configure_gpio_pins(void) {
         // low, and is active-high.
 
         // Note that rather than using discrete components for additional
-        // I2C pull-up resistors, the pull-ups of ganged GPIO lones are used
+        // I2C pull-up resistors, the pull-ups of ganged GPIO lines are used
         // to set the resistance in parallel. The nRF52 series has pull-up
         // and pull-down resistors of 11k/13k/16k min/nominal/max value,
         // so the effective pull-up is one to one-third this value,

@@ -74,7 +74,6 @@ set(SOURCES
     "src/dev/battery.cpp"
     "src/dev/lsm6dsox.cpp"
     "src/dev/mmc5883ma.cpp"
-    "src/dev/nrf52clock.c"
 )
 
 target_sources(app PRIVATE ${SOURCES})
