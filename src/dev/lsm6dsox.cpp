@@ -78,9 +78,7 @@ void configure_lsm6dsox(void) {
     insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
 
     if (unlikely(rx_buffer[1] != lsm6dsox_who_am_i_reply_value)) {
-        LOG_PANIC();
-        LOG_ERR("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
-        k_panic();
+        sys_panic("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
     }
 
     LOG_DBG("who_am_i register value read and verified");

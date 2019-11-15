@@ -32,9 +32,7 @@ void configure_mmc5883ma(void) {
     insist(i2c_burst_read(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_product_id_register, rx_buffer, 1));
 
     if (unlikely(rx_buffer[0] != mmc5883ma_product_id_reset_value)) {
-        LOG_PANIC();
-        LOG_ERR("i2c_burst_read: mmc5883ma_product_id_register != mmc5883ma_product_id_reset_value");
-        k_panic();
+        sys_panic("i2c_burst_read: mmc5883ma_product_id_register != mmc5883ma_product_id_reset_value");
     }
 
     LOG_DBG("product_id read and verified");

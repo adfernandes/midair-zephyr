@@ -18,10 +18,8 @@ static atomic_t is_initialized = ATOMIC_INIT(false);;
 
 #define DEVICE_GET_BINDING(port, name)   \
     (port) = device_get_binding((name)); \
-    if (unlikely((port) == NULL)) {                           \
-        LOG_PANIC();                                          \
-        LOG_ERR("device_get_binding(\"%s\") failed", (name)); \
-        k_panic();                                            \
+    if (unlikely((port) == NULL)) {                             \
+        sys_panic("device_get_binding(\"%s\") failed", (name)); \
     }
 
 //----------------------------------------------------------------------
@@ -242,9 +240,7 @@ static void verify_pwm_configs(void) {
         insist(pwm_get_cycles_per_sec(config.port, config.pin, &cycles));
 
         if (unlikely(cycles != UINT64_C(16000000))) {
-            LOG_PANIC();
-            LOG_ERR("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
-            k_panic();
+            sys_panic("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
         }
 
     }
@@ -295,10 +291,10 @@ static void verify_counter_configs(void) {
             (instance.alarm_channels != config.alarm_channels) ||
             (instance.top_value != config.top_value)
         )) {
-            LOG_PANIC();
-            LOG_ERR("counter[%s] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", config.name, config.frequency, config.is_counting_up, config.alarm_channels, config.top_value);
-            LOG_ERR("counter[%s] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }", config.name,  instance.frequency,  instance.is_counting_up,  instance.alarm_channels,  instance.top_value);
-            k_panic();
+            sys_panic("\ncounter[%s] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }"
+                      "\ncounter[%s] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }",
+                      config.name, config.frequency,   config.is_counting_up,   config.alarm_channels,   config.top_value,
+                      config.name, instance.frequency, instance.is_counting_up, instance.alarm_channels, instance.top_value);
 
         }
 
