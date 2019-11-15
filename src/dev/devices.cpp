@@ -291,8 +291,9 @@ static void verify_counter_configs(void) {
             (instance.alarm_channels != config.alarm_channels) ||
             (instance.top_value != config.top_value)
         )) {
-            sys_panic("\ncounter[%s] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }"
-                      "\ncounter[%s] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }",
+            sys_panic("counter/timer misconfiguration:\n"
+                      "- counter[%s] want: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }\n"
+                      "- counter[%s] have: { frequency: %u, is_counting_up: %d, alarm_channels: %d, top_value: 0x%08x }",
                       config.name, config.frequency,   config.is_counting_up,   config.alarm_channels,   config.top_value,
                       config.name, instance.frequency, instance.is_counting_up, instance.alarm_channels, instance.top_value);
 

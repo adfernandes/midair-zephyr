@@ -12,7 +12,7 @@ cd "${PROJECT_DIR}"      && \
 test -e  "prj.conf"      && \
 rm   -rf "_build"        && \
 mkdir -p "_build/Manual" && \
-cd       "_build/Manual" && \
+pushd    "_build/Manual" && \
 cmake \
     -G"Ninja" \
     -DUSE_PRESETS:BOOL=False \

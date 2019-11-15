@@ -15,7 +15,6 @@
 // User threads are not allowed to induce kernel panics, use an 'oops' instead
 //
 // Also, CLion does not understand https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
-// so use '##__VA_ARGS__' rather than the more modern '__VA_OPT__(,) __VA_ARGS__' style
 
 #define sys_panic(message, ...) LOG_PANIC(); LOG_ERR(message __VA_OPT__(,) __VA_ARGS__); k_oops()
 
