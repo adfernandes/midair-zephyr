@@ -4,10 +4,6 @@
 #include <drivers/clock_control/nrf_clock_control.h>
 #include <hal/nrf_power.h>
 
-#include <array>
-
-using std::array;
-
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------

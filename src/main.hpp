@@ -45,10 +45,13 @@
 #include <stdlib.h>
 #include <math.h>
 
+extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
+
 #include <algorithm>
 #include <type_traits>
+#include <array>
 
-extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
+using namespace std;
 
 //----------------------------------------------------------------------
 // A C++14 safe way of casting an 'enum class' to it's underlying type,

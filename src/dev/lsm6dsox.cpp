@@ -60,22 +60,22 @@ void configure_lsm6dsox(void) {
     const u8_t lsm6dsox_who_am_i_register = spi_read_register(0x0F);
     const u8_t lsm6dsox_who_am_i_reply_value = 0x6C;
 
-    u8_t tx_buffer[] = { lsm6dsox_ctrl3_c_register, lsm6dsox_ctrl3_c_boot_and_sw_reset_value };
-    u8_t rx_buffer[] = { 0, 0 };
+    array<u8_t, 2> tx_buffer {{ lsm6dsox_ctrl3_c_register, lsm6dsox_ctrl3_c_boot_and_sw_reset_value }};
+    array<u8_t, 2> rx_buffer {{ 0, 0 }};
 
-    STATIC_ASSERT(ARRAY_SIZE(tx_buffer) == ARRAY_SIZE(rx_buffer));
-    const size_t length = ARRAY_SIZE(tx_buffer);
+    STATIC_ASSERT(tx_buffer.size() == rx_buffer.size());
+    const size_t length = tx_buffer.size();
 
     LOG_DBG("initiating boot and sw_reset from spi idle");
 
-    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
+    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer.data(), rx_buffer.data(), length));
 
     k_sleep(20); // milliseconds, the reboot time fo the LSM6DSOX is 10 milliseconds
 
     tx_buffer[0] = lsm6dsox_who_am_i_register; tx_buffer[1] = spi_orc;
     rx_buffer[0] = 0; rx_buffer[1] = 0;
 
-    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer, rx_buffer, length));
+    insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer.data(), rx_buffer.data(), length));
 
     if (unlikely(rx_buffer[1] != lsm6dsox_who_am_i_reply_value)) {
         sys_panic("spi_simple_transceive: lsm6dsox_who_am_i_register != lsm6dsox_who_am_i_reply_value");
