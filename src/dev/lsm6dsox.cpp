@@ -1,5 +1,7 @@
 #include "lsm6dsox.hpp"
 
+#include "lsm6dsox_reg.h"
+
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------
@@ -47,6 +49,17 @@ int spi_simple_transceive(struct device *dev, const struct spi_config *config, u
     return spi_transceive(dev, config, &tx, &rx);
 
 }
+
+//----------------------------------------------------------------------
+
+static int32_t stmdev_write(void *handle, uint8_t reg, uint8_t *data, uint16_t length) { return 0; } // FIXME Start Here
+static int32_t stmdev_read (void *handle, uint8_t reg, uint8_t *data, uint16_t length) { return 0; } // FIXME Start Here
+
+static const stmdev_ctx_t stmdev_ctx = {
+    .write_reg = stmdev_write,
+    .read_reg  = stmdev_read,
+    .handle = nullptr,
+};
 
 //----------------------------------------------------------------------
 
