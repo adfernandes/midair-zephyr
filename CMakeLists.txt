@@ -68,7 +68,7 @@ include_directories(
     "src/ble"
 )
 
-set(SOURCES
+set(CXX_SOURCES
     "src/main.cpp"
     "src/dev/devices.cpp"
     "src/dev/leds.cpp"
@@ -78,7 +78,10 @@ set(SOURCES
     "src/dev/mmc5883ma.cpp"
 )
 
-target_sources(app PRIVATE ${SOURCES})
+target_sources(app PRIVATE ${CXX_SOURCES})
+
+# FIXME | set_source_files_properties("${CXX_SOURCES}" PROPERTIES COMPILE_FLAGS   "-Wno-error=implicit-int")
+# FIXME | set_source_files_properties("${CXX_SOURCES}" PROPERTIES COMPILE_OPTIONS "-Wno-error=implicit-int")
 
 # -----------------------------------------------------------------------------
 # Done

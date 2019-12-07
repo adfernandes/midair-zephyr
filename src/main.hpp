@@ -82,6 +82,7 @@ constexpr auto to_underlying(E e) noexcept
 #include "zephyr/soc/arm/nordic_nrf/nrf52/dts_fixup.h"
 #include "zephyr/include/generated/generated_dts_board_unfixed.h"
 #define  k_panic() // this expands properly during compilation
+#define  k_oops()  // this expands properly during compilation
 #endif
 
 //----------------------------------------------------------------------
