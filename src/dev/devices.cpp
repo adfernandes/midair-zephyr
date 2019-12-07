@@ -139,21 +139,21 @@ static void configure_gpio_pins(void) {
 
     };
 
-    const array<const gpio, 15> configs {{
+    const array configs = {
 
         // LED Output Pins ---------------------------------------------
 
-        { dev.red_led, RED_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
-        { dev.grn_led, GRN_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
+        gpio{ dev.red_led, RED_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
+        gpio{ dev.grn_led, GRN_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
 
         // Button Input Pins -------------------------------------------
 
-	    { dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
-        { dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
+        gpio{ dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
+        gpio{ dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
 
         // SSADC Pre-Configuration -------------------------------------
 
-        { dev.gpio0,  4, (GPIO_DIR_IN | GPIO_PUD_NORMAL) },
+        gpio{ dev.gpio0,  4, (GPIO_DIR_IN | GPIO_PUD_NORMAL) },
 
         // LSM6DSOX Accelerometer --------------------------------------
 
@@ -167,9 +167,9 @@ static void configure_gpio_pins(void) {
         //
         // When set as outputs, the INT1 and INT2 lines are active-high.
 
-        { dev.gpio0,  3, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 1 }, // spi0.cs
-        { dev.gpio0, 22, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int1
-        { dev.gpio0,  2, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int2
+        gpio{ dev.gpio0,  3, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 1 }, // spi0.cs
+        gpio{ dev.gpio0, 22, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int1
+        gpio{ dev.gpio0,  2, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int2
 
         // MMC5883MA Magnetometer --------------------------------------
 
@@ -184,17 +184,17 @@ static void configure_gpio_pins(void) {
         // so the effective pull-up is one to one-third this value,
         // depending on how many lines are used.
 
-        { dev.gpio0,  9, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl
-        { dev.gpio0, 10, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda
-        { dev.gpio0, 12, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
-        { dev.gpio0, 19, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
-        { dev.gpio0, 11, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
-        { dev.gpio0, 14, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
-        { dev.gpio0, 26, (GPIO_DIR_IN | GPIO_PUD_NORMAL)  },    // i2c1.int
+        gpio{ dev.gpio0,  9, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl
+        gpio{ dev.gpio0, 10, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda
+        gpio{ dev.gpio0, 12, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
+        gpio{ dev.gpio0, 19, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
+        gpio{ dev.gpio0, 11, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
+        gpio{ dev.gpio0, 14, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
+        gpio{ dev.gpio0, 26, (GPIO_DIR_IN | GPIO_PUD_NORMAL)  },    // i2c1.int
 
         // -------------------------------------------------------------
 
-    }};
+    };
 
     for (const auto config : configs) {
 
@@ -223,12 +223,12 @@ static void verify_pwm_configs(void) {
 
     };
 
-    const array<const pwm, 2> configs {{
+    const array configs = {
 
-        { dev.red_pwm, RED_LED_PIN },
-        { dev.grn_pwm, GRN_LED_PIN },
+        pwm{ dev.red_pwm, RED_LED_PIN },
+        pwm{ dev.grn_pwm, GRN_LED_PIN },
 
-    }};
+    };
 
     for (const auto config : configs) {
 
@@ -258,15 +258,15 @@ static void verify_counter_configs(void) {
 
     };
 
-    const array<const counter, 5> configs {{
+    const array configs = {
 
-        { .port = dev.rtc2,   .name = "rtc2",   .frequency = rtc2_frequency,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
-        { .port = dev.timer1, .name = "timer1", .frequency = timer1_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer2, .name = "timer2", .frequency = timer2_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer3, .name = "timer3", .frequency = timer3_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
-        { .port = dev.timer4, .name = "timer4", .frequency = timer4_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        counter{ .port = dev.rtc2,   .name = "rtc2",   .frequency = rtc2_frequency,   .is_counting_up = true, .alarm_channels = 3, .top_value = 0x00FFFFFF },
+        counter{ .port = dev.timer1, .name = "timer1", .frequency = timer1_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        counter{ .port = dev.timer2, .name = "timer2", .frequency = timer2_frequency, .is_counting_up = true, .alarm_channels = 2, .top_value = 0xFFFFFFFF },
+        counter{ .port = dev.timer3, .name = "timer3", .frequency = timer3_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
+        counter{ .port = dev.timer4, .name = "timer4", .frequency = timer4_frequency, .is_counting_up = true, .alarm_channels = 4, .top_value = 0xFFFFFFFF },
 
-    }};
+    };
 
     for (const auto config : configs) {
 

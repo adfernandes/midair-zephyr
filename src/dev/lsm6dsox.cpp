@@ -73,8 +73,8 @@ void configure_lsm6dsox(void) {
     const u8_t lsm6dsox_who_am_i_register = spi_read_register(0x0F);
     const u8_t lsm6dsox_who_am_i_reply_value = 0x6C;
 
-    array<u8_t, 2> tx_buffer {{ lsm6dsox_ctrl3_c_register, lsm6dsox_ctrl3_c_boot_and_sw_reset_value }};
-    array<u8_t, 2> rx_buffer {{ 0, 0 }};
+    array tx_buffer = { lsm6dsox_ctrl3_c_register, lsm6dsox_ctrl3_c_boot_and_sw_reset_value };
+    array rx_buffer = { u8_t(0), u8_t(0) };
 
     STATIC_ASSERT(tx_buffer.size() == rx_buffer.size());
     const size_t length = tx_buffer.size();

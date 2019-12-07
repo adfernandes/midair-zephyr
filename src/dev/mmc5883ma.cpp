@@ -28,7 +28,7 @@ void configure_mmc5883ma(void) {
 
     LOG_DBG("sw_reset initiated and completed");
 
-    array<u8_t, 1> rx_buffer {{ 0 }};
+    array rx_buffer = { u8_t(0) };
     insist(i2c_burst_read(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_product_id_register, rx_buffer.data(), 1));
 
     if (unlikely(rx_buffer[0] != mmc5883ma_product_id_reset_value)) {
