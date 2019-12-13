@@ -5,10 +5,6 @@
 #
 cmake_minimum_required(VERSION 3.15.5)
 
-set(CMAKE_BUILD_TYPE "Debug") # One of: Debug, Release, RelWithDebInfo, MinSizeRel
-
-set(NO_BUILD_TYPE_WARNING "YES") # Zephyr builds the 'Debug' target with '-Os'
-
 # -----------------------------------------------------------------------------
 
 set(USE_PRESETS True CACHE BOOL "Use the 'CMakeLists.txt' presets")
@@ -79,9 +75,6 @@ set(CXX_SOURCES
 )
 
 target_sources(app PRIVATE ${CXX_SOURCES})
-
-# FIXME | set_source_files_properties("${CXX_SOURCES}" PROPERTIES COMPILE_FLAGS   "-Wno-error=implicit-int")
-# FIXME | set_source_files_properties("${CXX_SOURCES}" PROPERTIES COMPILE_OPTIONS "-Wno-error=implicit-int")
 
 # -----------------------------------------------------------------------------
 # Done

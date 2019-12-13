@@ -8,11 +8,11 @@
 #
 
 set -xu
-cd "${PROJECT_DIR}"      && \
-test -e  "prj.conf"      && \
-rm   -rf "_build"        && \
-mkdir -p "_build/Manual" && \
-pushd    "_build/Manual" && \
+cd "${PROJECT_DIR}" && \
+test -e  "prj.conf" && \
+rm   -rf "_build"   && \
+mkdir -p "_build"   && \
+pushd    "_build"   && \
 cmake \
     -G"Ninja" \
     -DUSE_PRESETS:BOOL=False \

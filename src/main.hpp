@@ -8,9 +8,10 @@
 #include <logging/log.h>
 #include <logging/log_ctrl.h>
 
+#include <power/power.h>
+
 #include <device.h>
 #include <counter.h>
-#include <power.h>
 #include <gpio.h>
 #include <spi.h>
 #include <i2c.h>
