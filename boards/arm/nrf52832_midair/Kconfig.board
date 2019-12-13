@@ -6,5 +6,5 @@
 #
 
 config  BOARD_NRF52832_MIDAIR
-	bool "nRF52832-MIDAIR"
+	bool "nRF52832 MIDAIR"
 	depends on SOC_NRF52832_CIAA

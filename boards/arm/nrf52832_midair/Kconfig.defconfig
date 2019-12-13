@@ -10,52 +10,10 @@ if BOARD_NRF52832_MIDAIR
 config BOARD
 	default "nrf52832_midair"
 
-config SERIAL
-	default n
-
-config GPIO_NRFX
-	default y
-
-config NRFX_GPIOTE
-	default y
-
-config NRFX_PPI
-	default y
-
-config NRFX_SYSTICK
-	default y
-
-config GPIO_AS_PINRESET
-	default y
-
-config NFCT_PINS_AS_GPIOS
-	default y
-
-config SPI
-	default y
-
-config SPI_ASYNC
-	default y
-
-config I2C
-	default y
-
-config ADC
-	default y
-
-config ADC_ASYNC
-	default y
-
-config ENTROPY_GENERATOR
-	default y
-
 config HAS_STMEMSC
-	default y
+       default y
 
 config USE_STDC_LSM6DSOX
-	default y
-
-config BT_CTLR
-	default BT
+       default y
 
 endif # BOARD_NRF52832_MIDAIR
