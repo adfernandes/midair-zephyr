@@ -34,8 +34,7 @@ void devices_init(void) {
 
     if (atomic_get(&is_initialized)) return;
 
-    DEVICE_GET_BINDING(dev.clock_16m, DT_INST_0_NORDIC_NRF_CLOCK_LABEL "_16M");
-    DEVICE_GET_BINDING(dev.clock_32k, DT_INST_0_NORDIC_NRF_CLOCK_LABEL "_32K");
+    DEVICE_GET_BINDING(dev.clock, DT_INST_0_NORDIC_NRF_CLOCK_LABEL);
 
     DEVICE_GET_BINDING(dev.entropy, CONFIG_ENTROPY_NAME);
 
@@ -85,9 +84,11 @@ static void configure_clocks(void) {
     //
     // See "zephyr/.../nrf52_clock.{h,c}" for an example on how to use the 'clock_control_*'
     // API function calls as well as online information such as https://tinyurl.com/u8twby7
+    //
+    // Changes post 2.1 were made as per https://tinyurl.com/yx4hutpc
 
-    clock_control_on(dev.clock_16m, (void *)1);
-    clock_control_on(dev.clock_32k, (void *)CLOCK_CONTROL_NRF_K32SRC);
+    clock_control_on(dev.clock, CLOCK_CONTROL_NRF_SUBSYS_HF);
+    clock_control_on(dev.clock, CLOCK_CONTROL_NRF_SUBSYS_LF);
 
     // Disable automatic sleep state transitions, staying always in the "active" state
 
