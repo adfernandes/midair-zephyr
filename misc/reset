@@ -10,8 +10,8 @@ NRFJPROG="${HOME}/Developer/Nordic/Tools/Default/nrfjprog/nrfjprog"
 
 "${SCRIPT_DIR}/power" on
 
-"${NRFJPROG}" --chiperase --snr 260114307 # Sensor
-"${NRFJPROG}" --chiperase --snr 260111065 # Station
+"${NRFJPROG}" --eraseall --snr 260114307 # Sensor
+#|"${NRFJPROG}" --eraseall --snr 260111065 # Station # TODO Erase, then program the 'uicr.hex' file!
 
 "${SCRIPT_DIR}/power" off perm
 

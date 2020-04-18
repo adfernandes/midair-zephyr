@@ -144,17 +144,17 @@ static void configure_gpio_pins(void) {
 
         // LED Output Pins ---------------------------------------------
 
-        gpio{ dev.red_led, RED_LED_PIN, (GPIO_OUTPUT), 0 },
-        gpio{ dev.grn_led, GRN_LED_PIN, (GPIO_OUTPUT), 0 },
+        gpio{ dev.red_led, RED_LED_PIN, GPIO_OUTPUT | DT_ALIAS_LED0_RED_GPIOS_FLAGS,   0 },
+        gpio{ dev.grn_led, GRN_LED_PIN, GPIO_OUTPUT | DT_ALIAS_LED1_GREEN_GPIOS_FLAGS, 0 },
 
         // Button Input Pins -------------------------------------------
 
-        gpio{ dev.red_btn, RED_BTN_PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) },
-        gpio{ dev.grn_btn, GRN_BTN_PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) },
+        gpio{ dev.red_btn, RED_BTN_PIN, GPIO_INPUT | DT_ALIAS_BUTTON0_RED_GPIOS_FLAGS   },
+        gpio{ dev.grn_btn, GRN_BTN_PIN, GPIO_INPUT | DT_ALIAS_BUTTON1_GREEN_GPIOS_FLAGS },
 
         // SSADC Pre-Configuration -------------------------------------
 
-        gpio{ dev.gpio0,  4, (GPIO_INPUT) },
+        gpio{ dev.gpio0,  4, (GPIO_INPUT) }, // FIXME
 
         // LSM6DSOX Accelerometer --------------------------------------
 
@@ -191,7 +191,7 @@ static void configure_gpio_pins(void) {
         gpio{ dev.gpio0, 19, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.scl.pullup
         gpio{ dev.gpio0, 11, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.sda.pullup
         gpio{ dev.gpio0, 14, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.sda.pullup
-        gpio{ dev.gpio0, 26, (GPIO_INPUT)  },                                 // i2c1.int
+        gpio{ dev.gpio0, 26, (GPIO_INPUT)},                                   // i2c1.int
 
         // -------------------------------------------------------------
 
@@ -203,7 +203,7 @@ static void configure_gpio_pins(void) {
 
         if (config.flags & GPIO_OUTPUT) {
 
-            insist(gpio_pin_write(config.port, config.pin, config.state));
+            insist(gpio_pin_set(config.port, config.pin, config.state));
 
         }
 

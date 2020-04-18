@@ -23,14 +23,14 @@ void configure_leds(void) {
 void set_red_led_state(u8_t brightness) {
 
     const u32_t pulse = (brightness * multiplier);
-    insist(pwm_pin_set_usec(dev.red_pwm, to_underlying(led_pin::red), period, pulse));
+    insist(pwm_pin_set_usec(dev.red_pwm, to_underlying(led_pin::red), period, pulse, RED_LED_PWM_FLAGS));
 
 }
 
 void set_grn_led_state(u8_t brightness) {
 
     const u32_t pulse = (brightness * multiplier);
-    insist(pwm_pin_set_usec(dev.grn_pwm, to_underlying(led_pin::grn), period, pulse));
+    insist(pwm_pin_set_usec(dev.grn_pwm, to_underlying(led_pin::grn), period, pulse, GRN_LED_PWM_FLAGS));
 
 }
 

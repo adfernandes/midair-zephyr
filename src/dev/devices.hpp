@@ -64,4 +64,7 @@ const u32_t timer4_frequency = 1000000; // Hz
 
 #define BATTERY_ADC_INPUT NRF_SAADC_INPUT_AIN2
 
+#define RED_LED_PWM_FLAGS 0
+#define GRN_LED_PWM_FLAGS 0
+
 //----------------------------------------------------------------------

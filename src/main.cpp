@@ -32,7 +32,9 @@ void main(void) {
         const bool red_pushed = get_red_btn_state();
         const bool grn_pushed = get_grn_btn_state();
 
-        const float seconds = rtc2_rate * counter_read(dev.rtc2);
+        u32_t counter_value;
+        insist(counter_get_value(dev.rtc2, &counter_value));
+        const float seconds = rtc2_rate * counter_value;
         const float radians = 3.14159265358979323846f * seconds;
 
         u8_t red_bright = u8_t(lroundf(255.0f * (0.5f * (sin(radians) + 1.0f))));

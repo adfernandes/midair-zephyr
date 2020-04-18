@@ -40,16 +40,15 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
 void configure_buttons(void) {
 
-    insist(gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_INPUT | GPIO_PULL_UP | GPIO_ACTIVE_LOW | GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
-    insist(gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_INPUT | GPIO_PULL_UP | GPIO_ACTIVE_LOW | GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
+    // the pins have already been configured via 'gpio_pin_configure' before this point
+
+    insist(gpio_pin_interrupt_configure(dev.red_btn, RED_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
+    insist(gpio_pin_interrupt_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
 
     gpio_init_callback(&button_cb, button_changed, BIT(RED_BTN_PIN) | BIT(GRN_BTN_PIN));
 
     insist(gpio_add_callback(dev.red_btn, &button_cb));
     insist(gpio_add_callback(dev.grn_btn, &button_cb));
-
-	insist(gpio_pin_enable_callback(dev.red_btn, RED_BTN_PIN));
-	insist(gpio_pin_enable_callback(dev.grn_btn, GRN_BTN_PIN));
 
     LOG_DBG("all buttons successfully configured");
 
