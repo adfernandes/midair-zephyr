@@ -22,12 +22,12 @@
         compatible = "gpio-leds";
 
         led0_red: led_0 {
-            gpios = <&gpio0 31 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
+            gpios = <&gpio0 31 GPIO_ACTIVE_HIGH>;
             label = "led0-red";
         };
 
         led1_green: led_1 {
-            gpios = <&gpio0 30 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
+            gpios = <&gpio0 30 GPIO_ACTIVE_HIGH>;
             label = "led1-green";
         };
 
@@ -52,12 +52,12 @@
         compatible = "gpio-keys";
 
         button0_red: button_0 {
-            gpios = <&gpio0 24 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>;
+            gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
             label = "button0-red";
         };
 
         button1_green: button_1 {
-            gpios = <&gpio0 16 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>;
+            gpios = <&gpio0 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
             label = "button1-green";
         };
 
@@ -107,7 +107,7 @@
 &adc {
     status = "okay";
     label = "saadc-battery";
- // enable-gpios = <&gpio0 4 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // AIN2
+ // enable-gpios = <&gpio0 4 GPIO_INPUT>; // AIN2
 };
 
 &pwm0 {
@@ -133,9 +133,9 @@
     sck-pin  = <5>;
     mosi-pin = <6>;
     miso-pin = <8>;
-    cs-gpios = <&gpio0 3 (GPIO_DIR_OUT | GPIO_PUD_NORMAL)>;
- // enable-gpios = <&gpio0 22 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>, // INT1
- //                <&gpio0  2 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT2
+    cs-gpios = <&gpio0 3 GPIO_ACTIVE_LOW>;
+ // enable-gpios = <&gpio0 22 GPIO_ACTIVE_LOW>, // INT1
+ //                <&gpio0  2 GPIO_ACTIVE_LOW>; // INT2
 };
 
 &i2c1 {
@@ -145,9 +145,9 @@
     clock-frequency = <I2C_BITRATE_FAST>;
     scl-pin =  <9>; // P0.12 and P0.19 should be set as inputs with pull-up
     sda-pin = <10>; // P0.11 and P0.14 should be set as inputs with pull-up
- // enable-gpios = <&gpio0 12 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 19 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, // SCL
- //                <&gpio0 11 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, <&gpio0 14 (GPIO_DIR_IN | GPIO_PUD_PULL_UP)>, // SDA
- //                <&gpio0 26 (GPIO_DIR_IN | GPIO_PUD_NORMAL)>; // INT
+ // enable-gpios = <&gpio0 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>, <&gpio0 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>, // SCL
+ //                <&gpio0 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>, <&gpio0 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>, // SDA
+ //                <&gpio0 26 (GPIO_ACTIVE_LOW)>; // INT
 };
 
 &timer1 {
