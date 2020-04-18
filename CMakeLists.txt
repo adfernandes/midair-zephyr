@@ -17,8 +17,7 @@ if(USE_PRESETS)
     set(ENV{ZEPHYR_BASE} "$ENV{PROJECT_DIR}/zephyr")
 
     set(ENV{ZEPHYR_TOOLCHAIN_VARIANT} "gnuarmemb") # "zephyr" or "gnuarmemb"
-
-    set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
+    #|set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
     set(ENV{GNUARMEMB_TOOLCHAIN_PATH} "$ENV{HOME}/Developer/Toolchains/gcc-arm-none-eabi")
 
     unset(ENV{ZEPHYR_MODULES})
