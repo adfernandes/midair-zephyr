@@ -13,3 +13,6 @@
 [submodule "modules/stmemsc"]
 	path = modules/stmemsc
 	url = git@github.com:zephyrproject-rtos/hal_st.git
+[submodule "modules/cmsis"]
+	path = modules/cmsis
+	url = git@github.com:zephyrproject-rtos/cmsis.git

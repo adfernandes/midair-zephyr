@@ -36,7 +36,7 @@ void devices_init(void) {
 
     DEVICE_GET_BINDING(dev.clock, DT_INST_0_NORDIC_NRF_CLOCK_LABEL);
 
-    DEVICE_GET_BINDING(dev.entropy, CONFIG_ENTROPY_NAME);
+    DEVICE_GET_BINDING(dev.entropy, DT_CHOSEN_ZEPHYR_ENTROPY_LABEL);
 
     DEVICE_GET_BINDING(dev.gpio0, DT_NORDIC_NRF_GPIO_GPIO_0_LABEL);
 
@@ -144,17 +144,17 @@ static void configure_gpio_pins(void) {
 
         // LED Output Pins ---------------------------------------------
 
-        gpio{ dev.red_led, RED_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
-        gpio{ dev.grn_led, GRN_LED_PIN, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 0 },
+        gpio{ dev.red_led, RED_LED_PIN, (GPIO_OUTPUT), 0 },
+        gpio{ dev.grn_led, GRN_LED_PIN, (GPIO_OUTPUT), 0 },
 
         // Button Input Pins -------------------------------------------
 
-        gpio{ dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
-        gpio{ dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },
+        gpio{ dev.red_btn, RED_BTN_PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) },
+        gpio{ dev.grn_btn, GRN_BTN_PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) },
 
         // SSADC Pre-Configuration -------------------------------------
 
-        gpio{ dev.gpio0,  4, (GPIO_DIR_IN | GPIO_PUD_NORMAL) },
+        gpio{ dev.gpio0,  4, (GPIO_INPUT) },
 
         // LSM6DSOX Accelerometer --------------------------------------
 
@@ -168,9 +168,9 @@ static void configure_gpio_pins(void) {
         //
         // When set as outputs, the INT1 and INT2 lines are active-high.
 
-        gpio{ dev.gpio0,  3, (GPIO_DIR_OUT | GPIO_PUD_NORMAL), 1 }, // spi0.cs
-        gpio{ dev.gpio0, 22, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int1
-        gpio{ dev.gpio0,  2, (GPIO_DIR_IN  | GPIO_PUD_NORMAL) },    // spi0.int2
+        gpio{ dev.gpio0,  3, (GPIO_OUTPUT), 1 }, // spi0.cs
+        gpio{ dev.gpio0, 22, (GPIO_INPUT)     }, // spi0.int1
+        gpio{ dev.gpio0,  2, (GPIO_INPUT)     }, // spi0.int2
 
         // MMC5883MA Magnetometer --------------------------------------
 
@@ -185,13 +185,13 @@ static void configure_gpio_pins(void) {
         // so the effective pull-up is one to one-third this value,
         // depending on how many lines are used.
 
-        gpio{ dev.gpio0,  9, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl
-        gpio{ dev.gpio0, 10, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda
-        gpio{ dev.gpio0, 12, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
-        gpio{ dev.gpio0, 19, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.scl.pullup
-        gpio{ dev.gpio0, 11, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
-        gpio{ dev.gpio0, 14, (GPIO_DIR_IN | GPIO_PUD_PULL_UP) },    // i2c1.sda.pullup
-        gpio{ dev.gpio0, 26, (GPIO_DIR_IN | GPIO_PUD_NORMAL)  },    // i2c1.int
+        gpio{ dev.gpio0,  9, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.scl
+        gpio{ dev.gpio0, 10, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.sda
+        gpio{ dev.gpio0, 12, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.scl.pullup
+        gpio{ dev.gpio0, 19, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.scl.pullup
+        gpio{ dev.gpio0, 11, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.sda.pullup
+        gpio{ dev.gpio0, 14, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP) }, // i2c1.sda.pullup
+        gpio{ dev.gpio0, 26, (GPIO_INPUT)  },                                 // i2c1.int
 
         // -------------------------------------------------------------
 
@@ -201,7 +201,7 @@ static void configure_gpio_pins(void) {
 
         insist(gpio_pin_configure(config.port, config.pin, config.flags));
 
-        if (config.flags & GPIO_DIR_OUT) {
+        if (config.flags & GPIO_OUTPUT) {
 
             insist(gpio_pin_write(config.port, config.pin, config.state));
 
@@ -209,7 +209,7 @@ static void configure_gpio_pins(void) {
 
     }
 
-    k_sleep(100); // this delay ensures that the SPI and I2C bus states are reset
+    k_msleep(100); // this delay ensures that the SPI and I2C bus states are reset
 
 }
 

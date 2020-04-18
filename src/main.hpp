@@ -5,18 +5,19 @@
 
 #include <zephyr.h>
 
+#include <device.h>
+
 #include <logging/log.h>
 #include <logging/log_ctrl.h>
 
 #include <power/power.h>
 
-#include <device.h>
-#include <counter.h>
-#include <gpio.h>
-#include <spi.h>
-#include <i2c.h>
-#include <adc.h>
-#include <pwm.h>
+#include <drivers/counter.h>
+#include <drivers/gpio.h>
+#include <drivers/spi.h>
+#include <drivers/i2c.h>
+#include <drivers/adc.h>
+#include <drivers/pwm.h>
 
 #ifdef CONFIG_BT
 #include "ble.hpp"

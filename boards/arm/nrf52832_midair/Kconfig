@@ -1,15 +1,10 @@
-# Kconfig - nrf52832-midair board configuration
+# nrf52832-midair configuration
 #
-# Copyright (c) 2019 Andrew Fernandes <andrew@fernandes.org>
-#
+# Copyright (c) 2020 Andrew Fernandes <andrew@fernandes.org>
 # SPDX-License-Identifier: Apache-2.0
-#
-
-if BOARD_NRF52832_MIDAIR
 
 config BOARD_ENABLE_DCDC
-	bool "Enable DCDC mode"
-	select SOC_DCDC_NRF52X
-	default y
-
-endif # BOARD_NRF52832_MIDAIR
+    bool "Enable DCDC mode"
+    select SOC_DCDC_NRF52X
+    default y
+    depends on BOARD_NRF52832_MIDAIR

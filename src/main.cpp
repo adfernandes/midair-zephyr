@@ -1,8 +1,3 @@
-//
-// Copyright (c) 2019 Andrew Fernandes <andrew@fernandes.org>
-//
-// SPDX-License-Identifier: Apache-2.0
-//
 #include "main.hpp"
 #include "devices.hpp"
 
@@ -48,7 +43,7 @@ void main(void) {
 
         if (!isfinite(seconds)) break; // no 'endless loop' warning
 
-        k_sleep(32); // milliseconds
+        k_msleep(32);
 
     }
 

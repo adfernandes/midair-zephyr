@@ -83,7 +83,7 @@ void configure_lsm6dsox(void) {
 
     insist(spi_simple_transceive(dev.spi0, &spi_cfg, tx_buffer.data(), rx_buffer.data(), length));
 
-    k_sleep(20); // milliseconds, the reboot time fo the LSM6DSOX is 10 milliseconds
+    k_msleep(20); // the reboot time fo the LSM6DSOX is 10 milliseconds
 
     tx_buffer[0] = lsm6dsox_who_am_i_register; tx_buffer[1] = spi_orc;
     rx_buffer[0] = 0; rx_buffer[1] = 0;

@@ -9,7 +9,7 @@ HEX_FILE_SENSOR="${1}"
 
 # Later: Use the 'nrfjprog --recover' option if we ever enable 'read-back protection'
 
-NRFJPROG="${HOME}/Developer/Nordic/Tools/Latest/nrfjprog/nrfjprog"
+NRFJPROG="${HOME}/Developer/Nordic/Tools/Default/nrfjprog/nrfjprog"
 
 "${SCRIPT_DIR}/power" on
 

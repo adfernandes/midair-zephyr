@@ -24,7 +24,7 @@ void configure_mmc5883ma(void) {
 
     insist(i2c_burst_write(dev.i2c1, mmc5883ma_i2c_addr, mmc5883ma_internal_control_1_register, &mmc5883ma_internal_control_1_sw_reset_value, 1));
 
-    k_sleep(10); // milliseconds, the MMC5883MA SW_RESET time is 5 milliseconds
+    k_msleep(10); // the MMC5883MA SW_RESET time is 5 milliseconds
 
     LOG_DBG("sw_reset initiated and completed");
 

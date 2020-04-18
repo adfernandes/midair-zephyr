@@ -1,9 +1,9 @@
+# nrf52832-midair configuration
 #
-# Copyright (c) 2019 Andrew Fernandes <andrew@fernandes.org>
-#
+# Copyright (c) 2020 Andrew Fernandes <andrew@fernandes.org>
 # SPDX-License-Identifier: Apache-2.0
-#
-cmake_minimum_required(VERSION 3.16.2)
+
+cmake_minimum_required(VERSION 3.17.1)
 
 # -----------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ if(USE_PRESETS)
     set(ENV{ZEPHYR_BASE} "$ENV{PROJECT_DIR}/zephyr")
 
     set(ENV{ZEPHYR_TOOLCHAIN_VARIANT} "gnuarmemb") # "zephyr" or "gnuarmemb"
-    #|set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
+  #|set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
     set(ENV{GNUARMEMB_TOOLCHAIN_PATH} "$ENV{HOME}/Developer/Toolchains/gcc-arm-none-eabi")
 
     unset(ENV{ZEPHYR_MODULES})
@@ -29,8 +29,8 @@ if(USE_PRESETS)
     set(PYTHON_EXECUTABLE "/opt/conda/envs/zephyr/bin/python")
 
     set(ENV{PATH} "/opt/conda/envs/zephyr/bin:$ENV{PATH}")
-    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/mergehex:$ENV{PATH}")
-    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Latest/nrfjprog:$ENV{PATH}")
+    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Default/mergehex:$ENV{PATH}")
+    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Default/nrfjprog:$ENV{PATH}")
     set(ENV{PATH} "$ENV{PROJECT_DIR}/zephyr/scripts:$ENV{PATH}")
 
 endif(USE_PRESETS)
@@ -46,6 +46,7 @@ set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/
 # See the list of current modules in "${CMAKE_SOURCE_DIR}/zephyr/west.yml"
 #
 set(ZEPHYR_MODULES
+    "${CMAKE_SOURCE_DIR}/modules/cmsis"
     "${CMAKE_SOURCE_DIR}/modules/nordic"
     "${CMAKE_SOURCE_DIR}/modules/segger"
     "${CMAKE_SOURCE_DIR}/modules/stmemsc"

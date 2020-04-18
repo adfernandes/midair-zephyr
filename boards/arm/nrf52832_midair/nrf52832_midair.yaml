@@ -1,10 +1,12 @@
 identifier: nrf52832_midair
-name: "nRF52832 MIDAIR"
+name: "nRF52832 midair"
 type: mcu
 arch: arm
+flash: 512
+ram: 64
 toolchain:
   - zephyr
   - gnuarmemb
   - xtools
-flash: 512
-ram: 64
+supported:
+  - ble

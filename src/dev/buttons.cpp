@@ -16,11 +16,8 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
     if (pins & BIT(RED_BTN_PIN)) {
 
-        u32_t value;
-        insist(gpio_pin_read(dev_btn, RED_BTN_PIN, &value));
-        value = value ? 0 : 1; // negated
-
-        insist(gpio_pin_write(dev.red_led, RED_LED_PIN, value));
+        const u32_t value = gpio_pin_get(dev_btn, RED_BTN_PIN);
+        insist(gpio_pin_set(dev.red_led, RED_LED_PIN, value));
         atomic_set(&red_btn_state, value);
 
         LOG_INF("red: %s", state[value]);
@@ -29,11 +26,8 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
     if (pins & BIT(GRN_BTN_PIN)) {
 
-        u32_t value;
-        insist(gpio_pin_read(dev_btn, GRN_BTN_PIN, &value));
-        value = value ? 0 : 1; // negated
-
-        insist(gpio_pin_write(dev.grn_led, GRN_LED_PIN, value));
+        const u32_t value = gpio_pin_get(dev_btn, GRN_BTN_PIN);
+        insist(gpio_pin_set(dev.grn_led, GRN_LED_PIN, value));
         atomic_set(&grn_btn_state, value);
 
         LOG_INF("green: %s", state[value]);
@@ -46,8 +40,8 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
 void configure_buttons(void) {
 
-    insist(gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE)));
-    insist(gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_DIR_IN | GPIO_PUD_PULL_UP | GPIO_INT | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE)));
+    insist(gpio_pin_configure(dev.red_btn, RED_BTN_PIN, (GPIO_INPUT | GPIO_PULL_UP | GPIO_ACTIVE_LOW | GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
+    insist(gpio_pin_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_INPUT | GPIO_PULL_UP | GPIO_ACTIVE_LOW | GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
 
     gpio_init_callback(&button_cb, button_changed, BIT(RED_BTN_PIN) | BIT(GRN_BTN_PIN));
 
