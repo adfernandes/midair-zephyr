@@ -7,35 +7,8 @@ cmake_minimum_required(VERSION 3.17.1)
 
 # -----------------------------------------------------------------------------
 
-set(USE_PRESETS True CACHE BOOL "Use the 'CMakeLists.txt' presets")
-
-if(USE_PRESETS)
-
-    message("Using the 'CMakeLists.txt' presets for CMake")
-
-    set(ENV{PROJECT_DIR} "$ENV{HOME}/Projects/Nordic/midair/zephyr")
-    set(ENV{ZEPHYR_BASE} "$ENV{PROJECT_DIR}/zephyr")
-
-    set(ENV{ZEPHYR_TOOLCHAIN_VARIANT} "gnuarmemb") # "zephyr" or "gnuarmemb"
-  #|set(ENV{ZEPHYR_SDK_INSTALL_DIR}   "$ENV{HOME}/Developer/Toolchains/zephyr-sdk-ng")
-    set(ENV{GNUARMEMB_TOOLCHAIN_PATH} "$ENV{HOME}/Developer/Toolchains/gcc-arm-none-eabi")
-
-    unset(ENV{ZEPHYR_MODULES})
-    set(ENV{WEST_DIR} "$ENV{PROJECT_DIR}/.west/west")
-
-    set(BOARD      "nrf52832_midair")
-    set(BOARD_ROOT "$ENV{PROJECT_DIR}")
-
-    set(PYTHON_EXECUTABLE "/opt/conda/envs/zephyr/bin/python")
-
-    set(ENV{PATH} "/opt/conda/envs/zephyr/bin:$ENV{PATH}")
-    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Default/mergehex:$ENV{PATH}")
-    set(ENV{PATH} "$ENV{HOME}/Developer/Nordic/Tools/Default/nrfjprog:$ENV{PATH}")
-    set(ENV{PATH} "$ENV{PROJECT_DIR}/zephyr/scripts:$ENV{PATH}")
-
-endif(USE_PRESETS)
-
-# -----------------------------------------------------------------------------
+# Set the 'BOARD_ROOT' property for CLion
+set(BOARD_ROOT "$ENV{PROJECT_DIR}")
 
 # The C++ Standard version is set in 'prj.conf' via the 'CONFIG_STD_CPP17' setting
 #

@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/.west/west" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/modules/cmsis" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/modules/nordic" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/modules/segger" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/modules/stmemsc" vcs="Git" />

@@ -26,7 +26,7 @@ if [[ -e "prj.conf" ]] ; then
     export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
     export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
 
-    unset  ZEPHYR_MODULES                       # because we are not using modules, yet
+    unset  ZEPHYR_MODULES                       # because we are not using west-management
     export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
 
     source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
