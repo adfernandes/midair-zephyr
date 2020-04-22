@@ -1,0 +1,64 @@
+# This project is set up with Git submodules.
+# We are NOT using West for anything but additional commands.
+# https://docs.zephyrproject.org/latest/guides/west/without-west.html
+#
+# This file is provided as a sample reference only!
+
+manifest:
+
+  self:
+
+    path: west
+
+  defaults:
+
+    remote: zephyr
+
+  remotes:
+
+    - name: zephyr
+      url-base: git@github.com:zephyrproject-rtos
+
+  projects:
+
+    - name: zephyr
+      revision: master
+      west-commands: scripts/west-commands.yml
+      path: rtos/zephyr
+
+    - name: cmsis
+      revision: master
+      path: rtos/modules/hal/cmsis
+
+    - name: hal_nordic
+      revision: master
+      path: rtos/modules/hal/nordic
+
+    - name: hal_st
+      revision: master
+      path: rtos/modules/hal/stmemsc
+
+    - name: libmetal
+      revision: master
+      path: rtos/modules/hal/libmetal
+
+    - name: mcuboot
+      revision: master
+      path: rtos/boot/mcuboot
+
+    - name: segger
+      revision: master
+      path: rtos/modules/debug/segger
+
+    - name: tinycbor
+      path: rtos/modules/lib/tinycbor
+      revision: master
+
+    - name: tinycrypt
+      path: rtos/modules/lib/tinycrypt
+      revision: master
+
+    - name: nrf_hw_models
+      path: rtos/modules/bsim
+      revision: master
+

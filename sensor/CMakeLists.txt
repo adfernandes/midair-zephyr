@@ -7,7 +7,10 @@ cmake_minimum_required(VERSION 3.17.1)
 
 # -----------------------------------------------------------------------------
 
-# Set the 'BOARD_ROOT' property for CLion
+# Since we are using a custom board
+#
+set(BOARD "nrf52832_midair")
+#
 set(BOARD_ROOT "$ENV{PROJECT_DIR}")
 
 # The C++ Standard version is set in 'prj.conf' via the 'CONFIG_STD_CPP17' setting
@@ -16,20 +19,20 @@ set_property(GLOBAL PROPERTY CSTD "gnu17") # https://gcc.gnu.org/onlinedocs/gcc/
 
 # https://docs.zephyrproject.org/latest/guides/modules.html#without-west
 #
-# See the list of current modules in "${CMAKE_SOURCE_DIR}/zephyr/west.yml"
+# See the list of current modules in "$ENV{PROJECT_DIR}/zephyr/west.yml"
 #
 set(ZEPHYR_MODULES
-    "${CMAKE_SOURCE_DIR}/modules/cmsis"
-    "${CMAKE_SOURCE_DIR}/modules/nordic"
-    "${CMAKE_SOURCE_DIR}/modules/segger"
-    "${CMAKE_SOURCE_DIR}/modules/stmemsc"
+    "$ENV{PROJECT_DIR}/modules/cmsis"
+    "$ENV{PROJECT_DIR}/modules/nordic"
+    "$ENV{PROJECT_DIR}/modules/segger"
+    "$ENV{PROJECT_DIR}/modules/stmemsc"
 )
 #
-include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
+include("$ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake" NO_POLICY_SCOPE)
 
 # -----------------------------------------------------------------------------
 
-project(midair)
+project(midair-sensor)
 
 include_directories(
     "src"

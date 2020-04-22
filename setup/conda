@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eux -o pipefail
+
+PROJECT_DIR="$( cd "$( dirname "$(dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
+
+set +u
+conda deactivate
+conda env remove --name "zephyr" --yes
+conda     create --name "zephyr" --yes
+conda activate          "zephyr"
+set -u
+
+pip install west         # we do not use 'west', see the comments in the '.west/README' file
+pip install pyrtt-viewer # https://docs.zephyrproject.org/latest/tools/nordic_segger.html#rtt-console
+pip install cmake_format # optional, but useful, I think
+pip install gdbgui       # for debugging, of course
+
+pip install --requirement "${PROJECT_DIR}/zephyr/scripts/requirements.txt"
+
+# Done

@@ -1,41 +1,38 @@
 # -*- mode: bash -*-
-#
-# This project is set up with Git submodules.
-# We are NOT using West for anything but additional commands.
-# https://docs.zephyrproject.org/latest/guides/west/without-west.html
 
-if [[ -e "prj.conf" ]] ; then
+[[ -z ${HOME:-} ]] && export HOME=~andrew
 
-    export PROJECT_DIR="$(pwd)"
+export PROJECT_DIR="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" >/dev/null 2>&1 && pwd)"
 
-    conda deactivate
-    conda env remove --name "zephyr" --yes
-    conda     create --name "zephyr" --yes
+export MACPORTS_ROOT="/opt/local"
+export CONDA_ROOT="/opt/conda"
 
-    conda activate "zephyr"
+export PATH="${MACPORTS_ROOT}/libexec/gnubin:${MACPORTS_ROOT}/bin:${MACPORTS_ROOT}/sbin:${PATH}"
 
-    pip install --requirement "zephyr/scripts/requirements.txt"
-    pip install pyrtt-viewer # https://docs.zephyrproject.org/latest/tools/nordic_segger.html#rtt-console
-    pip install cmake_format # optional, but useful, I think
-    pip install gdbgui       # for debugging, of course
+set +u
+source "${CONDA_ROOT}/bin/activate" "zephyr"
+set -u
 
-    export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
-  #|export ZEPHYR_SDK_INSTALL_DIR="${HOME}/Developer/Toolchains/zephyr-sdk-ng"
-    export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi"
+export ZEPHYR_BASE="${PROJECT_DIR}/zephyr"
 
-    export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
-    export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
+export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
+unset  ZEPHYR_SDK_INSTALL_DIR # "${HOME}/Developer/Toolchains/zephyr-sdk-ng"
+export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi"
 
-    unset  ZEPHYR_MODULES                       # because we are not using west-management
-    export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
+export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
+export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
+export PATH="${PROJECT_DIR}/zephyr/scripts:${PATH}"
 
-    source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
-  #|source .west/west/scripts/west-completion.bash
+export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
+unset  ZEPHYR_SDK_INSTALL_DIR # "${HOME}/Developer/Toolchains/zephyr-sdk-ng"
+export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi"
 
-else
+export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
+export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
 
-    echo "error: please 'cd' to the project directory first"
+unset  ZEPHYR_MODULES                       # because we are not using west-management
+export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
 
-fi
+source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
 
 # Done

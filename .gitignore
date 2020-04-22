@@ -1,11 +1,7 @@
 _*
 !__*__.py
 
-*.jdebug.user
-
-.vscode/ipch
-
-.idea/workspace.xml
-
+.vscode
 .DS_Store
 
+*.jdebug.user

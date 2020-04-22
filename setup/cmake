@@ -1,22 +1,9 @@
-# -*- mode: bash -*-
+#!/bin/bash
 
-# NOTE https://blog.jetbrains.com/clion/2019/10/clion-2019-3-eap-ninja-cmake-generators/
-#
-#      Soon CLion will support the 'Ninja' generator,
-#      which means that this script can share the build
-#      directory with the CLion build directory!
-#
+set -eu -o pipefail
 
-set -xu
-cd "${PROJECT_DIR}" && \
-test -e  "prj.conf" && \
-rm   -rf "_build"   && \
-mkdir -p "_build"   && \
-pushd    "_build"   && \
-cmake \
-    -G"Ninja" \
-    -DUSE_PRESETS:BOOL=False \
-    -DBOARD="nrf52832_midair" \
-    -DBOARD_ROOT="${PROJECT_DIR}" \
-    "${PROJECT_DIR}"
-set +xu
+source "$(dirname "${BASH_SOURCE[0]}")/environment"
+
+exec cmake "${@}"
+
+# Done
