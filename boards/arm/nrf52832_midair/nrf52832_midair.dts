@@ -167,7 +167,7 @@
 
 &flash0 {
 
-    // https://docs.zephyrproject.org/latest/guides/dts/index.html#flash-partitions
+    // https://docs.zephyrproject.org/latest/guides/dts/legacy-macros.html#mcuboot-partitions
 
     partitions {
 
