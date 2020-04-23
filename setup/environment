@@ -13,6 +13,8 @@ set +u
 source "${CONDA_ROOT}/bin/activate" "zephyr"
 set -u
 
+export CMAKE_GENERATOR="Ninja"
+
 export ZEPHYR_BASE="${PROJECT_DIR}/zephyr"
 
 export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
@@ -26,6 +28,11 @@ export PATH="${PROJECT_DIR}/zephyr/scripts:${PATH}"
 export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
 unset  ZEPHYR_SDK_INSTALL_DIR # "${HOME}/Developer/Toolchains/zephyr-sdk-ng"
 export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi"
+
+case "${ZEPHYR_TOOLCHAIN_VARIANT}" in
+    "zephyr")    exit 1 ;; # TODO # export PATH="${ZEPHYR_SDK_INSTALL_DIR}/bin:${PATH}" ;;
+    "gnuarmemb") export PATH="${GNUARMEMB_TOOLCHAIN_PATH}/arm-none-eabi/bin:${GNUARMEMB_TOOLCHAIN_PATH}/bin:${PATH}" ;;
+esac
 
 export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
 export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
