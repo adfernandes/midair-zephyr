@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "zephyr",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "VSCODE_CPPTOOLS_INTELLISENSE"
+            ],
+            "compilerPath": "${env:HOME}/Developer/Toolchains/gcc-arm-none-eabi/bin",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

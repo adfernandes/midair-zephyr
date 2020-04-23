@@ -34,7 +34,7 @@ void devices_init(void) {
 
     if (atomic_get(&is_initialized)) return;
 
-    DEVICE_GET_BINDING(dev.clock, DT_INST_0_NORDIC_NRF_CLOCK_LABEL);
+    DEVICE_GET_BINDING(dev.clock, DT_LABEL(DT_INST(0, nordic_nrf_clock)));
 
     DEVICE_GET_BINDING(dev.entropy, DT_CHOSEN_ZEPHYR_ENTROPY_LABEL);
 

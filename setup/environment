@@ -35,4 +35,4 @@ export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and
 
 source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
 
-# Done
+# done

@@ -18,4 +18,4 @@ pip install gdbgui       # for debugging, of course
 
 pip install --requirement "${PROJECT_DIR}/zephyr/scripts/requirements.txt"
 
-# Done
+# done

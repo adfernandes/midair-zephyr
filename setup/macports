@@ -4,4 +4,4 @@ set -eux -o pipefail
 
 sudo port install cmake ninja gperf dfu-util dtc coreutils
 
-# Done
+# done

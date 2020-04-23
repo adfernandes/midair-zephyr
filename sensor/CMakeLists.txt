@@ -32,7 +32,7 @@ include("$ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake" NO_POLICY_SCOPE)
 
 # -----------------------------------------------------------------------------
 
-project(midair-sensor)
+project(midair)
 
 include_directories(
     "src"
