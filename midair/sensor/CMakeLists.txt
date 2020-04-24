@@ -1,17 +1,17 @@
-# nrf52832-midair configuration
+# midair sensor configuration
 #
 # Copyright (c) 2020 Andrew Fernandes <andrew@fernandes.org>
 # SPDX-License-Identifier: Apache-2.0
 
-cmake_minimum_required(VERSION 3.17.1)
+cmake_minimum_required(VERSION "$ENV{CMAKE_MINIMUM_REQUIRED}")
 
 # -----------------------------------------------------------------------------
 
-# Since we are using a custom board
+# We might use a custom board
 #
 set(BOARD "nrf52832_midair")
 #
-set(BOARD_ROOT "$ENV{PROJECT_DIR}")
+set(BOARD_ROOT "$ENV{PROJECT_DIR}/midair")
 
 # The C++ Standard version is set in 'prj.conf' via the 'CONFIG_STD_CPP17' setting
 #
@@ -32,7 +32,7 @@ include("$ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake" NO_POLICY_SCOPE)
 
 # -----------------------------------------------------------------------------
 
-project(midair)
+project(sensor)
 
 include_directories(
     "src"

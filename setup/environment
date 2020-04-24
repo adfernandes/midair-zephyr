@@ -1,5 +1,8 @@
 # -*- mode: bash -*-
 
+export CMAKE_GENERATOR="Ninja"
+export CMAKE_MINIMUM_REQUIRED="3.17.1"
+
 [[ -z ${HOME:-} ]] && export HOME=~andrew
 
 export PROJECT_DIR="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" >/dev/null 2>&1 && pwd)"
@@ -13,9 +16,9 @@ set +u
 source "${CONDA_ROOT}/bin/activate" "zephyr"
 set -u
 
-export CMAKE_GENERATOR="Ninja"
-
 export ZEPHYR_BASE="${PROJECT_DIR}/zephyr"
+
+export PATH="${ZEPHYR_BASE}/scripts:${PATH}"
 
 export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
 unset  ZEPHYR_SDK_INSTALL_DIR # "${HOME}/Developer/Toolchains/zephyr-sdk-ng"
@@ -23,7 +26,6 @@ export GNUARMEMB_TOOLCHAIN_PATH="${HOME}/Developer/Toolchains/gcc-arm-none-eabi"
 
 export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
 export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
-export PATH="${PROJECT_DIR}/zephyr/scripts:${PATH}"
 
 export ZEPHYR_TOOLCHAIN_VARIANT="gnuarmemb" # "zephyr" or "gnuarmemb"
 unset  ZEPHYR_SDK_INSTALL_DIR # "${HOME}/Developer/Toolchains/zephyr-sdk-ng"
@@ -33,9 +35,6 @@ case "${ZEPHYR_TOOLCHAIN_VARIANT}" in
     "zephyr")    exit 1 ;; # TODO # export PATH="${ZEPHYR_SDK_INSTALL_DIR}/bin:${PATH}" ;;
     "gnuarmemb") export PATH="${GNUARMEMB_TOOLCHAIN_PATH}/arm-none-eabi/bin:${GNUARMEMB_TOOLCHAIN_PATH}/bin:${PATH}" ;;
 esac
-
-export PATH="${HOME}/Developer/Nordic/Tools/Default/nrfjprog:${PATH}"
-export PATH="${HOME}/Developer/Nordic/Tools/Default/mergehex:${PATH}"
 
 unset  ZEPHYR_MODULES                       # because we are not using west-management
 export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
