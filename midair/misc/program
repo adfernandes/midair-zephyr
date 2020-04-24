@@ -1,20 +1,22 @@
 #!/bin/bash
 
-set -eux -o pipefail
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
 
-HEX_FILE_SENSOR="${1}"
-#|HEX_FILE_STATION="${2}"
+source "${SCRIPT_DIR}/../../setup/environment"
 
-# Later: Use the 'nrfjprog --recover' option if we ever enable 'read-back protection'
+set -eux -o pipefail
 
-NRFJPROG="${HOME}/Developer/Nordic/Tools/Default/nrfjprog/nrfjprog"
+HEX_FILE_SENSOR="${PROJECT_DIR}/midair/sensor/_build/zephyr/zephyr.hex"
+
+HEX_FILE_STATION="${PROJECT_DIR}/midair/station/_build/zephyr/zephyr.hex"
+HEX_FILE_STATION_UICR="${PROJECT_DIR}/midair/misc/uicr.hex"
 
 "${SCRIPT_DIR}/power" on
 
-"${NRFJPROG}" --program "${HEX_FILE_SENSOR}"  --chiperase --snr 260114307 # Sensor
-#|"${NRFJPROG}" --program "${HEX_FILE_STATION}" --chiperase --snr 260111065 # Station
+nrfjprog --program "${HEX_FILE_SENSOR}"       --chiperase --snr 260114307 # sensor
+
+nrfjprog --program "${HEX_FILE_STATION_UICR}" --chiperase --snr 260111065 # station uicr
+nrfjprog --program "${HEX_FILE_STATION}"                  --snr 260111065 # station
 
 "${SCRIPT_DIR}/power" off perm
 

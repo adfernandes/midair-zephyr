@@ -1,17 +1,17 @@
 #!/bin/bash
 
-set -eux -o pipefail
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+source "${SCRIPT_DIR}/../../setup/environment"
+
+set -eux -o pipefail
 
 # Later: Use the 'nrfjprog --recover' option if we ever enable 'read-back protection'
 
-NRFJPROG="${HOME}/Developer/Nordic/Tools/Default/nrfjprog/nrfjprog"
-
 "${SCRIPT_DIR}/power" on
 
-"${NRFJPROG}" --eraseall --snr 260114307 # Sensor
-#|"${NRFJPROG}" --eraseall --snr 260111065 # Station # TODO Erase, then program the 'uicr.hex' file!
+nrfjprog --eraseall --snr 260114307 # sensor
+nrfjprog --eraseall --snr 260111065 # station
 
 "${SCRIPT_DIR}/power" off perm
 
