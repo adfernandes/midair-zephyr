@@ -1,0 +1,12 @@
+# -*- mode: bash -*-
+
+# === WARNING ===
+#
+# Ozone does NOT use these variables, the
+# values are hardcoded, unfortunately!
+
+export MIDAIR_SENSOR_JLINK_SN="260114307"
+export MIDAIR_SENSOR_DEVICE="nRF52832_xxAA"
+
+export MIDAIR_STATION_JLINK_SN="260111065"
+export MIDAIR_STATION_DEVICE="nRF52840_xxAA"

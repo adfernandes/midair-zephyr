@@ -39,6 +39,10 @@ esac
 unset  ZEPHYR_MODULES                       # because we are not using west-management
 export WEST_DIR="${PROJECT_DIR}/.west/west" # so ninja can use west to flash and debug
 
+export PATH="/Applications/SEGGER/JLink/JLinkRTTViewer.app/Contents/MacOS:${PATH}" # handy
+export PATH="/Applications/SEGGER/JLink/JLinkGDBServer.app/Contents/MacOS:${PATH}" # handy
+export PATH="/Applications/SEGGER/Ozone/Ozone.app/Contents/MacOS:${PATH}"          # handy
+
 source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
 
 # done

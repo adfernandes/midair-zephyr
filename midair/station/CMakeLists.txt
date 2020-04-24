@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION "$ENV{CMAKE_MINIMUM_REQUIRED}")
 
 # We might use a custom board
 #
-set(BOARD "nrf52840dongle_nrf52840")
+set(BOARD "nrf52840_dongle")
 #
 set(BOARD_ROOT "$ENV{PROJECT_DIR}/midair")
 

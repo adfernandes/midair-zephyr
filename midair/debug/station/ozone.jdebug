@@ -1,3 +1,13 @@
+/*********************************************************************
+*               (c) SEGGER Microcontroller GmbH                      *
+*                        The Embedded Experts                        *
+*                           www.segger.com                           *
+**********************************************************************
+
+File          :
+Created       : 24 Apr 2020  13:56
+Ozone Version : V3.10h
+*/
 
 /*********************************************************************
 *
@@ -12,19 +22,67 @@ void OnProjectLoad (void) {
   //
   // Dialog-generated settings
   //
-  Project.SetDevice ("nRF52832_xxAA");
-  Project.SetHostIF ("USB", "");
+  Project.SetDevice ("nRF52840_xxAA");
+  Project.SetHostIF ("USB", "260111065");
   Project.SetTargetIF ("SWD");
-  Project.SetTIFSpeed ("4 MHz");
-  Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M4F.svd");
-  Project.AddSvdFile ("$(HOME)/Developer/Nordic/SDKs/nRF5/modules/nrfx/mdk/nrf52.svd");
-  Project.AddPathSubstitute ("$(HOME)/Projects/Nordic/midair", "$(ProjectDir)");
+  Project.SetTIFSpeed ("8 MHz");
+  Project.AddSvdFile ("$(AppBundleDir)/Contents/MacOS/Config/CPU/Cortex-M4F.svd");
+  Project.AddSvdFile ("$(ProjectDir)/../../../modules/nordic/nrfx/mdk/nrf52840.svd");
   //
   // User settings
   //
-  Edit.Preference (PREF_TERMINAL_CLEAR_ON_RESET, 1);
-  File.Open ("$(HOME)/Projects/Nordic/midair/_build/Manual/zephyr/zephyr.elf");
+  File.Open ("$(ProjectDir)/../../station/_build/zephyr/zephyr.elf");
+  Debug.Start ();
 }
+
+/*********************************************************************
+*
+*       OnSnapshotLoad
+*
+* Function description
+*   Called upon loading a snapshot. Optional.
+*
+* Additional information
+*   This function is used to restore the target state in cases
+*   where values cannot simply be written to the target.
+*   Typical use: GPIO clock needs to be enabled, before
+*   GPIO is configured.
+*
+**********************************************************************
+*/
+//void OnSnapshotLoad (void) {
+//}
+
+/*********************************************************************
+*
+*       OnSnapshotSave
+*
+* Function description
+*   Called upon saving a snapshot. Optional.
+*
+* Additional information
+*   This function is usually used to save values of the target
+*   state which can either not be trivially read,
+*   or need to be restored in a specific way or order.
+*   Typically use: Memory Mapped Registers,
+*   such as PLL and GPIO configuration.
+*
+**********************************************************************
+*/
+//void OnSnapshotSave (void) {
+//}
+
+/*********************************************************************
+*
+*       OnError
+*
+* Function description
+*   Called when an error or unexpected condition ocurred. Optional.
+*
+**********************************************************************
+*/
+//void OnError (const char* sErrorMsg) {
+//}
 
 /*********************************************************************
 *
@@ -45,22 +103,23 @@ void OnProjectLoad (void) {
 //  unsigned int PC;
 //  unsigned int VectorTableAddr;
 //
-//  Exec.Reset();
-//
-//  VectorTableAddr = Elf.GetBaseAddr();
+//  VectorTableAddr = Program.GetBaseAddr();
 //
 //  if (VectorTableAddr != 0xFFFFFFFF) {
-//
-//    Util.Log("Resetting Program.");
-//
 //    SP = Target.ReadU32(VectorTableAddr);
 //    Target.SetReg("SP", SP);
+//  } else {
+//    Util.Log("Project file error: failed to get program base");
+//  }
 //
+//  PC = Elf.GetEntryPointPC();
+//
+//  if (PC != 0xFFFFFFFF) {
+//    Target.SetReg("PC", PC);
+//  } else if (VectorTableAddr != 0xFFFFFFFF) {
 //    PC = Target.ReadU32(VectorTableAddr + 4);
 //    Target.SetReg("PC", PC);
-//  }
 //}
-
 /*********************************************************************
 *
 *       BeforeTargetReset
@@ -91,12 +150,18 @@ void AfterTargetReset (void) {
 
   VectorTableAddr = Elf.GetBaseAddr();
 
-  if (VectorTableAddr == 0xFFFFFFFF) {
-    Util.Log("Project file error: failed to get program base");
-  } else {
+  if (VectorTableAddr != 0xFFFFFFFF) {
     SP = Target.ReadU32(VectorTableAddr);
     Target.SetReg("SP", SP);
+  } else {
+    Util.Log("Project file error: failed to get program base");
+  }
 
+  PC = Elf.GetEntryPointPC();
+
+  if (PC != 0xFFFFFFFF) {
+    Target.SetReg("PC", PC);
+  } else if (VectorTableAddr != 0xFFFFFFFF) {
     PC = Target.ReadU32(VectorTableAddr + 4);
     Target.SetReg("PC", PC);
   }
@@ -192,12 +257,18 @@ void AfterTargetDownload (void) {
 
   VectorTableAddr = Elf.GetBaseAddr();
 
-  if (VectorTableAddr == 0xFFFFFFFF) {
-    Util.Log("Project file error: failed to get program base");
-  } else {
+  if (VectorTableAddr != 0xFFFFFFFF) {
     SP = Target.ReadU32(VectorTableAddr);
     Target.SetReg("SP", SP);
+  } else {
+    Util.Log("Project file error: failed to get program base");
+  }
 
+  PC = Elf.GetEntryPointPC();
+
+  if (PC != 0xFFFFFFFF) {
+    Target.SetReg("PC", PC);
+  } else if (VectorTableAddr != 0xFFFFFFFF) {
     PC = Target.ReadU32(VectorTableAddr + 4);
     Target.SetReg("PC", PC);
   }

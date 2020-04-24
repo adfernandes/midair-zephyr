@@ -1,6 +1,0 @@
-#!/bin/bash
-
-exec /Applications/SEGGER/JLink/JLinkGDBServer.app/Contents/MacOS/JLinkGDBServerExe \
-    -localhostonly -stayontop -singlerun \
-    -halt -ir -if SWD -speed 8000 -endian little \
-    -device nRF52832_xxAA -select USB=260114307 \

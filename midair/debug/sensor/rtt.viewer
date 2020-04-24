@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+source "${SCRIPT_DIR}/../../setup/environment"
+
+source "${SCRIPT_DIR}../environment"
+
+exec JLinkRTTViewerExe \
+    --autoconnect --bright \
+    --interface SWD --speed 8000 \
+    --device "${MIDAIR_SENSOR_DEVICE}" --serialnumber "${MIDAIR_SENSOR_JLINK_SN}"

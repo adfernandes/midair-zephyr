@@ -1,7 +1,1 @@
----
-#
-# hicpp-signed-bitwise: causes many spurious warnings in the LOG_* macros
-# modernize-redundant-void-arg: https://news.ycombinator.com/item?id=19894798
-#
-Checks: '-hicpp-signed-bitwise,-modernize-redundant-void-arg'
-...
+../common/.clang-tidy

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-exec /Applications/SEGGER/JLink/JLinkRTTViewer.app/Contents/MacOS/JLinkRTTViewerExe \
-    --autoconnect --bright \
-    --interface SWD --speed 8000 \
-    --device nRF52832_xxAA --serialnumber 260114307

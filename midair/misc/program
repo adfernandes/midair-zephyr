@@ -4,19 +4,17 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )
 
 source "${SCRIPT_DIR}/../../setup/environment"
 
+source "${SCRIPT_DIR}/../debug/environment"
+
 set -eux -o pipefail
 
 HEX_FILE_SENSOR="${PROJECT_DIR}/midair/sensor/_build/zephyr/zephyr.hex"
-
 HEX_FILE_STATION="${PROJECT_DIR}/midair/station/_build/zephyr/zephyr.hex"
-HEX_FILE_STATION_UICR="${PROJECT_DIR}/midair/misc/uicr.hex"
 
 "${SCRIPT_DIR}/power" on
 
-nrfjprog --program "${HEX_FILE_SENSOR}"       --chiperase --snr 260114307 # sensor
-
-nrfjprog --program "${HEX_FILE_STATION_UICR}" --chiperase --snr 260111065 # station uicr
-nrfjprog --program "${HEX_FILE_STATION}"                  --snr 260111065 # station
+nrfjprog --program "${HEX_FILE_SENSOR}"  --chiperase --snr "${MIDAIR_SENSOR_JLINK_SN}"
+nrfjprog --program "${HEX_FILE_STATION}" --chiperase --snr "${MIDAIR_STATION_JLINK_SN}"
 
 "${SCRIPT_DIR}/power" off perm
 

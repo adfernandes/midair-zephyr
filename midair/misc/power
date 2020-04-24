@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+source "${SCRIPT_DIR}/../../setup/environment"
+
+source "${SCRIPT_DIR}/../debug/environment"
+
 set -eu -o pipefail
 
 if (( $# < 1 )) ; then
@@ -10,8 +17,8 @@ fi
 case "${*}" in
 
     "on"|"off"|"on perm"|"off perm")
-        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN 260114307 > "/dev/null" # Sensor
-        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN 260111065 > "/dev/null" # Station
+        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN "${MIDAIR_SENSOR_JLINK_SN}"  > "/dev/null"
+        echo -ne "power ${*}\nq\n" | JLinkExe -SelectEmuBySN "${MIDAIR_STATION_JLINK_SN}" > "/dev/null"
     ;;
 
     *)
@@ -21,7 +28,7 @@ case "${*}" in
 
 esac
 
-echo -ne "q\n" | JLinkExe -SelectEmuBySN 260114307 # Sensor
-echo -ne "q\n" | JLinkExe -SelectEmuBySN 260111065 # Station
+echo -ne "q\n" | JLinkExe -SelectEmuBySN "${MIDAIR_SENSOR_JLINK_SN}"
+echo -ne "q\n" | JLinkExe -SelectEmuBySN "${MIDAIR_STATION_JLINK_SN}"
 
 # Done

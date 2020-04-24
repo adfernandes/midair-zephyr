@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > "/dev/null" 2>&1 && pwd )"
+
+source "${SCRIPT_DIR}/../../setup/environment"
+
+source "${SCRIPT_DIR}../environment"
+
+exec JLinkGDBServerExe \
+    -localhostonly -stayontop -singlerun \
+    -halt -ir -if SWD -speed 8000 -endian little \
+    -device "${MIDAIR_SENSOR_DEVICE}" -select USB="${MIDAIR_SENSOR_JLINK_SN}"
