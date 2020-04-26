@@ -85,7 +85,7 @@ static void configure_clocks(void) {
     // See "zephyr/.../nrf52_clock.{h,c}" for an example on how to use the 'clock_control_*'
     // API function calls as well as online information such as https://tinyurl.com/u8twby7
     //
-    // Changes post 2.1 were made as per https://tinyurl.com/yx4hutpc
+    // Changes post zephyr-version-2.1 were made as per https://tinyurl.com/yx4hutpc
 
     clock_control_on(dev.clock, CLOCK_CONTROL_NRF_SUBSYS_HF);
     clock_control_on(dev.clock, CLOCK_CONTROL_NRF_SUBSYS_LF);
