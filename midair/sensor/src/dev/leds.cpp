@@ -19,6 +19,13 @@ void configure_leds(void) {
 }
 
 //----------------------------------------------------------------------
+// TODO
+// - Set brightness via 10-level log2 based lookup table
+// - use the power API to turn the PWM peripheral off and on when the level is zero
+//   https://docs.zephyrproject.org/latest/reference/power_management/index.html?highlight=config_device_power_management#_CPPv422device_set_power_stateP6device5u32_t12device_pm_cbPv
+//   (and also see the 'samples' directory 'zephyr/samples/sensor/apds9960/src/main.c' for example)
+//   ... we want DEVICE_PM_ACTIVE_STATE and DEVICE_PM_OFF_STATE according to 'pwm_nrfx.c' ...
+//----------------------------------------------------------------------
 
 void set_red_led_state(u8_t brightness) {
 
