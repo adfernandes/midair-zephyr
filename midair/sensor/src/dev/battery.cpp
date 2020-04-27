@@ -2,6 +2,14 @@
 
 LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 
+#define VBATT DT_PATH(vbatt)
+
+//----------------------------------------------------------------------
+
+#ifndef CONFIG_ADC_NRFX_SAADC
+#error "!defined(CONFIG_ADC_NRFX_SAADC)"
+#endif
+
 //----------------------------------------------------------------------
 
 // The SAADC effective number of bits (ENOB) without oversampling is nine.
@@ -44,9 +52,9 @@ extern "C" enum adc_action adc_callback(
 static const struct adc_channel_cfg channel_cfg = {
 	.gain             = ADC_GAIN_1_5,
 	.reference        = ADC_REF_INTERNAL,
-	.acquisition_time = ADC_ACQ_TIME(ADC_ACQ_TIME_MICROSECONDS, 3),
-	.channel_id       = to_underlying(BATTERY_ADC_INPUT),
-	.input_positive   = BATTERY_ADC_INPUT,
+	.acquisition_time = ADC_ACQ_TIME(ADC_ACQ_TIME_MICROSECONDS, 40),
+	.channel_id       = 1 + DT_IO_CHANNELS_INPUT(VBATT),
+	.input_positive   = SAADC_CH_PSELP_PSELP_AnalogInput0 + DT_IO_CHANNELS_INPUT(VBATT),
     .input_negative   = NRF_SAADC_INPUT_DISABLED
 };
 
@@ -85,6 +93,8 @@ K_TIMER_DEFINE(battery_timer, battery_timer_handler, NULL);
 //----------------------------------------------------------------------
 
 void configure_battery(void) {
+
+    insist((2 * DT_PROP(VBATT, output_ohms)) != DT_PROP(VBATT, full_ohms));
 
     insist(adc_channel_setup(dev.saadc0, &channel_cfg));
 

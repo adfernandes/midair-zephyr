@@ -62,6 +62,13 @@
 
     };
 
+    vbatt {
+        compatible = "voltage-divider";
+        io-channels = <&adc 2>; // AIN2
+        output-ohms = <100000>;
+        full-ohms = <(100000 + 100000)>;
+    };
+
     aliases {
 
         led0 = &led0_red;
@@ -105,8 +112,7 @@
 
 &adc {
     status = "okay";
-    label = "saadc-battery";
- // enable-gpios = <&gpio0 4 GPIO_INPUT>; // AIN2
+    label = "adc-vbatt";
 };
 
 &pwm0 {
