@@ -12,7 +12,7 @@ static struct spi_cs_control spi_cs = {
 };
 
 static struct spi_config spi_cfg = {
-	.frequency = 8000000, // MHz
+	.frequency = 8000000, // MHz // FIXME Set this from the device-tree
 	.operation = SPI_OP_MODE_MASTER | SPI_TRANSFER_MSB | SPI_WORD_SET(8) | SPI_LINES_SINGLE,
 	.slave = 0,
 	.cs = &spi_cs,

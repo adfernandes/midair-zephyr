@@ -21,12 +21,12 @@
         compatible = "gpio-leds";
 
         led0_red: led_0 {
-            gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH)>; // GPIO_OUTPUT
+            gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH)>;
             label = "led0-red";
         };
 
         led1_green: led_1 {
-            gpios = <&gpio0 30 (GPIO_ACTIVE_HIGH)>; // GPIO_OUTPUT
+            gpios = <&gpio0 30 (GPIO_ACTIVE_HIGH)>;
             label = "led1-green";
         };
 
@@ -51,12 +51,12 @@
         compatible = "gpio-keys";
 
         button0_red: button_0 {
-            gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; // GPIO_INPUT
+            gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
             label = "button0-red";
         };
 
         button1_green: button_1 {
-            gpios = <&gpio0 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; // GPIO_INPUT
+            gpios = <&gpio0 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
             label = "button1-green";
         };
 
@@ -133,14 +133,20 @@
 
 &spi0 {
     status = "okay";
-    label = "accelerometer";
+    label = "spi0-lsm6dsox";
     compatible = "nordic,nrf-spim";
     sck-pin  = <5>;
     mosi-pin = <6>;
     miso-pin = <8>;
-    cs-gpios = <&gpio0 3 (GPIO_ACTIVE_LOW)>; // GPIO_OUTPUT
- // enable-gpios = <&gpio0 22 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>, // INT1
- //                <&gpio0  2 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>; // INT2
+    cs-gpios = <&gpio0 3 (GPIO_ACTIVE_LOW)>;
+    lsm6dsox: lsm6dsox@0 {
+        label = "lsm6dsox";
+        compatible = "lsm6dsox";
+        int1-gpios = <&gpio0 22 (GPIO_ACTIVE_LOW)>;
+        int2-gpios = <&gpio0  2 (GPIO_ACTIVE_LOW)>;
+        spi-max-frequency = <8000000>;
+        reg = <0>;
+    };
 };
 
 &i2c1 {
