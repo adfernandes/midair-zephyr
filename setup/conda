@@ -2,13 +2,15 @@
 
 set -eux -o pipefail
 
+PATH="/opt/conda/bin:${PATH}"
+
 PROJECT_DIR="$( cd "$( dirname "$(dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
 
 set +u
-conda deactivate
-conda env remove --name "zephyr" --yes
-conda     create --name "zephyr" --yes
-conda activate          "zephyr"
+source deactivate
+conda  env remove --name "zephyr" --yes
+conda      create --name "zephyr" --yes
+source activate          "zephyr"
 set -u
 
 pip install west         # we do not use 'west', see the comments in the '.west/README' file
