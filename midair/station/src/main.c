@@ -1,13 +1,12 @@
 /*
  * Copyright (c) 2016 Intel Corporation
+ * Copyright (c) 2020 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @file Sample app to demonstrate PWM.
- *
- * This app uses PWM[0].
+ * @file Sample app to demonstrate PWM-based LED fade
  */
 
 #include <zephyr.h>
@@ -15,80 +14,77 @@
 #include <device.h>
 #include <drivers/pwm.h>
 
-#if defined(DT_ALIAS_PWM_LED0_PWMS_CONTROLLER) && defined(DT_ALIAS_PWM_LED0_PWMS_CHANNEL)
-/* get the defines from dt (based on alias 'pwm-led0') */
-#define PWM_DRIVER	DT_ALIAS_PWM_LED0_PWMS_CONTROLLER
-#define PWM_CHANNEL	DT_ALIAS_PWM_LED0_PWMS_CHANNEL
-#ifdef DT_ALIAS_PWM_LED0_PWMS_FLAGS
-#define PWM_FLAGS	DT_ALIAS_PWM_LED0_PWMS_FLAGS
+#define PWM_LED0_NODE	DT_ALIAS(pwm_led0)
+
+/*
+ * Devicetree helper macro which gets the 'flags' cell from the node's
+ * pwms property, or returns 0 if the property has no 'flags' cell.
+ */
+
+#define FLAGS_OR_ZERO(node)						\
+	COND_CODE_1(DT_PHA_HAS_CELL(node, pwms, flags),		\
+		    (DT_PWMS_FLAGS(node)),				\
+		    (0))
+
+#if DT_NODE_HAS_STATUS(PWM_LED0_NODE, okay)
+#define PWM_LABEL	DT_PWMS_LABEL(PWM_LED0_NODE)
+#define PWM_CHANNEL	DT_PWMS_CHANNEL(PWM_LED0_NODE)
+#define PWM_FLAGS	FLAGS_OR_ZERO(PWM_LED0_NODE)
 #else
+#error "Unsupported board: pwm-led0 devicetree alias is not defined"
+#define PWM_LABEL	""
+#define PWM_CHANNEL	0
 #define PWM_FLAGS	0
 #endif
-#else
-#error "Choose supported PWM driver"
-#endif
 
-/* in microseconds */
-#define MIN_PERIOD	(USEC_PER_SEC / 64U)
-
-/* in microseconds */
-#define MAX_PERIOD	USEC_PER_SEC
+/*
+ * This period should be fast enough to be above the flicker fusion
+ * threshold. The steps should also be small enough, and happen
+ * quickly enough, to make the output fade change appear continuous.
+ */
+#define PERIOD_USEC	20000U
+#define NUM_STEPS	50U
+#define STEP_USEC	(PERIOD_USEC / NUM_STEPS)
+#define SLEEP_MSEC	25U
 
 void main(void)
 {
-	struct device *pwm_dev;
-	u32_t max_period;
-	u32_t period;
-	u8_t dir = 0U;
+    struct device *pwm;
+    u32_t pulse_width = 0U;
+    u8_t dir = 1U;
+    int ret;
 
-	printk("PWM demo app-blink LED\n");
+    printk("PWM-based LED fade\n");
 
-	pwm_dev = device_get_binding(PWM_DRIVER);
-	if (!pwm_dev) {
-		printk("Cannot find %s!\n", PWM_DRIVER);
-		return;
-	}
+    pwm = device_get_binding(PWM_LABEL);
+    if (!pwm) {
+        printk("Error: didn't find %s device\n", PWM_LABEL);
+        return;
+    }
 
-	/* In case the default MAX_PERIOD value cannot be set for some PWM
-	 * hardware, try to decrease the value until it fits, but no further
-	 * than to the value of MIN_PERIOD muliplied by four (to allow the
-	 * sample to actually show some blinking with changing frequency).
-	 */
-	max_period = MAX_PERIOD;
-	while (pwm_pin_set_usec(pwm_dev, PWM_CHANNEL,
-				max_period, max_period / 2U, PWM_FLAGS)) {
-		max_period /= 2U;
-		if (max_period < (4U * MIN_PERIOD)) {
-			printk("This sample needs to set a period that is "
-			       "not supported by the used PWM driver.");
-			return;
-		}
-	}
+    while (1) {
+        ret = pwm_pin_set_usec(pwm, PWM_CHANNEL, PERIOD_USEC,
+                               pulse_width, PWM_FLAGS);
+        if (ret) {
+            printk("Error %d: failed to set pulse width\n", ret);
+            return;
+        }
 
-	period = max_period;
-	while (1) {
-		if (pwm_pin_set_usec(pwm_dev, PWM_CHANNEL,
-				     period, period / 2U, PWM_FLAGS)) {
-			printk("pwm pin set fails\n");
-			return;
-		}
+        if (dir) {
+            pulse_width += STEP_USEC;
+            if (pulse_width >= PERIOD_USEC) {
+                pulse_width = PERIOD_USEC - STEP_USEC;
+                dir = 0U;
+            }
+        } else {
+            if (pulse_width >= STEP_USEC) {
+                pulse_width -= STEP_USEC;
+            } else {
+                pulse_width = STEP_USEC;
+                dir = 1U;
+            }
+        }
 
-		if (dir) {
-			period *= 2U;
-
-			if (period > max_period) {
-				dir = 0U;
-				period = max_period;
-			}
-		} else {
-			period /= 2U;
-
-			if (period < MIN_PERIOD) {
-				dir = 1U;
-				period = MIN_PERIOD;
-			}
-		}
-
-		k_sleep(K_SECONDS(4U));
-	}
+        k_sleep(K_MSEC(SLEEP_MSEC));
+    }
 }

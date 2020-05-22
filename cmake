@@ -6,8 +6,8 @@
 
 set -eu -o pipefail
 
-source "$(dirname "${BASH_SOURCE[0]}")/environment"
+source "$(dirname "${BASH_SOURCE[0]}")/setup/environment"
 
-exec cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "${@}"
+exec cmake "${@}"
 
 # done

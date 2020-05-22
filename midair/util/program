@@ -13,8 +13,8 @@ HEX_FILE_STATION="${PROJECT_DIR}/midair/station/_build/zephyr/zephyr.hex"
 
 "${SCRIPT_DIR}/power" on
 
-nrfjprog --program "${HEX_FILE_SENSOR}"  --chiperase --snr "${MIDAIR_SENSOR_JLINK_SN}"
-nrfjprog --program "${HEX_FILE_STATION}" --chiperase --snr "${MIDAIR_STATION_JLINK_SN}"
+[[ -e ${HEX_FILE_SENSOR}  ]] && nrfjprog --program "${HEX_FILE_SENSOR}"  --chiperase --snr "${MIDAIR_SENSOR_JLINK_SN}"
+[[ -e ${HEX_FILE_STATION} ]] && nrfjprog --program "${HEX_FILE_STATION}" --chiperase --snr "${MIDAIR_STATION_JLINK_SN}"
 
 "${SCRIPT_DIR}/power" off perm
 

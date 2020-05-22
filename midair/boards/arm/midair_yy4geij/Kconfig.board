@@ -3,6 +3,6 @@
 # Copyright (c) 2020 Andrew Fernandes <andrew@fernandes.org>
 # SPDX-License-Identifier: Apache-2.0
 
-config BOARD_NRF52832_MIDAIR
+config BOARD_MIDAIR_YY4GEIJ
 	bool "nRF52832 midair"
 	depends on SOC_NRF52832_CIAA

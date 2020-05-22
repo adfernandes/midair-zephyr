@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+PROJECT_DIR="$( cd "$( dirname "$(dirname "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
+
+rm -rf "${PROJECT_DIR}"/*/"_build"
+
+# done
