@@ -6,6 +6,7 @@
 #include <zephyr.h>
 
 #include <device.h>
+#include <devicetree_legacy_unfixed.h> // FIXME Remove me!
 
 #include <logging/log.h>
 #include <logging/log_ctrl.h>

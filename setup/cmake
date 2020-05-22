@@ -8,6 +8,6 @@ set -eu -o pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/environment"
 
-exec cmake "${@}"
+exec cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "${@}"
 
 # done

@@ -1,4 +1,4 @@
-# nrf52832-midair configuration
+# midair-yy4geij configuration
 #
 # Copyright (c) 2020 Andrew Fernandes <andrew@fernandes.org>
 # SPDX-License-Identifier: Apache-2.0
@@ -6,7 +6,7 @@
 if BOARD_NRF52832_MIDAIR
 
 config BOARD
-	default "nrf52832_midair"
+	default "midair_yy4geij"
 
 config HAS_STMEMSC
        default y
