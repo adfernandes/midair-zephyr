@@ -30,6 +30,6 @@
     }                                                                                        \
 } while (false)
 
-#define insist_true(failed) insist(!(failed))
+#define insist_that(failed) insist(!(failed))
 
 //----------------------------------------------------------------------

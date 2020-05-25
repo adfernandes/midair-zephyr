@@ -39,7 +39,7 @@ include_directories(
 
 set(C_SOURCES
     "src/main.c"
-    "board/nrf52840dongle_nrf52840.c"
+    "board/${BOARD}.c"
 )
 
 target_sources(app PRIVATE ${C_SOURCES})

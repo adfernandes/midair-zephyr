@@ -62,7 +62,7 @@ const u32_t timer4_frequency = 1000000; // Hz
 #define RED_BTN_PIN DT_ALIAS_BUTTON0_RED_GPIOS_PIN
 #define GRN_BTN_PIN DT_ALIAS_BUTTON1_GREEN_GPIOS_PIN
 
-#define RED_LED_PWM_FLAGS 0
-#define GRN_LED_PWM_FLAGS 0
+#define RED_LED_PWM_FLAGS PWM_POLARITY_NORMAL
+#define GRN_LED_PWM_FLAGS PWM_POLARITY_NORMAL
 
 //----------------------------------------------------------------------

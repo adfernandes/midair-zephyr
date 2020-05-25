@@ -53,6 +53,7 @@ extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
 #include <algorithm>
 #include <type_traits>
 #include <array>
+#include <new>
 
 using namespace std;
 
@@ -73,6 +74,29 @@ constexpr auto to_underlying(E e) noexcept
 // Static and dynamic assertion and verification macros and functions
 
 #include "insist.h" // valid for C and C++ both
+
+//----------------------------------------------------------------------
+// Define a type to be used by the Kernel's Queues, FIFOs, & LIFOs
+
+class datum {
+
+  private:
+
+    void *reserved;
+
+  public:
+
+    datum(datum &&) = delete;
+    datum(const datum &) = delete;
+    datum & operator=(datum &&) = delete;
+    datum & operator=(const datum &) = delete;
+
+};
+
+template<typename T>
+struct queued_data : private datum {
+
+};
 
 //----------------------------------------------------------------------
 // These 'include' directives are NOT needed by Zephyr.

@@ -104,11 +104,11 @@ static void configure_clocks(void) {
 
     // Verify that everything is running as we expected
 
-    insist_true(nrf_clock_lf_is_running(NRF_CLOCK));
-    insist_true(nrf_clock_hf_is_running(NRF_CLOCK, NRF_CLOCK_HFCLK_HIGH_ACCURACY));
+    insist_that(nrf_clock_lf_is_running(NRF_CLOCK));
+    insist_that(nrf_clock_hf_is_running(NRF_CLOCK, NRF_CLOCK_HFCLK_HIGH_ACCURACY));
 
     const nrf_clock_lfclk_t nrf_clock_lfclk = nrf_clock_lf_src_get(NRF_CLOCK);
-    insist_true(nrf_clock_lfclk == NRF_CLOCK_LFCLK_Xtal || nrf_clock_lfclk == NRF_CLOCK_LFCLK_Synth);
+    insist_that(nrf_clock_lfclk == NRF_CLOCK_LFCLK_Xtal || nrf_clock_lfclk == NRF_CLOCK_LFCLK_Synth);
 
     // Setup the high-performance "constant latency" mode (which is probably moot since we are
     // disabling any sort of power-down or sleep mode that turns off the HFXO or LFXO clocks)
