@@ -42,8 +42,8 @@ void configure_buttons(void) {
 
     // the pins have already been configured via 'gpio_pin_configure' before this point
 
-    insist(gpio_pin_interrupt_configure(dev.red_btn, RED_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
-    insist(gpio_pin_interrupt_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_DEBOUNCE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
+    insist(gpio_pin_interrupt_configure(dev.red_btn, RED_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
+    insist(gpio_pin_interrupt_configure(dev.grn_btn, GRN_BTN_PIN, (GPIO_INT_ENABLE | GPIO_INT_EDGE | GPIO_INT_EDGE_BOTH)));
 
     gpio_init_callback(&button_cb, button_changed, BIT(RED_BTN_PIN) | BIT(GRN_BTN_PIN));
 

@@ -10,6 +10,8 @@
 
 LOG_MODULE_REGISTER(midair, LOG_LEVEL_DBG);
 
+//----------------------------------------------------------------------
+//
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
@@ -24,6 +26,9 @@ void main(void) {
     configure_lsm6dsox();
     configure_mmc5883ma();
     configure_battery();
+
+    unsigned foo = 1;
+    __ASSERT(foo == 0xF0CACC1A, "Invalid value of foo, got 0x%x", foo);
 
     insist(counter_start(dev.rtc2));
 
@@ -54,3 +59,5 @@ void main(void) {
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif // !defined(__clang__)
+//
+//----------------------------------------------------------------------

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <zephyr.h>
+
+#include <logging/log.h>
+#include <logging/log_ctrl.h>
+
 //----------------------------------------------------------------------
 // Static assertions, for C and C++ both
 
@@ -17,7 +22,11 @@
 // Also, CLion does not understand https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
 // so use '##__VA_ARGS__' rather than the more modern '__VA_OPT__(,) __VA_ARGS__' style
 
-#define sys_panic(message, ...) LOG_PANIC(); LOG_ERR(message, ##__VA_ARGS__); k_oops()
+#define sys_panic(message, ...) {               \
+        LOG_PANIC();                            \
+        LOG_ERR(message, ##__VA_ARGS__);        \
+        assert_post_action(__FILE__, __LINE__); \
+    }
 
 //----------------------------------------------------------------------
 // A helper function for something that we do a lot, note that

@@ -32,6 +32,9 @@ void OnProjectLoad (void) {
   // User settings
   //
   File.Open ("$(ProjectDir)/../../sensor/_build/zephyr/zephyr.elf");
+  Edit.Preference (PREF_TERMINAL_CLEAR_ON_RESET, 1);
+  Debug.SetConnectMode (CM_RESET_DOWNLOAD)
+  Debug.SetResetMode (RM_BREAK_AT_MAIN);
   Debug.Start ();
 }
 

@@ -41,7 +41,6 @@ include_directories(
 )
 
 set(CXX_SOURCES
-    "src/new.cpp"
     "src/main.cpp"
     "src/dev/devices.cpp"
     "src/dev/leds.cpp"

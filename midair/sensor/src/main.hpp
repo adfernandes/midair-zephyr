@@ -8,8 +8,7 @@
 #include <device.h>
 #include <devicetree_legacy_unfixed.h> // FIXME Remove me!
 
-#include <logging/log.h>
-#include <logging/log_ctrl.h>
+
 
 #include <power/power.h>
 
@@ -17,7 +16,6 @@
 #include <drivers/gpio.h>
 #include <drivers/spi.h>
 #include <drivers/i2c.h>
-#include <drivers/adc.h>
 #include <drivers/pwm.h>
 
 #ifdef CONFIG_BT
@@ -35,7 +33,6 @@
 
 #include <nrfx/hal/nrf_ficr.h>
 #include <nrfx/hal/nrf_clock.h>
-#include <nrfx/hal/nrf_saadc.h>
 #include <nrfx/hal/nrf_radio.h>
 #include <nrfx/hal/nrf_systick.h>
 
@@ -48,8 +45,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
-
 #include <algorithm>
 #include <type_traits>
 #include <array>
@@ -58,45 +53,10 @@ extern "C" char *gcvtf(float, int, char *); // newlib: float -> string
 using namespace std;
 
 //----------------------------------------------------------------------
-// A C++14 safe way of casting an 'enum class' to it's underlying type,
-// see https://stackoverflow.com/a/33083231/1229371 for details
-
-template <typename E>
-constexpr auto to_underlying(E e) noexcept;
-
-template<typename E>
-constexpr auto to_underlying(E e) noexcept
-{
-    return static_cast<std::underlying_type_t<E>>(e);
-}
-
-//----------------------------------------------------------------------
 // Static and dynamic assertion and verification macros and functions
 
-#include "insist.h" // valid for C and C++ both
-
-//----------------------------------------------------------------------
-// Define a type to be used by the Kernel's Queues, FIFOs, & LIFOs
-
-class datum {
-
-  private:
-
-    void *reserved;
-
-  public:
-
-    datum(datum &&) = delete;
-    datum(const datum &) = delete;
-    datum & operator=(datum &&) = delete;
-    datum & operator=(const datum &) = delete;
-
-};
-
-template<typename T>
-struct queued_data : private datum {
-
-};
+#include "insist.h"  // valid for C and C++ both
+#include "utility.h" // valid for C and C++ both
 
 //----------------------------------------------------------------------
 // These 'include' directives are NOT needed by Zephyr.

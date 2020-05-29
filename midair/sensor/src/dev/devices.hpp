@@ -21,8 +21,6 @@ struct devices {
     struct device *red_btn;
     struct device *grn_btn;
 
-    struct device *saadc0;
-
     struct device *spi0;
     struct device *spi0cs;
 

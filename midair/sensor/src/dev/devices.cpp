@@ -12,12 +12,6 @@ struct devices dev = {  };
 
 static atomic_t is_initialized = ATOMIC_INIT(false);;
 
-#define DEVICE_GET_BINDING(port, name)   \
-    (port) = device_get_binding((name)); \
-    if (unlikely((port) == NULL)) {                             \
-        sys_panic("device_get_binding(\"%s\") failed", (name)); \
-    }
-
 //----------------------------------------------------------------------
 
 static void configure_clocks(void);
@@ -48,8 +42,6 @@ void devices_init(void) {
 
     DEVICE_GET_BINDING(dev.red_btn, DT_ALIAS_BUTTON0_RED_GPIOS_CONTROLLER);
     DEVICE_GET_BINDING(dev.grn_btn, DT_ALIAS_BUTTON1_GREEN_GPIOS_CONTROLLER);
-
-    DEVICE_GET_BINDING(dev.saadc0, DT_NORDIC_NRF_SAADC_ADC_0_LABEL);
 
     DEVICE_GET_BINDING(dev.spi0,   DT_NORDIC_NRF_SPIM_SPI_0_LABEL);
     DEVICE_GET_BINDING(dev.spi0cs, DT_NORDIC_NRF_SPIM_SPI_0_CS_GPIOS_CONTROLLER);
