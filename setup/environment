@@ -1,7 +1,7 @@
 # -*- mode: bash -*-
 
 export CMAKE_GENERATOR="Ninja"
-export CMAKE_MINIMUM_REQUIRED="3.17.2"
+export CMAKE_MINIMUM_REQUIRED="3.18.2"
 export CMAKE_EXPORT_COMPILE_COMMANDS="ON"
 
 [[ -z ${HOME:-} ]] && export HOME=~andrew

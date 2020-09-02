@@ -7,8 +7,10 @@ LOG_MODULE_DECLARE(midair, LOG_LEVEL_DBG);
 //----------------------------------------------------------------------
 
 static struct spi_cs_control spi_cs = {
-	.gpio_pin = DT_NORDIC_NRF_SPIM_SPI_0_CS_GPIOS_PIN,
-	.delay = 0, // microseconds
+    .gpio_dev = nullptr, // FIXME &&& DT_GPIO_LABEL(DT_NODELABEL(spi0), cs_gpios),
+    .delay = 0, // in microseconds
+    .gpio_pin = DT_GPIO_PIN(DT_NODELABEL(spi0), cs_gpios),
+    .gpio_dt_flags = DT_GPIO_FLAGS(DT_NODELABEL(spi0), cs_gpios),
 };
 
 static struct spi_config spi_cfg = {
@@ -20,7 +22,7 @@ static struct spi_config spi_cfg = {
 
 //----------------------------------------------------------------------
 
-int spi_simple_transceive(struct device *dev, const struct spi_config *config, u8_t *tx_buffer, u8_t *rx_buffer, size_t length) {
+int spi_simple_transceive(struct device *dev, const struct spi_config *config, uint8_t *tx_buffer, uint8_t *rx_buffer, size_t length) {
 
     const struct spi_buf tx_buffers[] = {
 		{
@@ -67,14 +69,14 @@ void configure_lsm6dsox(void) {
 
     spi_cs.gpio_dev = dev.spi0cs;
 
-    const u8_t lsm6dsox_ctrl3_c_register = spi_write_register(0x12);
-    const u8_t lsm6dsox_ctrl3_c_boot_and_sw_reset_value = 0x81;
+    const uint8_t lsm6dsox_ctrl3_c_register = spi_write_register(0x12);
+    const uint8_t lsm6dsox_ctrl3_c_boot_and_sw_reset_value = 0x81;
 
-    const u8_t lsm6dsox_who_am_i_register = spi_read_register(0x0F);
-    const u8_t lsm6dsox_who_am_i_reply_value = 0x6C;
+    const uint8_t lsm6dsox_who_am_i_register = spi_read_register(0x0F);
+    const uint8_t lsm6dsox_who_am_i_reply_value = 0x6C;
 
     array tx_buffer = { lsm6dsox_ctrl3_c_register, lsm6dsox_ctrl3_c_boot_and_sw_reset_value };
-    array rx_buffer = { u8_t(0), u8_t(0) };
+    array rx_buffer = { uint8_t(0), uint8_t(0) };
 
     STATIC_ASSERT(tx_buffer.size() == rx_buffer.size());
     const size_t length = tx_buffer.size();

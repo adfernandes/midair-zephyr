@@ -16,7 +16,7 @@ LOG_MODULE_REGISTER(battery, LOG_LEVEL_DBG);
 static struct device *saadc0;
 
 static const size_t n_samples = 1;
-static s16_t sample_buffer[n_samples] = { 0 };
+static int16_t sample_buffer[n_samples] = { 0 };
 
 //----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ static const struct adc_channel_cfg channel_cfg = {
 // The SAADC effective number of bits (ENOB) without oversampling is nine.
 // So higher resolutions - usually 10, 12, or 14 - require oversampling.
 //
-static const u8_t bits_resolution = 14;
+static const uint8_t bits_resolution = 14;
 
 // voltage = factor * sample_reading, for the 'channel_cfg' above
 //
@@ -79,7 +79,7 @@ K_TIMER_DEFINE(battery_timer, battery_timer_handler, NULL);
 void configure_battery(void)
 {
 
-    DEVICE_GET_BINDING(saadc0, (DT_PROP(DT_ALIAS(adc_0), label)));
+    DEVICE_GET_BINDING(saadc0, DT_LABEL(DT_NODELABEL(adc)));
 
     insist((2 * DT_PROP(VBATT, output_ohms)) != DT_PROP(VBATT, full_ohms));
 

@@ -30,30 +30,30 @@ void devices_init(void) {
 
     DEVICE_GET_BINDING(dev.clock, DT_LABEL(DT_INST(0, nordic_nrf_clock)));
 
-    DEVICE_GET_BINDING(dev.entropy, DT_CHOSEN_ZEPHYR_ENTROPY_LABEL);
+    DEVICE_GET_BINDING(dev.entropy, DT_LABEL(DT_CHOSEN(zephyr_entropy)));
 
-    DEVICE_GET_BINDING(dev.gpio0, DT_NORDIC_NRF_GPIO_GPIO_0_LABEL);
+    DEVICE_GET_BINDING(dev.gpio0, DT_LABEL(DT_NODELABEL(gpio0)));
 
-    DEVICE_GET_BINDING(dev.red_led, DT_ALIAS_LED0_RED_GPIOS_CONTROLLER);
-    DEVICE_GET_BINDING(dev.grn_led, DT_ALIAS_LED1_GREEN_GPIOS_CONTROLLER);
+    DEVICE_GET_BINDING(dev.red_led, DT_LABEL(DT_NODELABEL(led0_red)));
+    DEVICE_GET_BINDING(dev.grn_led, DT_LABEL(DT_NODELABEL(led1_green)));
 
-    DEVICE_GET_BINDING(dev.red_pwm, DT_PWM_LEDS_PWM_LED_0_PWMS_CONTROLLER);
-    DEVICE_GET_BINDING(dev.grn_pwm, DT_PWM_LEDS_PWM_LED_1_PWMS_CONTROLLER);
+    DEVICE_GET_BINDING(dev.red_pwm, DT_LABEL(DT_NODELABEL(pwm0)));
+    DEVICE_GET_BINDING(dev.grn_pwm, DT_LABEL(DT_NODELABEL(pwm1)));
 
-    DEVICE_GET_BINDING(dev.red_btn, DT_ALIAS_BUTTON0_RED_GPIOS_CONTROLLER);
-    DEVICE_GET_BINDING(dev.grn_btn, DT_ALIAS_BUTTON1_GREEN_GPIOS_CONTROLLER);
+    DEVICE_GET_BINDING(dev.red_btn, DT_LABEL(DT_NODELABEL(button0_red)));
+    DEVICE_GET_BINDING(dev.grn_btn, DT_LABEL(DT_NODELABEL(button1_green)));
 
-    DEVICE_GET_BINDING(dev.spi0,   DT_NORDIC_NRF_SPIM_SPI_0_LABEL);
-    DEVICE_GET_BINDING(dev.spi0cs, DT_NORDIC_NRF_SPIM_SPI_0_CS_GPIOS_CONTROLLER);
+    DEVICE_GET_BINDING(dev.spi0,   DT_LABEL(DT_NODELABEL(spi0)));
+    DEVICE_GET_BINDING(dev.spi0cs, DT_GPIO_LABEL(DT_NODELABEL(spi0), cs_gpios));
 
-    DEVICE_GET_BINDING(dev.i2c1, DT_NORDIC_NRF_TWIM_I2C_1_LABEL);
+    DEVICE_GET_BINDING(dev.i2c1, DT_LABEL(DT_NODELABEL(i2c1)));
 
-    DEVICE_GET_BINDING(dev.rtc2, DT_NORDIC_NRF_RTC_RTC_2_LABEL);
+    DEVICE_GET_BINDING(dev.rtc2, DT_LABEL(DT_NODELABEL(rtc2)));
 
-    DEVICE_GET_BINDING(dev.timer1, DT_NORDIC_NRF_TIMER_TIMER_1_LABEL);
-    DEVICE_GET_BINDING(dev.timer2, DT_NORDIC_NRF_TIMER_TIMER_2_LABEL);
-    DEVICE_GET_BINDING(dev.timer3, DT_NORDIC_NRF_TIMER_TIMER_3_LABEL);
-    DEVICE_GET_BINDING(dev.timer4, DT_NORDIC_NRF_TIMER_TIMER_4_LABEL);
+    DEVICE_GET_BINDING(dev.timer1, DT_LABEL(DT_NODELABEL(timer1)));
+    DEVICE_GET_BINDING(dev.timer2, DT_LABEL(DT_NODELABEL(timer2)));
+    DEVICE_GET_BINDING(dev.timer3, DT_LABEL(DT_NODELABEL(timer3)));
+    DEVICE_GET_BINDING(dev.timer4, DT_LABEL(DT_NODELABEL(timer4)));
 
     configure_clocks();
 
@@ -117,18 +117,18 @@ static void configure_clocks(void) {
 
 // Santity check the hard-coded pin numbers, below:
 //
-STATIC_ASSERT(DT_NORDIC_NRF_SPIM_SPI_0_CS_GPIOS_PIN ==  3);
-STATIC_ASSERT(DT_NORDIC_NRF_TWIM_I2C_1_SCL_PIN      ==  9);
-STATIC_ASSERT(DT_NORDIC_NRF_TWIM_I2C_1_SDA_PIN      == 10);
+STATIC_ASSERT(DT_GPIO_PIN(DT_NODELABEL(spi0), cs_gpios) ==  3);
+STATIC_ASSERT(DT_PROP(DT_NODELABEL(i2c1), scl_pin)      ==  9);
+STATIC_ASSERT(DT_PROP(DT_NODELABEL(i2c1), sda_pin)      == 10);
 //
 static void configure_gpio_pins(void) {
 
     struct gpio {
 
         struct device *port;
-        u32_t pin;
+        uint32_t pin;
         int flags;
-        u32_t state;
+        uint32_t state;
 
     };
 
@@ -212,7 +212,7 @@ static void verify_pwm_configs(void) {
     struct pwm {
 
         struct device *port;
-        u32_t pin;
+        uint32_t pin;
 
     };
 
@@ -225,11 +225,11 @@ static void verify_pwm_configs(void) {
 
     for (const auto config : configs) {
 
-        u64_t cycles = 0;
+        uint64_t cycles = 0;
         insist(pwm_get_cycles_per_sec(config.port, config.pin, &cycles));
 
         if (unlikely(cycles != UINT64_C(16000000))) {
-            sys_panic("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", u32_t(cycles >> 32), u32_t(cycles));
+            sys_panic("unexpected pwm_get_cycles_per_sec: 0x%08x%08x", uint32_t(cycles >> 32), uint32_t(cycles));
         }
 
     }
@@ -244,10 +244,10 @@ static void verify_counter_configs(void) {
 
         struct device *port;
         const char *name;
-        u32_t frequency;
+        uint32_t frequency;
         bool is_counting_up;
-        u8_t alarm_channels;
-        u32_t top_value;
+        uint8_t alarm_channels;
+        uint32_t top_value;
 
     };
 

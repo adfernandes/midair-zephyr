@@ -12,11 +12,11 @@ static const char * const state[2] = { "released", "pressed" };
 
 //----------------------------------------------------------------------
 
-static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32_t pins) {
+static void button_changed(struct device *dev_btn, struct gpio_callback *cb, uint32_t pins) {
 
     if (pins & BIT(RED_BTN_PIN)) {
 
-        const u32_t value = gpio_pin_get(dev_btn, RED_BTN_PIN);
+        const uint32_t value = gpio_pin_get(dev_btn, RED_BTN_PIN);
         insist(gpio_pin_set(dev.red_led, RED_LED_PIN, value));
         atomic_set(&red_btn_state, value);
 
@@ -26,7 +26,7 @@ static void button_changed(struct device *dev_btn, struct gpio_callback *cb, u32
 
     if (pins & BIT(GRN_BTN_PIN)) {
 
-        const u32_t value = gpio_pin_get(dev_btn, GRN_BTN_PIN);
+        const uint32_t value = gpio_pin_get(dev_btn, GRN_BTN_PIN);
         insist(gpio_pin_set(dev.grn_led, GRN_LED_PIN, value));
         atomic_set(&grn_btn_state, value);
 

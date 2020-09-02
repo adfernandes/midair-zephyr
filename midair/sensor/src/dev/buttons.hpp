@@ -5,7 +5,7 @@
 #include "main.hpp"
 #include "devices.hpp"
 
-enum class btn_pin : u32_t {
+enum class btn_pin : uint32_t {
     red   = RED_BTN_PIN,
     grn   = GRN_BTN_PIN,
 };
