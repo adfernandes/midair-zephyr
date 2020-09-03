@@ -1,4 +1,6 @@
 # -*- mode: bash -*-
+#
+set -u # init
 
 export CMAKE_GENERATOR="Ninja"
 export CMAKE_MINIMUM_REQUIRED="3.18.2"
@@ -46,4 +48,5 @@ export PATH="/Applications/SEGGER/Ozone/Ozone.app/Contents/MacOS:${PATH}"       
 
 source "${PROJECT_DIR}/zephyr/zephyr-env.sh"
 
-# done
+# done ------
+set +u # fini
