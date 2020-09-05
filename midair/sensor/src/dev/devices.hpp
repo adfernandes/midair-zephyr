@@ -6,35 +6,35 @@
 
 struct devices {
 
-    struct device *clock;
+    const struct device *clock;
 
-    struct device *entropy;
+    const struct device *entropy;
 
-    struct device *gpio0;
+    const struct device *gpio0;
 
-    struct device *red_led;
-    struct device *grn_led;
+    const struct device *red_led;
+    const struct device *grn_led;
 
-    struct device *red_pwm;
-    struct device *grn_pwm;
+    const struct device *red_pwm;
+    const struct device *grn_pwm;
 
-    struct device *red_btn;
-    struct device *grn_btn;
+    const struct device *red_btn;
+    const struct device *grn_btn;
 
-    struct device *spi0;
-    struct device *spi0cs;
+    const struct device *spi0;
+    const struct device *spi0cs;
 
-    struct device *i2c1;
+    const struct device *i2c1;
 
     // RTC0 is Reserved;
     // RTC1 is Reserved;
-    struct device *rtc2;
+    const struct device *rtc2;
 
     // TIMER0 is Reserved;
-    struct device *timer1;
-    struct device *timer2;
-    struct device *timer3;
-    struct device *timer4;
+    const struct device *timer1;
+    const struct device *timer2;
+    const struct device *timer3;
+    const struct device *timer4;
 
 };
 

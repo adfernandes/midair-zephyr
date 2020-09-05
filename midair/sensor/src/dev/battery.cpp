@@ -13,7 +13,7 @@ LOG_MODULE_REGISTER(battery, LOG_LEVEL_DBG);
 
 //----------------------------------------------------------------------
 
-static struct device *saadc0;
+static const struct device *saadc0;
 
 static const size_t n_samples = 1;
 static int16_t sample_buffer[n_samples] = { 0 };

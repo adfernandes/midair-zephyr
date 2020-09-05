@@ -12,7 +12,7 @@ static const char * const state[2] = { "released", "pressed" };
 
 //----------------------------------------------------------------------
 
-static void button_changed(struct device *dev_btn, struct gpio_callback *cb, uint32_t pins) {
+static void button_changed(const struct device *dev_btn, struct gpio_callback *cb, uint32_t pins) {
 
     if (pins & BIT(RED_BTN_PIN)) {
 

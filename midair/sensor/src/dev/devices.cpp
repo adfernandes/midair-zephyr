@@ -125,10 +125,10 @@ static void configure_gpio_pins(void) {
 
     struct gpio {
 
-        struct device *port;
-        uint32_t pin;
-        int flags;
-        uint32_t state;
+        const struct device *port;
+        const uint32_t pin;
+        const int flags;
+        const uint32_t state;
 
     };
 
@@ -211,8 +211,8 @@ static void verify_pwm_configs(void) {
 
     struct pwm {
 
-        struct device *port;
-        uint32_t pin;
+        const struct device *port;
+        const uint32_t pin;
 
     };
 
@@ -242,12 +242,12 @@ static void verify_counter_configs(void) {
 
     struct counter {
 
-        struct device *port;
-        const char *name;
-        uint32_t frequency;
-        bool is_counting_up;
-        uint8_t alarm_channels;
-        uint32_t top_value;
+        const struct device *port;
+        const char* const name;
+        const uint32_t frequency;
+        const bool is_counting_up;
+        const uint8_t alarm_channels;
+        const uint32_t top_value;
 
     };
 
@@ -263,7 +263,7 @@ static void verify_counter_configs(void) {
 
     for (const auto config : configs) {
 
-        struct device *port = config.port;
+        const struct device *port = config.port;
 
         struct counter instance = {
             .port = port,

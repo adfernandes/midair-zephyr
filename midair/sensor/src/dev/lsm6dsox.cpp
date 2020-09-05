@@ -22,7 +22,7 @@ static struct spi_config spi_cfg = {
 
 //----------------------------------------------------------------------
 
-int spi_simple_transceive(struct device *dev, const struct spi_config *config, uint8_t *tx_buffer, uint8_t *rx_buffer, size_t length) {
+int spi_simple_transceive(const struct device *dev, const struct spi_config *config, uint8_t *tx_buffer, uint8_t *rx_buffer, size_t length) {
 
     const struct spi_buf tx_buffers[] = {
 		{
